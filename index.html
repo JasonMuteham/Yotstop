@@ -2,10 +2,12 @@
 <html >
     <head>
         <meta charset="UTF-8">
-        <title>YOTSTOP - Anchor Moor Explore</title>
+        <title>YotStop - Anchor Moor Explore</title>
+        <link rel="shortcut icon" href="/icons/res/mipmap-mdpi/ic_launcher_yotstop.png" type="image/x-icon">
+        
         <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates:600" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Zilla+Slab+Highlight:700" rel="stylesheet">
-
+        <link href="https://fonts.googleapis.com/css?family=Zilla+Slab:600" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 
@@ -15,50 +17,122 @@
 
     </head>
 
-    <body>
-        <div class="container">
+    <body id="body-back-img">
+        <div id="back-img-cover">
+            <div class="container">
 
-            <nav class="navbar navbar-toggleable-sm navbar-inverse rounded">
-                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a class="navbar-brand" href="#">YOTSTOP</a>
+                <nav class="navbar navbar-toggleable-sm navbar-inverse rounded">
+                    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><img width="30" height="30" class="d-inline-block align-top" src="/icons/res/mipmap-hdpi/ic_launcher_yotstop.png">OTSTOP</a>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="#">Explore <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="#">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="#">Contact</a>
-                        </li>
-                    </ul>
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                        <button class="btn btn-secondary my-2 my-sm-0" type="submit" disabled>Search</button>
-                    </form>
-                </div>
-            </nav>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link disabled" href="#">Explore <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link disabled" href="#">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link disabled" href="#">Contact</a>
+                            </li>
+                        </ul>
+                        <form class="form-inline my-2 my-lg-0">
+                            <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                            <button class="btn btn-secondary my-2 my-sm-0" type="submit" disabled>Search</button>
+                        </form>
+                    </div>
+                </nav>
 
 
-            <div class="row">
-                <div class="col-12">
-                    <div id="content" class="rounded">
-                        <h1 class="display-1">YotStop</h1>
-                        <h2 class="display-5">Anchor Moor Explore</h2>
-                        <button id="exploreButton" type="button" class="btn btn-secondary btn-lg" disabled>Explore</button>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="content" class="rounded">
+
+
+                            <h1 class="display-1"> <img class="img-fluid d-inline-block align-middle" id ="brand-icon-large" src="/icons/web_hi_res_512.png">otStop</h1>
+
+                            <h2 class="display-5 ws">Anchor Moor Explore</h2>
+                            <button id="exploreButton" type="button" class="btn btn-secondary btn-lg" disabled>Explore</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
 
+
+        <script type="text/javascript">
+
+
+            var imageArr = []; 
+
+
+            var ImageIDvalue = "body-back-img";
+            var ImageCoverId = "back-img-cover";    
+
+            var TransitionIncrement = 0.1;
+
+            var IncrementInterval = 50;
+
+            var PauseBeforeNextImage = 10000;
+
+
+            imageArr.push('url("/images/cover-1.jpg")');
+            imageArr.push('url("/images/boy-on-bow.jpg")');
+            imageArr.push('url("/images/red-sands-fort.jpg")');
+            imageArr.push('url("/images/old-lady.jpg")');
+
+
+            var opacity = 1;
+            var currentImage = 0;
+            var topImage = imageArr.length - 1;
+            var image = document.getElementById(ImageIDvalue);
+            var cover = document.getElementById(ImageCoverId);   
+
+            var timerthing;
+
+            function FadeIn() {
+                opacity -= TransitionIncrement;
+                if( opacity <= 0 ) { opacity = 0; }
+                cover.style.backgroundColor = 'rgba(0,0,0,' + opacity + ')';
+                if( opacity == 0 ) {
+                    clearInterval(timerthing);
+                    setTimeout("StartFadeOut()",PauseBeforeNextImage);
+                }
+            }
+
+            function FadeOut() {
+                opacity += TransitionIncrement;
+                if( opacity >= 1 ) { opacity = 1; }
+                cover.style.backgroundColor = 'rgba(0,0,0,' + opacity + ')';
+                if( opacity == 1 ) {
+                    clearInterval(timerthing);
+                    currentImage++;
+                    if( currentImage > topImage ) { currentImage = 0; }
+                    image.style.backgroundImage = imageArr[currentImage];
+                    timerthing = setInterval("FadeIn()",IncrementInterval);
+                }
+            }
+
+            function StartFadeOut() { timerthing = setInterval("FadeOut()",IncrementInterval); }
+
+            function StartSlideShowTransition() {
+                setTimeout("StartFadeOut()",PauseBeforeNextImage);
+            }
+
+            StartSlideShowTransition();
+        </script>
+
     </body>
 </html>
+
+
+
+
+
