@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <title>YotStop - Anchor Moor Explore</title>
         <link rel="shortcut icon" href="/icons/res/mipmap-mdpi/ic_launcher_yotstop.png" type="image/x-icon">
-        
+
         <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates:600" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Zilla+Slab+Highlight:700" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Zilla+Slab:600" rel="stylesheet">
@@ -59,6 +59,9 @@
                         </div>
                     </div>
                 </div>
+                <div class = "row">
+                    <p class ="col fixed-bottom" id = "GPS">Locating...</p>
+                </div>
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
@@ -66,68 +69,10 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
 
+        
+        <script type="text/javascript" src="yotstop.js"></script>
 
-        <script type="text/javascript">
-
-
-            var imageArr = []; 
-
-
-            var ImageIDvalue = "body-back-img";
-            var ImageCoverId = "back-img-cover";    
-
-            var TransitionIncrement = 0.1;
-
-            var IncrementInterval = 50;
-
-            var PauseBeforeNextImage = 10000;
-
-
-            imageArr.push('url("/images/cover-1.jpg")');
-            imageArr.push('url("/images/boy-on-bow.jpg")');
-            imageArr.push('url("/images/red-sands-fort.jpg")');
-            imageArr.push('url("/images/old-lady.jpg")');
-
-
-            var opacity = 1;
-            var currentImage = 0;
-            var topImage = imageArr.length - 1;
-            var image = document.getElementById(ImageIDvalue);
-            var cover = document.getElementById(ImageCoverId);   
-
-            var timerthing;
-
-            function FadeIn() {
-                opacity -= TransitionIncrement;
-                if( opacity <= 0 ) { opacity = 0; }
-                cover.style.backgroundColor = 'rgba(0,0,0,' + opacity + ')';
-                if( opacity == 0 ) {
-                    clearInterval(timerthing);
-                    setTimeout("StartFadeOut()",PauseBeforeNextImage);
-                }
-            }
-
-            function FadeOut() {
-                opacity += TransitionIncrement;
-                if( opacity >= 1 ) { opacity = 1; }
-                cover.style.backgroundColor = 'rgba(0,0,0,' + opacity + ')';
-                if( opacity == 1 ) {
-                    clearInterval(timerthing);
-                    currentImage++;
-                    if( currentImage > topImage ) { currentImage = 0; }
-                    image.style.backgroundImage = imageArr[currentImage];
-                    timerthing = setInterval("FadeIn()",IncrementInterval);
-                }
-            }
-
-            function StartFadeOut() { timerthing = setInterval("FadeOut()",IncrementInterval); }
-
-            function StartSlideShowTransition() {
-                setTimeout("StartFadeOut()",PauseBeforeNextImage);
-            }
-
-            StartSlideShowTransition();
-        </script>
+   
 
     </body>
 </html>
