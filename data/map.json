@@ -1,0 +1,35 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    0.525174,
+                    51.394564
+                ]
+            },
+            "type": "Feature",
+            "properties": {
+                "category": "yotstop",
+                "description": "Private Mooring",
+                "title": "Thunderbolt Pier"
+            }
+        },
+        {
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    0.691754,
+                    51.404027
+                ]
+            },
+            "type": "Feature",
+            "properties": {
+                "category": "yotstop",
+                "description": "Nice anchorage",
+                "title": "Stangate Creek"
+            }
+        }
+    ]
+}

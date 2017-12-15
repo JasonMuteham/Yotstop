@@ -1,0 +1,127 @@
+<html>
+
+<head>
+  <title>Yotstop Map</title>
+  <link rel="stylesheet" href="/css/map.css">
+  <link rel="shortcut icon" href="/icons/res/mipmap-mdpi/ic_launcher_yotstop.png" type="image/x-icon">
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/css?family=Zilla+Slab:600" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.2/css/materialize.min.css"> -->
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
+
+  <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase-firestore.js"></script>
+  
+
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <head>
+
+    <body>
+      
+ 
+      <!-- Modal Structure -->
+      <div id="data-entry-modal" class="modal">
+        <div class="modal-content">
+          <span id="dataClose" class="close">
+            <i class="material-icons text-shadow">arrow_back</i>
+          </span>
+          <h5>New Marker</h5>
+          <form id="data-form">
+            <div class="input-field col">
+              <input type="text" name="title" id="data-title">
+              <label for="title">Marker Name</label>
+            </div>
+            <div class="input-field col">
+              <input type="text" name="description" id="data-description">
+              <label for="description">Description</label>
+            </div>
+
+
+            <div class="input-field">
+              <select id="data-type">
+                <option value="moor">mooring</option>
+                <option value="anchor">anchorage</option>
+                <option value="info">explore</option>
+              </select>
+              <label>Select Type</label>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button onclick="saveData()" class="modal-action modal-close waves-effect waves-green btn-flat">Save</button>
+        </div>
+      </div>
+
+      <!-- The Modal -->
+      <div id="vr-modal">
+
+        <!-- Modal content -->
+        <div class="modal-content light-blue lighten-2 z-depth-2">
+          <span id="vrClose" class="close">
+            <i class="material-icons white-text">arrow_back</i>
+          </span>
+          <iframe id="vr" class="img-360" src="" frameborder="0" scrolling="no"></iframe>
+
+        </div>
+
+      </div>
+
+
+
+      <ul id="slide-out" class="side-nav info-box light-blue lighten-2">
+        <!-- <span class="close"><i class="material-icons">arrow_back</i></span> -->
+
+      </ul>
+      <a href="#" data-activates="slide-out" class="button-collapse"></a>
+
+
+      <div id="mapcanvas" class="map"></div>
+
+
+
+
+      <div class="copyright grey-text hide-on-med-and-down">
+        <a class="" href="https://mapicons.mapsmarker.com"> Maps Icons Collection</a>
+        <span id="my-copyright"> © 2017 Jason Muteham</span>
+
+      </div>
+
+
+      <!-- </div> -->
+
+
+
+      <!--Import jQuery before materialize.js-->
+
+
+
+
+      <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+
+      <script src="data/UK.json"></script>
+      <script src="js/map.js"></script>
+     
+
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPU-L8tah6RaZcNHcrKTOsld_T-V6gy5s&callback=initMap">
+      </script>
+      <script src="js/markerclusterer.js"></script>
+      <script>
+        $(document).ready(function () {
+          $(".button-collapse").sideNav();
+          $('select').material_select();
+         
+        });
+
+      </script>
+    </body>
+
+</html>

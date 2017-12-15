@@ -1,0 +1,85 @@
+var MAP_DATA ={
+    "settings":{
+        "imagePath":"images/",
+        "preview":"300px/",
+        "full":"1200px/",
+        "mapCenter":{
+            "lat": 51.41,
+            "lng": 0.64
+        },
+        "zoom":7,
+        "debugger":false
+    },
+    
+    "features": [
+        {
+            "type": "moor",
+            "title": "Thunderbolt Pier",
+            "description": "Private Mooring",
+            "position": { lng: 0.525174, lat: 51.394564},
+            "images": ["thunderbolt-pier-1.jpg"],
+            "VRUrl": "VR360/thunderbolt-pier-vr360.html",
+            "vrPreviewImage":"thunderbolt-pier-360-preview.jpg",
+            "enhanced":true
+        },
+        {
+            "type": "anchor",
+            "title": "Stangate Creek",
+            "description": "Popular Anchorage",
+            "position": { lng: 0.691754, lat: 51.404027},
+            "images": ["stangate-1.jpg"],
+            "enhanced":true
+            
+        },
+        {
+            "type": "anchor",
+            "title": "Sharfleet Creek",
+            "description": "Sweet Anchorage",
+            "position": { lat: 51.416838, lng: 0.679703},
+            "images": ["sharfleet-creek-1.jpg"],
+            "enhanced":true
+            
+        },
+        {
+            "type": "anchor",
+            "title": "Slaughterhouse Point",
+            "description": "Nice Anchorage",
+            "position": { lat: 51.394631, lng: 0.693306},
+            "images": ["slaughterhouse-point-1.jpg"],
+            "enhanced":true
+            
+        },
+        {
+            "type": "moor",
+            "title": "MDL Chatham",
+            "description": "Nice Marina",
+            "position": { lat: 51.40468070549327, lng: 0.5321609973907471 }
+           
+        },
+        {
+            "type": "anchor",
+            "title": "The Shade",
+            "description": "Quiet Anchorage",
+            "position": { lat: 51.394048, lng: 0.703077}
+           
+        },
+        {
+            "type": "info",
+            "title": "Fort Darnet",
+            "description": "Historical Landmark",
+           "url":"https://en.wikipedia.org/wiki/Fort_Darnet",
+           "position": { lat: 51.406580, lng: 0.596438},
+           "images":["fort-darnet-1.jpg"],
+           "enhanced":true
+            
+            
+        },
+        {
+            "type": "info",
+            "title": "Fort Hoo",
+            "description": "Historical Landmark",
+            "url":"https://en.wikipedia.org/wiki/Fort_Hoo",
+            "position": { lat: 51.403247, lng: 0.581359}
+        }
+    ]
+}

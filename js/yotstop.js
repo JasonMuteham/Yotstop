@@ -12,13 +12,13 @@ var PauseBeforeNextImage = 10000;
 
 
           
-imageArr.push('url("/images/cover-1.jpg")');
-imageArr.push('url("/images/pyefleet-creek-1.jpg")');
-imageArr.push('url("/images/sharfleet-creek.jpg")');  
-imageArr.push('url("/images/boy-on-bow.jpg")');
-imageArr.push('url("/images/red-sands-fort.jpg")');
-imageArr.push('url("/images/old-lady.jpg")');
-imageArr.push('url("/images/fort-darnet.jpg")');
+imageArr.push('url("/images/1920px/cover-1.jpg")');
+imageArr.push('url("/images/1920px/pyefleet-creek-1.jpg")');
+imageArr.push('url("/images/1920px/sharfleet-creek.jpg")');  
+imageArr.push('url("/images/1920px/boy-on-bow.jpg")');
+imageArr.push('url("/images/1920px/red-sands-fort.jpg")');
+imageArr.push('url("/images/1920px/old-lady.jpg")');
+imageArr.push('url("/images/1920px/fort-darnet.jpg")');
 
 
 
@@ -63,7 +63,7 @@ StartSlideShowTransition();
 
 //Start of Location code 
 
-var options = {
+/* var options = {
     enableHighAccuracy: true,
     timeout: 5000,
     maximumAge: 0
@@ -81,5 +81,5 @@ function error(err) {
 };
 
 navigator.geolocation.watchPosition(success, error, options);
-
+ */
 // End of Location code

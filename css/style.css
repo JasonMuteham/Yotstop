@@ -10,7 +10,7 @@ html {
     letter-spacing: .1em;
 }
 body{
-    background-image: url("/images/cover-1.jpg");
+    background-image: url("/images/1920px/cover-1.jpg");
     background-size: cover;
     background-position: center;
     height: 100%;
@@ -51,6 +51,7 @@ h1 {
 #exploreButton {
     // background-color: navy;
     margin-top: 1%;
+    cursor: pointer;
 }
 
 .display-1 {
