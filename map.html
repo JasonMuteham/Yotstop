@@ -10,12 +10,12 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!--Import materialize.css-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.2/css/materialize.min.css"> -->
-  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
 
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
+  <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase-firestore.js"></script>
-  
+
 
   <!--Let browser know website is optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,85 +23,126 @@
   <head>
 
     <body>
-      
- 
-      <!-- Modal Structure -->
-      <div id="data-entry-modal" class="modal">
-        <div class="modal-content">
-          <span id="dataClose" class="close">
-            <i class="material-icons text-shadow">arrow_back</i>
-          </span>
-          <h5>New Marker</h5>
+
+      <div class="hide">
+        <span id="main-title" class="valign-wrapper noselect text-shadow">
+          <img id="nav-logo-img" class="circle-shadow" src="/icons/res/mipmap-hdpi/ic_launcher_yotstop.png">OTSTOP
+        </span>
+      </div>
+
+
+      <div id="noEditModal" class="modal">
+        <div class="modal-content center-align">
+          <h4>Please log In</h4>
+          <p>Only registered users may add or edit data.</p>
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class="modal-action modal-close btn-floating btn-large waves-effect waves-light red">
+            <i class="material-icons">check</i>
+          </a>
+        </div>
+      </div>
+
+      <div id="data-entry-modal" class="no-modal white">
+        <div class="container">
+
+          <div class="center-align">
+            <h5>Add Marker</h5>
+            <div id="data-entry-pos" class="center-align"></div>
+          </div>
+
           <form id="data-form">
             <div class="input-field col">
-              <input type="text" name="title" id="data-title">
-              <label for="title">Marker Name</label>
+              <input class="validate" type="text" name="title" id="data-title" required>
+              <label for="title">Place Name</label>
             </div>
             <div class="input-field col">
-              <input type="text" name="description" id="data-description">
+              <input class="validate" type="text" name="description" id="data-description" required>
               <label for="description">Description</label>
             </div>
 
 
             <div class="input-field">
-              <select id="data-type">
-                <option value="moor">mooring</option>
-                <option value="anchor">anchorage</option>
-                <option value="info">explore</option>
+              <select id="data-type" class="" required>
               </select>
-              <label>Select Type</label>
+              <label>Type</label>
             </div>
 
           </form>
-        </div>
-        <div class="modal-footer">
-          <button onclick="saveData()" class="modal-action modal-close waves-effect waves-green btn-flat">Save</button>
+
+          <div class="data-modal-footer row">
+            <div class="col s1 left-align">
+              <button onclick="saveData()" class="modal-action modal-close waves-effect waves-green green btn-floating">
+                <i class="material-icons">check</i>
+              </button>
+            </div>
+            <div class="offset-s8 col s2 right-align">
+              <button onclick="closeData()" class="modal-action modal-close waves-effect waves-red red btn-floating ">
+                <i class="material-icons">close</i>
+              </button>
+
+            </div>
+
+          </div>
         </div>
       </div>
 
-      <!-- The Modal -->
-      <div id="vr-modal">
 
-        <!-- Modal content -->
+      <div id="vr-modal">
         <div class="modal-content light-blue lighten-2 z-depth-2">
           <span id="vrClose" class="close">
             <i class="material-icons white-text">arrow_back</i>
           </span>
           <iframe id="vr" class="img-360" src="" frameborder="0" scrolling="no"></iframe>
-
         </div>
-
       </div>
-
-
-
-      <ul id="slide-out" class="side-nav info-box light-blue lighten-2">
-        <!-- <span class="close"><i class="material-icons">arrow_back</i></span> -->
-
+      <ul id="slide-out" class="side-nav light-blue lighten-2">
       </ul>
       <a href="#" data-activates="slide-out" class="button-collapse"></a>
 
+      <div id="fab-main" class="hide">
+        <div class="fixed-action-btn click-to-toggle ">
+          <a class="btn-floating btn-large light-blue waves-effect waves-dark  lighten-2 z-depth-4">
+            <i class="material-icons">menu</i>
+          </a>
+          <ul>
+            <li>
+              <a id="gps-icon" class="btn-floating red z-depth-4" onClick="getLocation()">
+                <i class="material-icons">gps_not_fixed</i>
+              </a>
+            </li>
+            <li>
+              <a class="btn-floating red z-depth-4">
+                <i class="material-icons">search</i>
+              </a>
+            </li>
+            <li>
+              <a class="btn-floating red z-depth-4 ">
+                <i class="material-icons">list</i>
+              </a>
+            </li>
+            <li>
+              <a id="login-icon" class="login-icon btn-floating red z-depth-4 pulse" onClick="login()">
+                <i class="material-icons tiny">person_outline</i>
+              </a>
+            </li>
+            <li>
+              <a class="btn-floating red z-depth-4 ">
+                <i class="material-icons">settings</i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
 
       <div id="mapcanvas" class="map"></div>
-
-
-
 
       <div class="copyright grey-text hide-on-med-and-down">
         <a class="" href="https://mapicons.mapsmarker.com"> Maps Icons Collection</a>
         <span id="my-copyright"> © 2017 Jason Muteham</span>
 
       </div>
-
-
-      <!-- </div> -->
-
-
-
-      <!--Import jQuery before materialize.js-->
-
-
-
+  
 
       <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
@@ -109,16 +150,16 @@
 
       <script src="data/UK.json"></script>
       <script src="js/map.js"></script>
-     
 
-      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPU-L8tah6RaZcNHcrKTOsld_T-V6gy5s&callback=initMap">
+
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPU-L8tah6RaZcNHcrKTOsld_T-V6gy5s&callback=initApp">
       </script>
       <script src="js/markerclusterer.js"></script>
       <script>
         $(document).ready(function () {
           $(".button-collapse").sideNav();
           $('select').material_select();
-         
+          $('.modal').modal();
         });
 
       </script>
