@@ -1,4 +1,3 @@
-
 var MAP_DATA = window.MAP_DATA;
 var infoWindow;
 var map;
@@ -14,12 +13,8 @@ firebase.initializeApp({
   authDomain: "yotstop-1512497608857.firebaseapp.com",
   databaseURL: "https://yotstop-1512497608857.firebaseio.com",
   projectId: "yotstop-1512497608857",
-  storageBucket: "yotstop-1512497608857.appspot.com",
+  storageBucket: "yotstop-1512497608857.appspot.com"
 });
-
-
-
-
 
 // Initialize Cloud Firestore through Firebase
 var db = firebase.firestore();
@@ -36,95 +31,105 @@ var data = {
 };
 
 function areWeLoggedin() {
-  firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-      // User is signed in.
-      userAuth = true;
-      var displayName = user.displayName;
-      var email = user.email;
-      var emailVerified = user.emailVerified;
-      var photoURL = user.photoURL;
-      var uid = user.uid;
-      data.userId = uid;
-      var phoneNumber = user.phoneNumber;
-      var providerData = user.providerData;
-      var loginIcon = document.querySelector("#map-login-icon");
-      loginIcon.classList.remove("red");
-      loginIcon.classList.add("light-blue");
-      loginIcon.classList.add("lighten-2");
-      loginIcon.classList.remove("pulse");
+  firebase.auth().onAuthStateChanged(
+    function(user) {
+      if (user) {
+        // User is signed in.
+        userAuth = true;
+        var displayName = user.displayName;
+        var email = user.email;
+        var emailVerified = user.emailVerified;
+        var photoURL = user.photoURL;
+        var uid = user.uid;
+        data.userId = uid;
+        var phoneNumber = user.phoneNumber;
+        var providerData = user.providerData;
+        var loginIcon = document.querySelector("#map-login-icon");
+        loginIcon.setAttribute("data-tooltip","Logout");
+        $('.tooltipped').tooltip({delay: 350});
+        loginIcon.classList.remove("red");
+        loginIcon.classList.add("light-blue");
+        loginIcon.classList.add("lighten-2");
+        loginIcon.classList.remove("pulse");
+        // document.querySelector("#burger-fab").classList.remove("pulse");
+        console.log(displayName);
+        console.log(photoURL);
 
-      console.log(displayName);
-      console.log(photoURL);
-
-      // user.getIdToken().then(function(accessToken) {
-      //   document.getElementById('sign-in-status').textContent = 'Signed in';
-      //   document.getElementById('sign-in').textContent = 'Sign out';
-      //   document.getElementById('account-details').textContent = JSON.stringify({
-      //     displayName: displayName,
-      //     email: email,
-      //     emailVerified: emailVerified,
-      //     phoneNumber: phoneNumber,
-      //     photoURL: photoURL,
-      //     uid: uid,
-      //     accessToken: accessToken,
-      //     providerData: providerData
-      //   }, null, '  ');
-      // });
-    } else {
-      // User is signed out.
-      userAuth = false;
-      data.userId = "";
-      // var loginIcon = document.getElementById("login-icon");
-      var loginIcon = document.querySelector("#map-login-icon");
-      loginIcon.classList.add("red");
-      loginIcon.classList.remove("light-blue");
-      loginIcon.classList.remove("lighten-2");
-      loginIcon.classList.add("pulse");
-      // document.getElementById('sign-in-status').textContent = 'Signed out';
-      // document.getElementById('sign-in').textContent = 'Sign in';
-      // document.getElementById('account-details').textContent = 'null';
+        // user.getIdToken().then(function(accessToken) {
+        //   document.getElementById('sign-in-status').textContent = 'Signed in';
+        //   document.getElementById('sign-in').textContent = 'Sign out';
+        //   document.getElementById('account-details').textContent = JSON.stringify({
+        //     displayName: displayName,
+        //     email: email,
+        //     emailVerified: emailVerified,
+        //     phoneNumber: phoneNumber,
+        //     photoURL: photoURL,
+        //     uid: uid,
+        //     accessToken: accessToken,
+        //     providerData: providerData
+        //   }, null, '  ');
+        // });
+      } else {
+        // User is signed out.
+        userAuth = false;
+        data.userId = "";
+        // var loginIcon = document.getElementById("login-icon");
+        var loginIcon = document.querySelector("#map-login-icon");
+        loginIcon.classList.add("red");
+        loginIcon.classList.remove("light-blue");
+        loginIcon.classList.remove("lighten-2");
+        loginIcon.classList.add("pulse");
+        loginIcon.setAttribute("data-tooltip","Login");
+        $('.tooltipped').tooltip({delay: 350});
+        // document.getElementById('sign-in-status').textContent = 'Signed out';
+        // document.getElementById('sign-in').textContent = 'Sign in';
+        // document.getElementById('account-details').textContent = 'null';
+      }
+    },
+    function(error) {
+      console.log(error);
     }
-  }, function (error) {
-    console.log(error);
-  });
-
+  );
 }
 
 function login() {
   var loginIcon = document.getElementById("map-login-icon");
   if (!loginIcon.classList.contains("red")) {
     firebase.auth().signOut();
-
   } else {
-    var widgetURL = "login.html"
-    window.open(widgetURL, 'Sign In', 'width=500,height=500,left=300,top=100,dialog=yes,minimizable=no');
+    var widgetURL = "login.html";
+    window.open(
+      widgetURL,
+      "Sign In",
+      "width=500,height=500,left=300,top=100,dialog=yes,minimizable=no"
+    );
   }
 }
 
 function MainTitle(titleDiv, map) {
   // Set CSS for the control border.
-  var controlUI = document.createElement('div');
-  controlUI.style.cursor = 'pointer';
-  controlUI.style.marginTop = '10px';
-  controlUI.style.textAlign = 'center';
+  var controlUI = document.createElement("div");
+  controlUI.style.cursor = "pointer";
+  controlUI.style.marginTop = "10px";
+  controlUI.style.textAlign = "center";
   titleDiv.appendChild(controlUI);
-  var titleText = document.querySelector('#main-title').cloneNode(true);
-  titleText.id = "map-main-title"
+  var titleText = document.querySelector("#main-title").cloneNode(true);
+  titleText.id = "map-main-title";
   controlUI.appendChild(titleText);
-  controlUI.addEventListener('click', function () {
+  controlUI.addEventListener("click", function() {
     map.panTo(MAP_DATA.settings.mapCenter);
     map.setZoom(MAP_DATA.settings.zoom);
   });
 }
 
 function FABControl(FABDiv, map) {
-  var controlUI = document.createElement('div');
-  controlUI.style.cursor = 'pointer';
-  controlUI.style.marginRight = '10px';
-  controlUI.style.marginTop = '10px';
+  var controlUI = document.createElement("div");
+  controlUI.style.cursor = "pointer";
+  controlUI.style.marginRight = "10px";
+  controlUI.style.marginTop = "10px";
   FABDiv.appendChild(controlUI);
   var FABText = document.querySelector("#fab-main").cloneNode(true);
+  FABText.id = "map-fab-main";
   FABText.querySelector("#login-icon").id = "map-login-icon";
   FABText.classList.toggle("hide");
   controlUI.appendChild(FABText);
@@ -132,7 +137,7 @@ function FABControl(FABDiv, map) {
 
 function initMap() {
   // Create the map
-  map = new google.maps.Map(document.getElementsByClassName('map')[0], {
+  map = new google.maps.Map(document.getElementsByClassName("map")[0], {
     zoom: MAP_DATA.settings.zoom,
     zoomControlOptions: {
       position: google.maps.ControlPosition.LEFT_BOTTOM
@@ -152,32 +157,38 @@ function initMap() {
 
   // Create the DIV to hold the control and call the mainTitle()
   // constructor passing in this DIV.
-  var titleDiv = document.createElement('div');
+  var titleDiv = document.createElement("div");
   var mainTitle = new MainTitle(titleDiv, map);
 
   titleDiv.index = 1;
   map.controls[google.maps.ControlPosition.TOP_CENTER].push(titleDiv);
 
-  var FABDiv = document.createElement('div');
+  var FABDiv = document.createElement("div");
   var FABCtrl = new FABControl(FABDiv, map);
 
   FABDiv.index = 1;
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(FABDiv);
 
-  map.addListener("mousemove", function () {
+  map.addListener("mousemove", function() {
     infoWindow.close(map);
   });
 
   if (MAP_DATA.settings.debugger) {
-    map.addListener('dblclick', function (e) {
-      if (document.getElementById("data-entry-modal").style.display == "block") {
+    map.addListener("dblclick", function(e) {
+      if (
+        document.getElementById("data-entry-modal").style.display == "block"
+      ) {
         // no more markers if data entry in progress
-        return
+        return;
       }
       data.position = setLatLng(e);
 
-
-      var content = `"position": { lat: ` + data.position.lat + `, lng: ` + data.position.lng + ` }`;
+      var content =
+        `"position": { lat: ` +
+        data.position.lat +
+        `, lng: ` +
+        data.position.lng +
+        ` }`;
 
       marker = new google.maps.Marker({
         position: data.position,
@@ -187,27 +198,25 @@ function initMap() {
       });
 
       markers.push(marker);
-      google.maps.event.addListener(marker, 'click', function (e) {
+      google.maps.event.addListener(marker, "click", function(e) {
         if (userAuth) {
-          var dataEntryPos = document.getElementById("data-entry-pos");
           data.position = setLatLng(e);
           var lat = parseFloat(e.latLng.lat()).toFixed([5]);
           var lng = parseFloat(e.latLng.lng()).toFixed([5]);
 
-          posText = `<div id = "nav-position"><h6>LAT: ` + lat + `, LNG: ` + lng + `</h6></div>`;
+          document.getElementById("data-entry-pos-lat").textContent = lat;
+          document.getElementById("data-entry-pos-lng").textContent = lng;
 
-          dataEntryPos.innerHTML = posText;
-          google.maps.event.addListener(marker, 'dragend', function () {
+          google.maps.event.addListener(marker, "dragend", function() {
             lat = parseFloat(marker.position.lat()).toFixed([5]);
             lng = parseFloat(marker.position.lng()).toFixed([5]);
 
-            posText = `<div id = "nav-position"><h6>LAT: ` + lat + `, LNG: ` + lng + `</h6></div>`;
-
-            dataEntryPos.innerHTML = posText;
+            document.getElementById("data-entry-pos-lat").textContent = lat;
+            document.getElementById("data-entry-pos-lng").textContent = lng;
           });
           dataModalOn();
         } else {
-          $('#noEditModal').modal('open');
+          $("#noEditModal").modal("open");
         }
       });
     });
@@ -216,50 +225,47 @@ function initMap() {
   features = MAP_DATA.features;
 
   infoWindow = new google.maps.InfoWindow();
-  markerCluster = new MarkerClusterer(map, markers,
-    {
-      imagePath: 'icons/m',
-      gridSize: 40,
-      maxZoom: 15
-    }
-  );
+  markerCluster = new MarkerClusterer(map, markers, {
+    imagePath: "icons/m",
+    gridSize: 40,
+    maxZoom: 15
+  });
 
   loadMarkers();
-
 }
-var vrModal = document.getElementById('vr-modal');
-var noEditModal = document.getElementById('noEditModal');
-var dataEntryModal = document.getElementById('data-entry-modal');
+var vrModal = document.getElementById("vr-modal");
+var noEditModal = document.getElementById("noEditModal");
+var dataEntryModal = document.getElementById("data-entry-modal");
 
 // Get the <span> element that closes the modal
 var vrClose = document.getElementById("vrClose");
 var dataClose = document.getElementById("dataClose");
 
-// When the user clicks the button, open the modal 
+// When the user clicks the button, open the modal
 function vrModalOn() {
   vrModal.style.display = "block";
-  $('.button-collapse').sideNav('hide');
+  $(".button-collapse").sideNav("hide");
 }
 
 function dataModalOn() {
   var optionBuild = document.getElementById("data-type");
   optionBuild.innerHTML = "";
-  Object.keys(icons).forEach(function (key) {
-    var item = icons[key]
-    var option = `<option value = "` + key + `">` + item.description + `</option>`
+  Object.keys(icons).forEach(function(key) {
+    var item = icons[key];
+    var option =
+      `<option value = "` + key + `">` + item.description + `</option>`;
 
     optionBuild.innerHTML += option;
-    $('select').material_select();
+    $("select").material_select();
   });
   dataEntryModal.style.display = "block";
   // $('#data-entry-modal').modal('open');
 }
 
 // When the user clicks on <span> (x), close the modal
-vrClose.onclick = function () {
+vrClose.onclick = function() {
   vrModal.style.display = "none";
-}
-
+};
 
 function closeData() {
   marker.setMap(null);
@@ -267,42 +273,46 @@ function closeData() {
 }
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
+window.onclick = function(event) {
   if (event.target == vrModal) {
     vrModal.style.display = "none";
   } else if (event.target == dataEntryModal) {
     // dataEntryModal.style.display = "none";
   }
-}
+};
 
 function getLocation() {
-  //Start of Location code 
+  //Start of Location code
   var options = {
     enableHighAccuracy: true,
     timeout: 5000,
     maximumAge: 0
   };
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      var pos = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-      var gpsIcon = document.getElementById("gps-icon");
-      gpsIcon.classList.remove("red");
-      gpsIcon.classList.add("light-blue");
-      gpsIcon.classList.add("lighten-2");
-      infoWindow.setPosition(pos);
-      infoWindow.setContent('You');
-      infoWindow.open(map);
-      map.panTo(pos);
-      if (map.getZoom() < 15) {
-        map.setZoom(15);
-        // map.setCenter(pos);
-      }
-    }, function () {
-      handleLocationError(true, infoWindow, map.getCenter());
-    }, options);
+    navigator.geolocation.getCurrentPosition(
+      function(position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        var gpsIcon = document.getElementById("gps-icon");
+        gpsIcon.classList.remove("red");
+        gpsIcon.classList.add("light-blue");
+        gpsIcon.classList.add("lighten-2");
+        infoWindow.setPosition(pos);
+        infoWindow.setContent("You");
+        infoWindow.open(map);
+        map.panTo(pos);
+        if (map.getZoom() < 15) {
+          map.setZoom(15);
+          // map.setCenter(pos);
+        }
+      },
+      function() {
+        handleLocationError(true, infoWindow, map.getCenter());
+      },
+      options
+    );
   } else {
     // Browser doesn't support Geolocation
     handleLocationError(false, infoWindow, map.getCenter());
@@ -311,9 +321,11 @@ function getLocation() {
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   infoWindow.setPosition(pos);
-  infoWindow.setContent(browserHasGeolocation ?
-    'Error: The Geolocation service failed.' :
-    'Error: Your browser doesn\'t support geolocation.');
+  infoWindow.setContent(
+    browserHasGeolocation
+      ? "Error: The Geolocation service failed."
+      : "Error: Your browser doesn't support geolocation."
+  );
   infoWindow.open(map);
 }
 
@@ -325,11 +337,13 @@ function saveData() {
   dataEntryModal.style.display = "none";
   data.timestamp = Date.now();
   if (data.title !== "") {
-    db.collection("markers").add(data)
-      .then(function (docRef) {
+    db
+      .collection("markers")
+      .add(data)
+      .then(function(docRef) {
         console.log("Document written with ID: ", docRef.id);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.error("Error adding document: ", error);
       });
   }
@@ -339,7 +353,7 @@ function saveData() {
 
 function loadMarkers() {
   loadDataBase();
-  features.forEach(function (feature) {
+  features.forEach(function(feature) {
     createMarker(feature);
   });
 }
@@ -368,9 +382,9 @@ function createMarker(feature) {
 
   markers.push(marker);
 
-  marker.addListener('mouseover', function () {
-    var content = "<div class = 'center-align'><div><strong>" + feature.title + "</strong></div>";
-    var imageClass = "mouseover-img";
+  marker.addListener("mouseover", function() {
+    var mouseoverHTML = document.querySelector("#mouseover").cloneNode(true);
+    mouseoverHTML.querySelector("#mouseover-title").textContent = feature.title;
     var imagePreview = "";
     if (feature.vrPreviewImage !== undefined) {
       imagePreview = feature.vrPreviewImage;
@@ -378,26 +392,30 @@ function createMarker(feature) {
       imagePreview = feature.images[0];
     }
     if (imagePreview !== "") {
-      var imgPath = MAP_DATA.settings.imagePath + MAP_DATA.settings.preview + imagePreview;
-      image = `<img class = "` + imageClass + `" src = "` + imgPath + '" >';
-      content += image;
+      var imgPath =
+        MAP_DATA.settings.imagePath + MAP_DATA.settings.preview + imagePreview;
+      mouseoverHTML
+        .querySelector("#map-mouseover-img")
+        .classList.toggle("hide");
+      mouseoverHTML
+        .querySelector("#map-mouseover-img")
+        .setAttribute("src", imgPath);
     }
-    content += "</div></a>";
-    infoWindow.setContent(content);
+
+    infoWindow.setContent(mouseoverHTML);
     infoWindow.open(map, marker);
   });
 
-
-  marker.addListener('click', function () {
+  marker.addListener("click", function() {
     infoWindow.close(map, marker);
     var name = feature.title;
     var description = feature.description;
     var lat = parseFloat(feature.position.lat).toFixed([5]);
     var lng = parseFloat(feature.position.lng).toFixed([5]);
-    var posText
+    var posText;
     var content = "";
     var image = "";
-    var imageVR = ""
+    var imageVR = "";
     var url = "";
     var imageClass = "info-window-img responsive-img z-depth-2";
     var imageVRClass = "info-window-img z-depth-2";
@@ -405,30 +423,51 @@ function createMarker(feature) {
 
     content += name;
 
-    posText = `<div id = "nav-position" class = "center-align"><h6>LAT: ` + lat + `, LNG: ` + lng + `</h6></div>`;
-
+    posText =
+      `<div id = "nav-position" class = "center-align"><h6>LAT: ` +
+      lat +
+      `, LNG: ` +
+      lng +
+      `</h6></div>`;
 
     if (feature.VRUrl !== undefined) {
-      var imgPath = MAP_DATA.settings.imagePath + MAP_DATA.settings.preview + feature.vrPreviewImage;
-      imageVR = `<img class = "` + imageVRClass + `" style = "cursor:pointer;" onclick = "vrModalOn()" src = "` + imgPath + '" >';
-      var vr = document.getElementById('vr');
+      var imgPath =
+        MAP_DATA.settings.imagePath +
+        MAP_DATA.settings.preview +
+        feature.vrPreviewImage;
+      imageVR =
+        `<img class = "` +
+        imageVRClass +
+        `" style = "cursor:pointer;" onclick = "vrModalOn()" src = "` +
+        imgPath +
+        '" >';
+      var vr = document.getElementById("vr");
       vr.src = feature.VRUrl;
     }
 
-
     if (feature.images !== undefined) {
-      var imgPath = MAP_DATA.settings.imagePath + MAP_DATA.settings.preview + feature.images[0];
+      var imgPath =
+        MAP_DATA.settings.imagePath +
+        MAP_DATA.settings.preview +
+        feature.images[0];
       image = `<img class = "` + imageClass + `" src = "` + imgPath + '" >';
     }
 
-
     if (feature.url !== undefined) {
-      url = "<div><a href = '" + feature.url + "' target = '_blank'>wikipedia</a></div>";
+      url =
+        "<div><a href = '" +
+        feature.url +
+        "' target = '_blank'>wikipedia</a></div>";
     }
 
     var sideNav = document.getElementById("slide-out");
 
-    sideNav.innerHTML = "<div id='nav-close-icon'>" + closeIcon + "</div><li><h5 class='nav-title z-depth-2'>" + content + "</h5></li>";
+    sideNav.innerHTML =
+      "<div id='nav-close-icon'>" +
+      closeIcon +
+      "</div><li><h5 class='nav-title z-depth-2'>" +
+      content +
+      "</h5></li>";
 
     sideNav.innerHTML += "<li>" + posText + "</li>";
 
@@ -438,19 +477,21 @@ function createMarker(feature) {
 
     sideNav.innerHTML += "<li>" + image + "</li>";
 
-    sideNav.innerHTML += "<li><div class= 'nav-description z-depth-2'>" + description + "</div></li>";
+    sideNav.innerHTML +=
+      "<li><div class= 'nav-description z-depth-2'>" +
+      description +
+      "</div></li>";
 
     sideNav.innerHTML += `<li id="nav-icon-bar" class = "white z-depth-2"><span>
  <button class="btn-floating z-depth-2 waves-effect waves-light light-blue lighten-2 icon-li"><i class="material-icons">info_outline</i></button></span><span> 
  <button class="btn-floating z-depth-2 waves-effect waves-light red icon-li"><i class="material-icons ">edit</i></button> 
 </span></li>`;
 
-
-
     if (url !== "") {
-      sideNav.innerHTML += "<li class = 'z-depth-2 center-align'>" + url + "</li>";
+      sideNav.innerHTML +=
+        "<li class = 'z-depth-2 center-align'>" + url + "</li>";
     }
-    $('.button-collapse').sideNav('show');
+    $(".button-collapse").sideNav("show");
   });
 
   markerCluster.addMarkers(markers);
@@ -482,16 +523,16 @@ function deleteMarkers() {
   //console.log(markers);
 }
 function loadDataBase() {
+  db
+    .collection("markers")
+    .get()
+    .then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {
+        var dbData = doc.data();
 
-  db.collection("markers").get().then(function (querySnapshot) {
-    querySnapshot.forEach(function (doc) {
-
-
-      var dbData = doc.data();
-
-      createMarker(dbData);
+        createMarker(dbData);
+      });
     });
-  });
 }
 
 function setLatLng(e) {
@@ -500,12 +541,14 @@ function setLatLng(e) {
   var pos = {
     lat: lat,
     lng: lng
-  }
+  };
   return pos;
 }
 
-
 function initApp() {
   initMap();
-  setTimeout(areWeLoggedin, 2000);
+  setTimeout(function(){
+    areWeLoggedin();
+    $('.tooltipped').tooltip({delay: 350});
+  }, 2000);
 }

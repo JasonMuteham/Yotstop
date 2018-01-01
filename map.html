@@ -31,24 +31,220 @@
       </div>
 
 
-      <div id="noEditModal" class="modal">
-        <div class="modal-content center-align">
+      <div id="noEditModal" class="modal modal-fixed-footer blue lighten-4">
+        <div class="modal-content center-align blue lighten-4">
           <h4>Please log In</h4>
           <p>Only registered users may add or edit data.</p>
         </div>
-        <div class="modal-footer">
-          <a href="#!" class="modal-action modal-close btn-floating btn-large waves-effect waves-light red">
-            <i class="material-icons">check</i>
+        <div class="modal-footer blue lighten-4">
+          <a href="#!" class="modal-action modal-close btn-floating waves-effect waves-light red">
+            <i class="material-icons">close</i>
           </a>
         </div>
       </div>
 
-      <div id="data-entry-modal" class="no-modal white">
+      <div id="help-modal" class="modal modal-fixed-footer blue lighten-4">
+        <div class="modal-content left-align  blue lighten-4">
+          <div class="z-depth-2 white pt-5 pb-5 mb-10">
+            <h5 class="center-align">Help</h5>
+          </div>
+
+          <!-- <div class="row valign-wrapper">
+            <div class="col s3 l1 center-align">
+              <a class="btn-floating red z-depth-2">
+                <i class="material-icons">gps_not_fixed</i>
+              </a>
+            </div>
+            <div class="col s9 l11 left-align">
+              <span>Your current location</span>
+            </div>
+          </div>
+
+          <div class="row valign-wrapper">
+            <div class="col s3 l1 center-align">
+              <a class="btn-floating red z-depth-2">
+                <i class="material-icons">search</i>
+              </a>
+            </div>
+            <div class="col s9 l11 left-align">
+              <span>Search</span>
+            </div>
+          </div>
+
+          <div class="row valign-wrapper">
+            <div class="col s3 l1 center-align">
+              <a class="btn-floating red z-depth-2">
+                <i class="material-icons">list</i>
+              </a>
+            </div>
+            <div class="col s9 l11 left-align">
+              <span>Filter displayed icons</span>
+            </div>
+          </div>
+
+          <div class="row valign-wrapper">
+            <div class="col s3 l1 center-align">
+              <a class="login-icon btn-floating red z-depth-2 pulse">
+                <i class="material-icons tiny">person_outline</i>
+              </a>
+            </div>
+            <div class="col s9 l11 left-align">
+              <span>Login</span>
+            </div>
+          </div>
+
+          <div class="row valign-wrapper">
+            <div class="col s3 l1 center-align">
+              <a class="login-icon btn-floating light-blue lighten-2 z-depth-2">
+                <i class="material-icons tiny">person_outline</i>
+              </a>
+            </div>
+            <div class="col s9 l11 left-align">
+              <span>Logout</span>
+            </div>
+          </div>
+
+          <div class="row valign-wrapper">
+            <div class="col s3 l1 center-align">
+              <a class="btn-floating red z-depth-2">
+                <i class="material-icons">settings</i>
+              </a>
+            </div>
+            <div class="col s9 l11 left-align">
+              <span>User settings</span>
+            </div>
+          </div>
+
+          <div class="row valign-wrapper">
+            <div class="col s3 l1 center-align">
+              <a class="btn-floating light-blue lighten-2 z-depth-2">
+                <i class="material-icons">help</i>
+              </a>
+            </div>
+            <div class="col s9 l11 left-align">
+              <span>This screen</span>
+            </div>
+          </div>
+
+          <div class="row valign-wrapper">
+            <div class="col s3 l1 center-align">
+              <a class="btn-floating red z-depth-2">
+                <i class="material-icons">info_outline</i>
+              </a>
+            </div>
+            <div class="col s9 l11 left-align">
+              <span>All about the project and how to help</span>
+            </div>
+          </div> -->
+
+          <div class="row valign-wrapper">
+            <div class="col s3 l1 center-align">
+              <img src="/icons/map-marker.png" alt="" width="40" height="48">
+            </div>
+            <div class="col s9 l11 left-align">
+              <span>Double click map to add a marker. Single click marker to edit details</span>
+            </div>
+          </div>
+
+          <div class="row valign-wrapper">
+            <div class="col s3 l1 center-align">
+              <img src="/icons/anchor.png" alt="" width="40" height="48">
+            </div>
+            <div class="col s9 l11 left-align">
+              <span>Anchorage. Click marker to view details</span>
+            </div>
+          </div>
+
+          <div class="row valign-wrapper">
+            <div class="col s3 l1 center-align">
+              <img src="/icons/marina.png" alt="" width="40" height="48">
+            </div>
+            <div class="col s9 l11 left-align">
+              <span>Marina, pontoons or other mooring</span>
+            </div>
+          </div>
+
+          <div class="row valign-wrapper">
+            <div class="col s3 l1 center-align">
+              <img src="/icons/info.png" alt="" width="40" height="48">
+            </div>
+            <div class="col s9 l11 left-align">
+              <span>A point of interest or a feature to explore</span>
+            </div>
+          </div>
+
+          <div class="row valign-wrapper">
+            <div class="col s3 l1 center-align">
+              <img src="/icons/sailing.png" alt="" width="40" height="48">
+            </div>
+            <div class="col s9 l11 left-align">
+              <span>Yacht club</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer blue lighten-4">
+          <a href="#!" class="modal-action modal-close btn-floating waves-effect waves-light red">
+            <i class="material-icons">close</i>
+          </a>
+        </div>
+
+      </div>
+
+      <div id="about-modal" class="modal modal-fixed-footer blue lighten-4">
+        <div class="modal-content left-align blue lighten-4">
+          <div class="flow-text">
+
+            <div class="z-depth-2 white pt-5 pb-5 mb-10">
+              <h5 class="center-align">About</h5>
+            </div>
+            <blockquote>
+              “Believe me, my young friend, there is nothing - absolutely nothing - half so much worth doing as simply messing about in
+              boats.” ―
+              <strong>Kenneth Grahame, The Wind in the Willows</strong>
+            </blockquote>
+            <p>A user friendly source of information on where to anchor or moor and what to explore in your boat.</p>
+            <h5>Want to help?</h5>
+            <p> If you have a favorite anchorage that you would like to share then add an entry, especially if you have taken
+              a great photo.</p>
+            <p>If you would like to help financially consider either the Paypal or Patreon buttons below.</p>
+          </div>
+
+          <!--  non-working buttons for demo only -->
+          <div class="row">
+            <div class="col l3 s12 mb-10 center-align">
+              <img src="/icons/paypal_donate.gif" alt="">
+            </div>
+            <div class="col l3 s12 center-align">
+              <img src="/icons/become_a_patron_button.png" alt="">
+            </div>
+          </div>
+          <!--  non-working buttons for demo only -->
+
+        </div>
+
+        <div class="modal-footer blue lighten-4">
+          <a href="#!" class="modal-action modal-close btn-floating waves-effect waves-light red">
+            <i class="material-icons">close</i>
+          </a>
+        </div>
+
+      </div>
+
+      <div id="data-entry-modal" class="no-modal blue lighten-4">
         <div class="container">
 
           <div class="center-align">
             <h5>Add Marker</h5>
-            <div id="data-entry-pos" class="center-align"></div>
+            <div id="data-entry-pos" class="center-align">
+              <div id="nav-position">
+                <h6>LAT:
+                  <span id="data-entry-pos-lat"></span>, LNG:
+                  <span id="data-entry-pos-lng"></span>
+                </h6>
+              </div>
+            </div>
           </div>
 
           <form id="data-form">
@@ -60,14 +256,11 @@
               <input class="validate" type="text" name="description" id="data-description" required>
               <label for="description">Description</label>
             </div>
-
-
             <div class="input-field">
               <select id="data-type" class="" required>
               </select>
               <label>Type</label>
             </div>
-
           </form>
 
           <div class="data-modal-footer row">
@@ -80,7 +273,6 @@
               <button onclick="closeData()" class="modal-action modal-close waves-effect waves-red red btn-floating ">
                 <i class="material-icons">close</i>
               </button>
-
             </div>
 
           </div>
@@ -96,39 +288,63 @@
           <iframe id="vr" class="img-360" src="" frameborder="0" scrolling="no"></iframe>
         </div>
       </div>
+
+      <div class="hide">
+        <div id="mouseover" class="center-align">
+          <div>
+            <strong>
+              <span id="mouseover-title"></span>
+            </strong>
+          </div>
+          <img id="map-mouseover-img" src="" alt="" class="hide mouseover-img center-align">
+        </div>
+      </div>
+
+
       <ul id="slide-out" class="side-nav light-blue lighten-2">
       </ul>
       <a href="#" data-activates="slide-out" class="button-collapse"></a>
 
+
       <div id="fab-main" class="hide">
-        <div class="fixed-action-btn click-to-toggle ">
-          <a class="btn-floating btn-large light-blue waves-effect waves-dark  lighten-2 z-depth-4">
+        <div class="fixed-action-btn click-to-toggle">
+          <a class="btn-floating btn-large light-blue waves-effect waves-dark lighten-2 z-depth-4">
             <i class="material-icons">menu</i>
           </a>
           <ul>
             <li>
-              <a id="gps-icon" class="btn-floating red z-depth-4" onClick="getLocation()">
+              <a id="gps-icon" class="btn-floating red z-depth-4 tooltipped" data-position="left" data-delay="50" data-tooltip="Current Location" onClick="getLocation()">
                 <i class="material-icons">gps_not_fixed</i>
               </a>
             </li>
             <li>
-              <a class="btn-floating red z-depth-4">
+              <a class="btn-floating red z-depth-4 tooltipped" data-position="left" data-delay="50" data-tooltip="Search">
                 <i class="material-icons">search</i>
               </a>
             </li>
             <li>
-              <a class="btn-floating red z-depth-4 ">
+              <a class="btn-floating red z-depth-4 tooltipped" data-position="left" data-delay="50" data-tooltip="Filter Icons">
                 <i class="material-icons">list</i>
               </a>
             </li>
             <li>
-              <a id="login-icon" class="login-icon btn-floating red z-depth-4 pulse" onClick="login()">
+              <a id="login-icon" class="login-icon btn-floating red z-depth-4 pulse tooltipped" onClick="login()" data-position="left" data-delay="50" data-tooltip="Login Logout">
                 <i class="material-icons tiny">person_outline</i>
               </a>
             </li>
             <li>
-              <a class="btn-floating red z-depth-4 ">
+              <a class="btn-floating red z-depth-4 tooltipped" data-position="left" data-delay="50" data-tooltip="Settings">
                 <i class="material-icons">settings</i>
+              </a>
+            </li>
+            <li>
+              <a class="btn-floating light-blue lighten-2 z-depth-4 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Help" href="#help-modal">
+                <i class="material-icons">help</i>
+              </a>
+            </li>
+            <li>
+              <a class="btn-floating light-blue lighten-2 z-depth-4 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="About" href="#about-modal">
+                <i class="material-icons">info_outline</i>
               </a>
             </li>
           </ul>
@@ -139,29 +355,25 @@
 
       <div class="copyright grey-text hide-on-med-and-down">
         <a class="" href="https://mapicons.mapsmarker.com"> Maps Icons Collection</a>
-        <span id="my-copyright"> © 2017 Jason Muteham</span>
+        <span id="my-copyright"> ©2018 Jason Muteham</span>
 
       </div>
-  
+
 
       <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-
-
       <script src="data/UK.json"></script>
       <script src="js/map.js"></script>
-
-
       <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPU-L8tah6RaZcNHcrKTOsld_T-V6gy5s&callback=initApp">
       </script>
       <script src="js/markerclusterer.js"></script>
+
       <script>
         $(document).ready(function () {
           $(".button-collapse").sideNav();
           $('select').material_select();
           $('.modal').modal();
-        });
-
+          });
       </script>
     </body>
 

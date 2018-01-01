@@ -1,8 +1,25 @@
+.ml-10{
+    margin-left: 10px;
+}
+.mb-20{
+    margin-bottom: 20px;
+}
+.mb-10{
+    margin-bottom: 10px;
+}
+.mt-10{
+    margin-top: 10px;
+}
+.pt-5{
+    padding-top: 5px;
+}
+.pb-5{
+    padding-bottom: 5px;
+}
 nav{
     background-color: rgba(0,0,0,0.3);
 }
 #nav-logo-img{
-   
     width: 40px;
     height: 40px;
    }
@@ -87,11 +104,7 @@ html, body {
     /* position: fixed; */
     bottom: 10px
 }
-#noEditModal {
-    margin-top: 55px; 
-    width: 350px;  
-    height:220px;
-}
+
 
 #login{
     display: none;
@@ -168,6 +181,7 @@ box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
     width:100px;
     height: 60px;
 }
+
 
 #gps{
     margin-right:10px;
