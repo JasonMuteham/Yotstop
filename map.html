@@ -25,6 +25,11 @@
     <body>
 
       <div class="hide">
+        <div id="version" class="noselect">v0.2</div>
+      </div>
+
+
+      <div class="hide">
         <span id="main-title" class="valign-wrapper noselect text-shadow">
           <img id="nav-logo-img" class="circle-shadow" src="/icons/res/mipmap-hdpi/ic_launcher_yotstop.png">OTSTOP
         </span>
@@ -49,36 +54,16 @@
             <h5 class="center-align">Help</h5>
           </div>
 
-          <!-- <div class="row valign-wrapper">
-            <div class="col s3 l1 center-align">
-              <a class="btn-floating red z-depth-2">
-                <i class="material-icons">gps_not_fixed</i>
-              </a>
-            </div>
-            <div class="col s9 l11 left-align">
-              <span>Your current location</span>
-            </div>
-          </div>
+
 
           <div class="row valign-wrapper">
             <div class="col s3 l1 center-align">
-              <a class="btn-floating red z-depth-2">
-                <i class="material-icons">search</i>
+              <a class="login-icon btn-floating light-blue lighten-2 z-depth-2">
+                <i class="material-icons tiny">person_outline</i>
               </a>
             </div>
             <div class="col s9 l11 left-align">
-              <span>Search</span>
-            </div>
-          </div>
-
-          <div class="row valign-wrapper">
-            <div class="col s3 l1 center-align">
-              <a class="btn-floating red z-depth-2">
-                <i class="material-icons">list</i>
-              </a>
-            </div>
-            <div class="col s9 l11 left-align">
-              <span>Filter displayed icons</span>
+              <span>You are logged in.</span>
             </div>
           </div>
 
@@ -89,60 +74,16 @@
               </a>
             </div>
             <div class="col s9 l11 left-align">
-              <span>Login</span>
+              <span>You are logged out.</span>
             </div>
           </div>
-
-          <div class="row valign-wrapper">
-            <div class="col s3 l1 center-align">
-              <a class="login-icon btn-floating light-blue lighten-2 z-depth-2">
-                <i class="material-icons tiny">person_outline</i>
-              </a>
-            </div>
-            <div class="col s9 l11 left-align">
-              <span>Logout</span>
-            </div>
-          </div>
-
-          <div class="row valign-wrapper">
-            <div class="col s3 l1 center-align">
-              <a class="btn-floating red z-depth-2">
-                <i class="material-icons">settings</i>
-              </a>
-            </div>
-            <div class="col s9 l11 left-align">
-              <span>User settings</span>
-            </div>
-          </div>
-
-          <div class="row valign-wrapper">
-            <div class="col s3 l1 center-align">
-              <a class="btn-floating light-blue lighten-2 z-depth-2">
-                <i class="material-icons">help</i>
-              </a>
-            </div>
-            <div class="col s9 l11 left-align">
-              <span>This screen</span>
-            </div>
-          </div>
-
-          <div class="row valign-wrapper">
-            <div class="col s3 l1 center-align">
-              <a class="btn-floating red z-depth-2">
-                <i class="material-icons">info_outline</i>
-              </a>
-            </div>
-            <div class="col s9 l11 left-align">
-              <span>All about the project and how to help</span>
-            </div>
-          </div> -->
 
           <div class="row valign-wrapper">
             <div class="col s3 l1 center-align">
               <img src="/icons/map-marker.png" alt="" width="40" height="48">
             </div>
             <div class="col s9 l11 left-align">
-              <span>Double click map to add a marker. Single click marker to edit details</span>
+              <span>Double click map to add a marker. Single click marker to edit details.</span>
             </div>
           </div>
 
@@ -151,7 +92,7 @@
               <img src="/icons/anchor.png" alt="" width="40" height="48">
             </div>
             <div class="col s9 l11 left-align">
-              <span>Anchorage. Click marker to view details</span>
+              <span>Anchorage. Click marker to view details.</span>
             </div>
           </div>
 
@@ -160,7 +101,7 @@
               <img src="/icons/marina.png" alt="" width="40" height="48">
             </div>
             <div class="col s9 l11 left-align">
-              <span>Marina, pontoons or other mooring</span>
+              <span>Marina, pontoons or other mooring.</span>
             </div>
           </div>
 
@@ -169,7 +110,7 @@
               <img src="/icons/info.png" alt="" width="40" height="48">
             </div>
             <div class="col s9 l11 left-align">
-              <span>A point of interest or a feature to explore</span>
+              <span>A point of interest or a feature to explore.</span>
             </div>
           </div>
 
@@ -178,7 +119,7 @@
               <img src="/icons/sailing.png" alt="" width="40" height="48">
             </div>
             <div class="col s9 l11 left-align">
-              <span>Yacht club</span>
+              <span>Yacht club.</span>
             </div>
           </div>
 
@@ -198,6 +139,7 @@
 
             <div class="z-depth-2 white pt-5 pb-5 mb-10">
               <h5 class="center-align">About</h5>
+
             </div>
             <blockquote>
               “Believe me, my young friend, there is nothing - absolutely nothing - half so much worth doing as simply messing about in
@@ -300,9 +242,59 @@
         </div>
       </div>
 
-
       <ul id="slide-out" class="side-nav light-blue lighten-2">
+        <div id='nav-close-icon'>
+          <span class="close" onclick=" $('.button-collapse').sideNav('hide');">
+            <i class="material-icons white-text">arrow_back</i>
+            <!-- <i class="material-icons white-text">close</i> -->
+          </span>
+        </div>
+        <li>
+          <h5 id="nav-title" class='nav-title z-depth-2'></h5>
+        </li>
+        <li id="nav-position" class="center-align">
+          <h6>LAT:
+            <span id="nav-position-lat"></span>, LNG:
+            <span id="nav-position-lng"></span>
+          </h6>
+        </li>
+        <li>
+          <img id="nav-imagevr" class="hide info-window-img z-depth-2" style="cursor:pointer;" onclick="vrModalOn()" src="">
+        </li>
+        <li>
+          <img id="nav-image" class="hide info-window-img responsive-img z-depth-2" src="">
+        </li>
+        <li>
+          <div id="nav-description" class="z-depth-2 center-align"></div>
+        </li>
+        
+
+        <li id="nav-icon-bar" class="white z-depth-2 right-align">
+
+          <button class="btn-floating z-depth-2 waves-effect waves-light light-blue lighten-2 icon-li">
+            <i class="material-icons">info_outline</i>
+          </button>
+
+
+          <button class="btn-floating z-depth-2 waves-effect waves-light red icon-li">
+            <i class="material-icons ">edit</i>
+          </button>
+
+          <button class="btn-floating z-depth-2 waves-effect waves-light red icon-li" onclick=" $('.button-collapse').sideNav('hide');">
+            <i class="material-icons ">close</i>
+          </button>
+        </li>
+        <li class="z-depth-2 center-align">
+            <div>
+              <a id="nav-url" class = "hide" href="" target="_blank">website</a>
+            </div>
+          </li>
       </ul>
+
+
+      <!-- <ul id="slide-out" class="side-nav light-blue lighten-2">
+      </ul> -->
+
       <a href="#" data-activates="slide-out" class="button-collapse"></a>
 
 
@@ -313,7 +305,8 @@
           </a>
           <ul>
             <li>
-              <a id="gps-icon" class="btn-floating red z-depth-4 tooltipped" data-position="left" data-delay="50" data-tooltip="Current Location" onClick="getLocation()">
+              <a id="gps-icon" class="btn-floating red z-depth-4 tooltipped" data-position="left" data-delay="50" data-tooltip="Current Location"
+                onClick="getLocation()">
                 <i class="material-icons">gps_not_fixed</i>
               </a>
             </li>
@@ -328,7 +321,8 @@
               </a>
             </li>
             <li>
-              <a id="login-icon" class="login-icon btn-floating red z-depth-4 pulse tooltipped" onClick="login()" data-position="left" data-delay="50" data-tooltip="Login Logout">
+              <a id="login-icon" class="login-icon btn-floating red z-depth-4 pulse tooltipped" onClick="login()" data-position="left"
+                data-delay="50" data-tooltip="Login Logout">
                 <i class="material-icons tiny">person_outline</i>
               </a>
             </li>
@@ -338,12 +332,14 @@
               </a>
             </li>
             <li>
-              <a class="btn-floating light-blue lighten-2 z-depth-4 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Help" href="#help-modal">
+              <a class="btn-floating light-blue lighten-2 z-depth-4 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Help"
+                href="#help-modal">
                 <i class="material-icons">help</i>
               </a>
             </li>
             <li>
-              <a class="btn-floating light-blue lighten-2 z-depth-4 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="About" href="#about-modal">
+              <a class="btn-floating light-blue lighten-2 z-depth-4 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="About"
+                href="#about-modal">
                 <i class="material-icons">info_outline</i>
               </a>
             </li>
@@ -353,9 +349,9 @@
 
       <div id="mapcanvas" class="map"></div>
 
-      <div class="copyright grey-text hide-on-med-and-down">
+      <div class="copyright noselect grey-text hide-on-med-and-down">
         <a class="" href="https://mapicons.mapsmarker.com"> Maps Icons Collection</a>
-        <span id="my-copyright"> ©2018 Jason Muteham</span>
+        <span id="my-copyright">©2018 Jason Muteham</span>
 
       </div>
 
@@ -373,7 +369,7 @@
           $(".button-collapse").sideNav();
           $('select').material_select();
           $('.modal').modal();
-          });
+        });
       </script>
     </body>
 

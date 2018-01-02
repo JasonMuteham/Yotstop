@@ -227,6 +227,19 @@ var MAP_DATA ={
             "enhanced": true
         },
         {
+            "id":"25a788aa-c0e0-45b4-9815-e9508dcb9460",
+            "type": "info",
+            "title": "SS Richard Montgomery",
+            "description": "Historical Shipwreck",
+            "url":"https://en.m.wikipedia.org/wiki/SS_Richard_Montgomery",
+            "position": { lng: 0.787644, lat: 51.465928
+            },
+            "images": [
+                "monty-1.jpg"
+            ],
+            "enhanced": true
+        },
+        {
             "id":"40ba02ad-a094-42f3-adbe-f0e161bba3f6",
             "type": "anchor",
             "title": "Stangate Creek",

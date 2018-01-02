@@ -154,9 +154,7 @@ html, body {
     background-color: #e3f2fd;
   
 }
-.nav-description{
-    text-align: center;
-}
+
 #nav-icon-bar{
     padding-top: 5px;
     padding-bottom: 5px;
@@ -164,7 +162,7 @@ html, body {
     margin-bottom: 10px;
 }
 .icon-li{
-    margin-left: 10px;
+    margin-right: 10px;
 }
 .text-shadow{
  

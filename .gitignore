@@ -7,3 +7,4 @@
 *.apk
 .firebaserc
 *.code-workspace
+firebase-debug.log
