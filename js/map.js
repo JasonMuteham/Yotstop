@@ -5,8 +5,23 @@ var markers = [];
 var markerCluster;
 var features;
 var userAuth = false;
+var uid;
+
+var vrModal = document.getElementById("vr-modal");
+var noEditModal = document.getElementById("noEditModal");
+var dataEntryModal = document.getElementById("data-entry-modal");
+var vrClose = document.getElementById("vrClose");
+var dataClose = document.getElementById("dataClose");
 
 var icons = window.MAP_DATA.icons;
+
+function setupEventListeners() {
+  document.querySelector("#edit").addEventListener("click", function() {
+    // console.log("edit button clicked ", feature.id);
+    $(".button-collapse").sideNav("hide");
+    dataModalOn();
+  });
+}
 
 firebase.initializeApp({
   apiKey: "AIzaSyArhLbX05ll-bTM_WrvrPgpnsQtFWLPZlg",
@@ -20,9 +35,8 @@ firebase.initializeApp({
 var db = firebase.firestore();
 
 var data = {
-  userId: null,
+  userId: uid,
   timestamp: null,
-
   position: null,
   type: null,
   title: null,
@@ -40,8 +54,8 @@ function areWeLoggedin() {
         var email = user.email;
         var emailVerified = user.emailVerified;
         var photoURL = user.photoURL;
-        var uid = user.uid;
-        data.userId = uid;
+        uid = user.uid;
+        // data.userId = uid;
         var phoneNumber = user.phoneNumber;
         var providerData = user.providerData;
         var loginIcon = document.querySelector("#map-login-icon");
@@ -72,7 +86,7 @@ function areWeLoggedin() {
       } else {
         // User is signed out.
         userAuth = false;
-        data.userId = "";
+        // data.userId = "";
         // var loginIcon = document.getElementById("login-icon");
         var loginIcon = document.querySelector("#map-login-icon");
         loginIcon.classList.add("red");
@@ -197,6 +211,7 @@ function initMap() {
         // no more markers if data entry in progress
         return;
       }
+
       data.position = setLatLng(e);
 
       var content =
@@ -210,10 +225,12 @@ function initMap() {
         position: data.position,
         draggable: true,
         animation: google.maps.Animation.DROP,
-        map: map
+        map: map,
+        id: null
       });
 
       markers.push(marker);
+
       google.maps.event.addListener(marker, "click", function(e) {
         if (userAuth) {
           data.position = setLatLng(e);
@@ -230,6 +247,10 @@ function initMap() {
             document.getElementById("data-entry-pos-lat").textContent = lat;
             document.getElementById("data-entry-pos-lng").textContent = lng;
           });
+          data.title = "";
+          data.description = "";
+          data.type = "";
+          loadEditData(data);
           dataModalOn();
         } else {
           $("#noEditModal").modal("open");
@@ -249,13 +270,6 @@ function initMap() {
 
   loadMarkers();
 }
-var vrModal = document.getElementById("vr-modal");
-var noEditModal = document.getElementById("noEditModal");
-var dataEntryModal = document.getElementById("data-entry-modal");
-
-// Get the <span> element that closes the modal
-var vrClose = document.getElementById("vrClose");
-var dataClose = document.getElementById("dataClose");
 
 // When the user clicks the button, open the modal
 function vrModalOn() {
@@ -263,8 +277,23 @@ function vrModalOn() {
   $(".button-collapse").sideNav("hide");
 }
 
-function dataModalOn() {
+function setDefaultType(type) {
   var optionBuild = document.getElementById("data-type");
+  var optionRef = optionBuild.querySelectorAll("option");
+  optionRef.forEach(function(option) {
+    // console.log(option);
+    if (option.value === type) {
+      option.setAttribute("selected", "");
+    } else {
+      option.removeAttribute("selected");
+    }
+    $("select").material_select();
+  });
+}
+
+function buildIconSelect() {
+  var optionBuild = document.getElementById("data-type");
+  // console.log(optionBuild);
   optionBuild.innerHTML = "";
   Object.keys(icons).forEach(function(key) {
     var item = icons[key];
@@ -272,8 +301,11 @@ function dataModalOn() {
       `<option value = "` + key + `">` + item.description + `</option>`;
 
     optionBuild.innerHTML += option;
-    $("select").material_select();
   });
+  $("select").material_select();
+}
+
+function dataModalOn() {
   dataEntryModal.style.display = "block";
   // $('#data-entry-modal').modal('open');
 }
@@ -284,18 +316,20 @@ vrClose.onclick = function() {
 };
 
 function closeData() {
-  marker.setMap(null);
+  // marker.setMap(null);
   dataEntryModal.style.display = "none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == vrModal) {
-    vrModal.style.display = "none";
-  } else if (event.target == dataEntryModal) {
-    // dataEntryModal.style.display = "none";
-  }
-};
+// window.onclick = function(event) {
+//   console.log(event.target);
+//   if (event.target == vrModal) {
+//     console.log(event);
+//     vrModal.style.display = "none";
+//   } else if (event.target == dataEntryModal) {
+//     // dataEntryModal.style.display = "none";
+//   }
+// };
 
 function getLocation() {
   //Start of Location code
@@ -345,28 +379,6 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   infoWindow.open(map);
 }
 
-function saveData() {
-  data.title = document.getElementById("data-title").value;
-
-  data.description = document.getElementById("data-description").value;
-  data.type = document.getElementById("data-type").value;
-  dataEntryModal.style.display = "none";
-  data.timestamp = Date.now();
-  if (data.title !== "") {
-    db
-      .collection("markers")
-      .add(data)
-      .then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
-      })
-      .catch(function(error) {
-        console.error("Error adding document: ", error);
-      });
-  }
-  deleteMarkers();
-  loadMarkers();
-}
-
 function loadMarkers() {
   loadDataBase();
   features.forEach(function(feature) {
@@ -393,14 +405,15 @@ function createMarker(feature) {
     title: feature.title,
     position: feature.position,
     icon: iconImg,
-    map: map
+    map: map,
+    id: feature.id
   });
 
   markers.push(marker);
 
   marker.addListener("mouseover", function() {
     var mouseoverHTML = document.querySelector("#mouseover").cloneNode(true);
-    mouseoverHTML.querySelector("#mouseover-title").textContent = feature.title;
+    mouseoverHTML.querySelector("#mouseover-title").textContent = this.title;
     var imagePreview = "";
     if (feature.vrPreviewImage !== undefined) {
       imagePreview = feature.vrPreviewImage;
@@ -435,15 +448,21 @@ function createMarker(feature) {
 }
 
 function getSideNav(feature) {
-
+  // console.log(feature);
   var lat = parseFloat(feature.position.lat).toFixed([5]);
   var lng = parseFloat(feature.position.lng).toFixed([5]);
-
+  data.position = {
+    lat: feature.position.lat,
+    lng: feature.position.lng
+  };
   var sideNav = document.getElementById("slide-out");
   sideNav.querySelector("#nav-title").textContent = feature.title;
   sideNav.querySelector("#nav-description").textContent = feature.description;
-  sideNav.querySelector("#nav-position-lat").textContent = lat;
-  sideNav.querySelector("#nav-position-lng").textContent = lng;
+  // sideNav.querySelector("#nav-position-lat").textContent = lat;
+  // sideNav.querySelector("#nav-position-lng").textContent = lng;
+  var dmsCoords = ddToDms(feature.position.lat, feature.position.lng);
+  sideNav.querySelector("#nav-position-dms").textContent = dmsCoords;
+
   if (feature.VRUrl !== undefined) {
     var imgPath =
       MAP_DATA.settings.imagePath +
@@ -473,17 +492,37 @@ function getSideNav(feature) {
   if (feature.url !== undefined) {
     sideNav.querySelector("#nav-url").href = feature.url;
     sideNav.querySelector("#nav-url").classList.remove("hide");
-    if(feature.url.includes("wikipedia") ){
-      sideNav.querySelector("#nav-url").textContent = "wikipedia"
+    if (feature.url.includes("wikipedia")) {
+      sideNav.querySelector("#nav-url").textContent = "wikipedia";
     } else {
-      sideNav.querySelector("#nav-url").textContent = "website"
+      sideNav.querySelector("#nav-url").textContent = "website";
     }
   } else {
     sideNav.querySelector("#nav-url").href = "";
     sideNav.querySelector("#nav-url").classList.add("hide");
   }
 
+  loadEditData(feature);
+
   $(".button-collapse").sideNav("show");
+}
+
+function loadEditData(feature) {
+  // console.log(feature);
+  var lat = parseFloat(feature.position.lat).toFixed([5]);
+  var lng = parseFloat(feature.position.lng).toFixed([5]);
+  document.getElementById("data-entry-pos-lat").textContent = lat;
+  document.getElementById("data-entry-pos-lng").textContent = lng;
+  document.getElementById("data-title").value = feature.title;
+  if (feature.url !== undefined) {
+    document.getElementById("data-url").value = feature.url;
+  }
+  document.getElementById("data-description").value = feature.description;
+  setDefaultType(feature.type);
+  // document.getElementById("data-type").value = feature.type;
+
+  document.getElementById("data-id").value = feature.id;
+  Materialize.updateTextFields();
 }
 
 // Sets the map on all markers in the array.
@@ -511,6 +550,7 @@ function deleteMarkers() {
   markers = [];
   //console.log(markers);
 }
+
 function loadDataBase() {
   db
     .collection("markers")
@@ -518,7 +558,7 @@ function loadDataBase() {
     .then(function(querySnapshot) {
       querySnapshot.forEach(function(doc) {
         var dbData = doc.data();
-
+        dbData.id = doc.id;
         createMarker(dbData);
       });
     });
@@ -534,8 +574,133 @@ function setLatLng(e) {
   return pos;
 }
 
+function deleteData() {
+  var docId = document.getElementById("data-id").value;
+
+  if ((docId !== "") & (docId !== undefined)) {
+    db
+      .collection("markers")
+      .doc(docId)
+      .delete()
+      .then(function() {
+        console.log("Document successfully deleted!");
+      })
+      .catch(function(error) {
+        console.error("Error removing document: ", error);
+      });
+  }
+  deleteMarkers();
+  loadMarkers();
+
+  closeData();
+}
+
+function saveData() {
+  var docId = document.getElementById("data-id").value;
+  // console.log("data-id", docId);
+  data.title = document.getElementById("data-title").value;
+  data.userId = uid;
+  data.description = document.getElementById("data-description").value;
+  data.type = document.getElementById("data-type").value;
+  data.url = document.getElementById("data-url").value;
+  if (data.url === "") {
+    data.url = undefined;
+  }
+  dataEntryModal.style.display = "none";
+  data.timestamp = Date.now();
+  if (docId === undefined) {
+    docId = "";
+  }
+  if (docId === "") {
+    // if (data.title !== "") {
+    db
+      .collection("markers")
+      .add(data)
+      .then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+      })
+      .catch(function(error) {
+        console.error("Error adding document: ", error);
+      });
+  } else {
+    // var updateRef = db.collection("markers").doc(docId);
+
+    // Set the "capital" field of the city 'DC'
+    // return updateRef
+    db
+      .collection("markers")
+      .doc(docId)
+      .update({
+        title: data.title,
+        description: data.description,
+        type: data.type,
+        url: data.url,
+        "position.lat": data.position.lat,
+        "position.lng": data.position.lng
+      })
+      .then(function() {
+        console.log("Document successfully updated!");
+      })
+      .catch(function(error) {
+        // The document probably doesn't exist.
+        console.error("Error updating document: ", error);
+      });
+  }
+  console.log("deleteMarkers");
+  deleteMarkers();
+  loadMarkers();
+}
+
+// This function returns the coordinate
+// conversion string in DD to DMS.
+function ddToDms(lat, lng) {
+  var lat = lat;
+  var lng = lng;
+  var latResult, lngResult, dmsResult;
+
+  lat = parseFloat(lat);
+  lng = parseFloat(lng);
+
+  latResult = lat >= 0 ? "N" : "S";
+
+  // Call to getDms(lat) function for the coordinates of Latitude in DMS.
+  // The result is stored in latResult variable.
+  latResult += getDms(lat);
+
+  lngResult = lng >= 0 ? "E" : "W";
+
+  // Call to getDms(lng) function for the coordinates of Longitude in DMS.
+  // The result is stored in lngResult variable.
+  lngResult += getDms(lng);
+
+  // Joining both variables and separate them with a space.
+  dmsResult = latResult + " " + lngResult;
+
+  // Return the resultant string
+  return dmsResult;
+}
+
+function getDms(val) {
+  var valDeg, valMin, valSec, result;
+
+  val = Math.abs(val);
+
+  valDeg = Math.floor(val);
+  result = valDeg + "º";
+
+  valMin = Math.floor((val - valDeg) * 60);
+  result += valMin + "'";
+
+  valSec = Math.round((val - valDeg - valMin / 60) * 3600 * 1000) / 1000;
+  result += valSec + '"';
+
+  return result;
+}
+
 function initApp() {
   initMap();
+  setupEventListeners();
+  buildIconSelect();
   setTimeout(function() {
     areWeLoggedin();
     $(".tooltipped").tooltip({ delay: 350 });

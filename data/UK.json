@@ -12,10 +12,15 @@ var MAP_DATA ={
         "debugger": true
     },
     "icons": {
-        "moor": {
-            "description": "Mooring/Pontoons/Marina",
+        "marina": {
+            "description": "Marina",
             "icon": 'marina.png',
             "enhanced": 'marina-en.png'
+        },
+        "moor": {
+            "description": "Visitor Mooring",
+            "icon": 'visitor.png',
+            "enhanced": 'visitor.png'
         },
         "anchor": {
             "description": "Anchorage",
@@ -200,7 +205,7 @@ var MAP_DATA ={
     "features": [
         {
             "id":"537c3fe8-6f0d-4d97-bbdc-90f3cd2903a8",
-            "type": "moor",
+            "type": "marina",
             "title": "Thunderbolt Pier",
             "description": "Private Mooring",
             "position": { lng: 0.525174, lat: 51.394564
@@ -277,7 +282,7 @@ var MAP_DATA ={
         },
         {
             "id":"2796caae-450e-4d97-8dcb-b8b49db033bb",
-            "type": "moor",
+            "type": "marina",
             "title": "MDL Chatham",
             "description": "Nice Marina",
             "position": { lat: 51.40468070549327, lng: 0.5321609973907471

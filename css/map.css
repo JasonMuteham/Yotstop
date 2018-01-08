@@ -83,7 +83,7 @@ html, body {
     padding-left: 0px;
     left: 5%;
     top: 0;
-    width: 90%; /* Full width */
+    width: 90%; 
     height: 80%; /* Full height */
     overflow: hidden; /* Enable scroll if needed */
 }

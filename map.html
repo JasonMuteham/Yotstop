@@ -25,7 +25,7 @@
     <body>
 
       <div class="hide">
-        <div id="version" class="noselect">v0.2</div>
+        <div id="version" class="noselect">v0.4</div>
       </div>
 
 
@@ -177,8 +177,9 @@
       <div id="data-entry-modal" class="no-modal blue lighten-4">
         <div class="container">
 
-          <div class="center-align">
-            <h5>Add Marker</h5>
+          <div class="center-align mb-20">
+            <h5>Edit Marker</h5>
+            <div id="data-id" class="hide"></div>
             <div id="data-entry-pos" class="center-align">
               <div id="nav-position">
                 <h6>LAT:
@@ -190,28 +191,37 @@
           </div>
 
           <form id="data-form">
-            <div class="input-field col">
+            <div class="input-field">
               <input class="validate" type="text" name="title" id="data-title" required>
               <label for="title">Place Name</label>
             </div>
-            <div class="input-field col">
+            <div class="input-field">
               <input class="validate" type="text" name="description" id="data-description" required>
               <label for="description">Description</label>
             </div>
             <div class="input-field">
-              <select id="data-type" class="" required>
+              <select id="data-type" required>
               </select>
               <label>Type</label>
+            </div>
+            <div class="input-field">
+              <input class="validate" type="url" name="website" id="data-url">
+              <label for="website">https://www.website.com</label>
             </div>
           </form>
 
           <div class="data-modal-footer row">
-            <div class="col s1 left-align">
+            <div class="col s4 left-align">
               <button onclick="saveData()" class="modal-action modal-close waves-effect waves-green green btn-floating">
                 <i class="material-icons">check</i>
               </button>
             </div>
-            <div class="offset-s8 col s2 right-align">
+            <div class="col s4 center-align">
+                <button onclick="deleteData()" class="modal-action modal-close waves-effect waves-red red btn-floating">
+                  <i class="material-icons">delete</i>
+                </button>
+              </div>
+            <div class="col s4 right-align">
               <button onclick="closeData()" class="modal-action modal-close waves-effect waves-red red btn-floating ">
                 <i class="material-icons">close</i>
               </button>
@@ -225,7 +235,7 @@
       <div id="vr-modal">
         <div class="modal-content light-blue lighten-2 z-depth-2">
           <span id="vrClose" class="close">
-            <i class="material-icons white-text">arrow_back</i>
+            <i class="material-icons white-text">close</i>
           </span>
           <iframe id="vr" class="img-360" src="" frameborder="0" scrolling="no"></iframe>
         </div>
@@ -245,18 +255,19 @@
       <ul id="slide-out" class="side-nav light-blue lighten-2">
         <div id='nav-close-icon'>
           <span class="close" onclick=" $('.button-collapse').sideNav('hide');">
-            <i class="material-icons white-text">arrow_back</i>
-            <!-- <i class="material-icons white-text">close</i> -->
+            <!-- <i class="material-icons white-text">arrow_back</i> -->
+            <i class="material-icons white-text">close</i>
           </span>
         </div>
         <li>
           <h5 id="nav-title" class='nav-title z-depth-2'></h5>
         </li>
         <li id="nav-position" class="center-align">
-          <h6>LAT:
+          <!-- <h6>LAT:
             <span id="nav-position-lat"></span>, LNG:
             <span id="nav-position-lng"></span>
-          </h6>
+          </h6> -->
+          <h6 id="nav-position-dms"></h6>
         </li>
         <li>
           <img id="nav-imagevr" class="hide info-window-img z-depth-2" style="cursor:pointer;" onclick="vrModalOn()" src="">
@@ -276,8 +287,8 @@
           </button>
 
 
-          <button class="btn-floating z-depth-2 waves-effect waves-light red icon-li">
-            <i class="material-icons ">edit</i>
+          <button id="edit" class="btn-floating z-depth-2 waves-effect waves-light red icon-li">
+            <i class="material-icons">edit</i>
           </button>
 
           <button class="btn-floating z-depth-2 waves-effect waves-light red icon-li" onclick=" $('.button-collapse').sideNav('hide');">
