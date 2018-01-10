@@ -25,7 +25,7 @@
     <body>
 
       <div class="hide">
-        <div id="version" class="noselect">v0.5</div>
+        <div id="version" class="noselect">v0.6</div>
       </div>
 
 
@@ -35,6 +35,17 @@
         </span>
       </div>
 
+      <div id="ReviewModal" class="modal modal-fixed-footer blue lighten-4">
+          <div class="modal-content center-align blue lighten-4">
+            <h4>Thank You</h4>
+            <p>Subject to review your submission will live soon.</p>
+          </div>
+          <div class="modal-footer blue lighten-4">
+            <a href="#!" class="modal-action modal-close btn-floating waves-effect waves-light red">
+              <i class="material-icons">close</i>
+            </a>
+          </div>
+        </div>
 
       <div id="noEditModal" class="modal modal-fixed-footer blue lighten-4">
         <div class="modal-content center-align blue lighten-4">
@@ -178,7 +189,7 @@
         <div class="container">
 
           <div class="center-align mb-20">
-            <h5>Edit Marker</h5>
+            <h5 id="data-entry-modal-title" >Edit Marker</h5>
             <div id="data-id" class="hide"></div>
             <div id="data-entry-pos" class="center-align">
               <div id="nav-position">
@@ -282,12 +293,12 @@
 
         <li id="nav-icon-bar" class="white z-depth-2 right-align">
 
-          <button class="btn-floating z-depth-2 waves-effect waves-light light-blue lighten-2 icon-li">
+          <button class="btn-floating z-depth-2 waves-effect waves-light light-blue lighten-2 disabled icon-li">
             <i class="material-icons">info_outline</i>
           </button>
 
 
-          <button id="edit" class="btn-floating z-depth-2 waves-effect waves-light red icon-li">
+          <button id="edit" class="btn-floating z-depth-2 waves-effect disabled waves-light red icon-li">
             <i class="material-icons">edit</i>
           </button>
 
@@ -307,7 +318,7 @@
 
       <div id="fab-main" class="hide">
         <div class="fixed-action-btn click-to-toggle">
-          <a class="btn-floating btn-large light-blue waves-effect waves-dark lighten-2 z-depth-4">
+          <a class="btn-floating btn-large light-blue waves-effect waves-dark lighten-2 z-depth-4" onClick="setLoginIcon()">
             <i class="material-icons">menu</i>
           </a>
           <ul>

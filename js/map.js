@@ -6,13 +6,12 @@ var markerCluster;
 var features = [];
 var userAuth = false;
 var uid;
-
 var vrModal = document.getElementById("vr-modal");
 var noEditModal = document.getElementById("noEditModal");
 var dataEntryModal = document.getElementById("data-entry-modal");
 var vrClose = document.getElementById("vrClose");
 var dataClose = document.getElementById("dataClose");
-
+var appUser = new User();
 var icons = window.MAP_DATA.icons;
 
 function setupEventListeners() {
@@ -34,17 +33,33 @@ firebase.initializeApp({
 // Initialize Cloud Firestore through Firebase
 var db = firebase.firestore();
 
-var data = {
-  userId: uid,
-  timestamp: null,
-  position: null,
-  type: null,
-  title: null,
-  position: null,
-  description: null
-};
+function setLoginIcon() {
+  var loginIcon = document.querySelector("#map-login-icon");
+  loginIcon.classList.remove("red");
+  loginIcon.classList.remove("pulse");
+  loginIcon.classList.remove("light-blue");
+  loginIcon.classList.remove("lighten-2");
+  loginIcon.classList.remove("yellow");
+  loginIcon.classList.remove("accent-3");
+  if (userAuth) {
+    loginIcon.setAttribute("data-tooltip", "Logout");
 
-function Data() {}
+    if (appUser.isMod()) {
+      loginIcon.classList.add("yellow");
+      loginIcon.classList.add("accent-3");
+      loginIcon.setAttribute("data-tooltip", "Admin Logout");
+    } else {
+      loginIcon.classList.add("light-blue");
+      loginIcon.classList.add("lighten-2");
+    }
+  } else {
+    loginIcon.classList.add("red");
+
+    loginIcon.classList.add("pulse");
+    loginIcon.setAttribute("data-tooltip", "Login");
+  }
+  $(".tooltipped").tooltip({ delay: 350 });
+}
 
 function areWeLoggedin() {
   firebase.auth().onAuthStateChanged(
@@ -57,16 +72,13 @@ function areWeLoggedin() {
         var emailVerified = user.emailVerified;
         var photoURL = user.photoURL;
         uid = user.uid;
-        // data.userId = uid;
+
+        appUser.init(user.uid);
+        // loadMarkers();
+        setLoginIcon();
         var phoneNumber = user.phoneNumber;
         var providerData = user.providerData;
-        var loginIcon = document.querySelector("#map-login-icon");
-        loginIcon.setAttribute("data-tooltip", "Logout");
-        $(".tooltipped").tooltip({ delay: 350 });
-        loginIcon.classList.remove("red");
-        loginIcon.classList.add("light-blue");
-        loginIcon.classList.add("lighten-2");
-        loginIcon.classList.remove("pulse");
+
         // document.querySelector("#burger-fab").classList.remove("pulse");
         console.log(displayName);
         console.log(photoURL);
@@ -88,15 +100,12 @@ function areWeLoggedin() {
       } else {
         // User is signed out.
         userAuth = false;
+        appUser.reset();
+        loadMarkers();
+        setLoginIcon();
         // data.userId = "";
         // var loginIcon = document.getElementById("login-icon");
-        var loginIcon = document.querySelector("#map-login-icon");
-        loginIcon.classList.add("red");
-        loginIcon.classList.remove("light-blue");
-        loginIcon.classList.remove("lighten-2");
-        loginIcon.classList.add("pulse");
-        loginIcon.setAttribute("data-tooltip", "Login");
-        $(".tooltipped").tooltip({ delay: 350 });
+
         // document.getElementById('sign-in-status').textContent = 'Signed out';
         // document.getElementById('sign-in').textContent = 'Sign in';
         // document.getElementById('account-details').textContent = 'null';
@@ -109,8 +118,9 @@ function areWeLoggedin() {
 }
 
 function login() {
-  var loginIcon = document.getElementById("map-login-icon");
-  if (!loginIcon.classList.contains("red")) {
+  // var loginIcon = document.getElementById("map-login-icon");
+  // if (!loginIcon.classList.contains("red")) {
+  if (userAuth) {
     firebase.auth().signOut();
   } else {
     var widgetURL = "login.html";
@@ -161,6 +171,14 @@ function FABControl(FABDiv, map) {
   controlUI.appendChild(FABText);
 }
 
+function authorised(permission) {
+  console.log(permission);
+  if (userAuth) {
+    return true;
+  }
+  return false;
+}
+
 function initMap() {
   // Create the map
   map = new google.maps.Map(document.getElementsByClassName("map")[0], {
@@ -207,34 +225,29 @@ function initMap() {
 
   if (MAP_DATA.settings.debugger) {
     map.addListener("dblclick", function(e) {
-      if (
-        document.getElementById("data-entry-modal").style.display == "block"
-      ) {
-        // no more markers if data entry in progress
-        return;
-      }
+      if (!authorised()) {
+        $("#noEditModal").modal("open");
+      } else {
+        if (
+          document.getElementById("data-entry-modal").style.display == "block"
+        ) {
+          // no more markers if data entry in progress
+          return;
+        }
 
-      var pos = setLatLng(e);
+        var pos = setLatLng(e);
 
-      // var content =
-      //   `"position": { lat: ` +
-      //   data.position.lat +
-      //   `, lng: ` +
-      //   data.position.lng +
-      //   ` }`;
+        marker = new google.maps.Marker({
+          position: pos,
+          draggable: true,
+          animation: google.maps.Animation.DROP,
+          map: map,
+          id: generateUUID()
+        });
 
-      marker = new google.maps.Marker({
-        position: pos,
-        draggable: true,
-        animation: google.maps.Animation.DROP,
-        map: map,
-        id: generateUUID()
-      });
+        markers.push(marker);
 
-      markers.push(marker);
-
-      google.maps.event.addListener(marker, "click", function(e) {
-        if (userAuth) {
+        google.maps.event.addListener(marker, "click", function(e) {
           var newData = {
             id: marker.id,
             position: setLatLng(e),
@@ -248,19 +261,8 @@ function initMap() {
           if (map.getZoom() < 15) {
             map.setZoom(15);
           }
-          // console.log(newData);
-          // data.id = generateUUID();
-          // data.position = setLatLng(e);
-          // console.log(marker.position.lat());
-          // var lat = parseFloat(e.latLng.lat()).toFixed([5]);
-          // var lng = parseFloat(e.latLng.lng()).toFixed([5]);
-
-          // document.getElementById("data-entry-pos-lat").textContent = lat;
-          // document.getElementById("data-entry-pos-lng").textContent = lng;
 
           google.maps.event.addListener(marker, "position_changed", function() {
-            // lat = parseFloat(marker.position.lat()).toFixed([5]);
-            // lng = parseFloat(marker.position.lng()).toFixed([5]);
             var dmsCoords = ddToDms(
               marker.position.lat(),
               marker.position.lng()
@@ -268,19 +270,12 @@ function initMap() {
             document.getElementById(
               "data-entry-pos-dms"
             ).textContent = dmsCoords;
-            // document.getElementById("data-entry-pos-lat").textContent = lat;
-            // document.getElementById("data-entry-pos-lng").textContent = lng;
           });
-          // data.title = "";
-          // data.description = "";
-          // data.type = "";
-          // data.url = "";
+
           loadEditData(newData);
           dataModalOn();
-        } else {
-          $("#noEditModal").modal("open");
-        }
-      });
+        });
+      }
     });
   }
 
@@ -291,7 +286,7 @@ function initMap() {
     maxZoom: 15
   });
 
-  loadMarkers();
+  // loadMarkers();
 }
 
 // When the user clicks the button, open the modal
@@ -404,6 +399,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 function loadMarkers() {
   features = JSON.parse(JSON.stringify(MAP_DATA.features));
+  deleteMarkers();
   loadLocalMarkers();
   loadDataBase();
   // features.forEach(function(feature) {
@@ -420,12 +416,16 @@ function createMarker(feature) {
   if (!icons.hasOwnProperty(tmpType)) {
     tmpType = "info";
   }
-
-  if (feature.enhanced == true) {
-    iconImg += icons[tmpType].enhanced;
+  if (feature.live) {
+    if (feature.enhanced == true) {
+      iconImg += icons[tmpType].enhanced;
+    } else {
+      iconImg += icons[tmpType].icon;
+    }
   } else {
-    iconImg += icons[tmpType].icon;
+    iconImg += MAP_DATA.settings.reviewIcon;
   }
+
   var marker = new google.maps.Marker({
     title: feature.title,
     position: feature.position,
@@ -560,17 +560,25 @@ function getSideNav(feature) {
 }
 
 function editData(id) {
-  loadEditData(getFeature(id));
-  $(".button-collapse").sideNav("hide");
-  dataModalOn();
+  if (!authorised()) {
+    $("#noEditModal").modal("open");
+  } else {
+    loadEditData(getFeature(id));
+    $(".button-collapse").sideNav("hide");
+    dataModalOn();
+  }
 }
 
 function loadEditData(feature) {
   if (feature.new) {
-    console.log("new", feature.new);
+    // console.log("new", feature.new);
+    document.getElementById("data-entry-modal-title").textContent =
+      "Add Feature";
     var saveFunction = `saveData("` + feature.id + `")`;
   } else {
     var saveFunction = `updateData("` + feature.id + `")`;
+    document.getElementById("data-entry-modal-title").textContent =
+      "Edit Feature";
   }
   document.querySelector("#save-data").setAttribute("onclick", saveFunction);
   var deleteFunction = `deleteData("` + feature.id + `")`;
@@ -620,18 +628,67 @@ function deleteMarkers() {
   //console.log(markers);
 }
 
-function loadDataBase() {
-  db
-    .collection("markers")
-    .get()
-    .then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc) {
-        var dbData = doc.data();
-        dbData.id = doc.id;
-        createMarker(dbData);
-        features.push(dbData);
+function editInit() {
+  if (appUser.isMod()) {
+    document.querySelector("#edit").classList.remove("disabled");
+  } else {
+    document.querySelector("#edit").classList.add("disabled");
+  }
+}
+
+function User() {
+  var userId;
+  var userData = {};
+
+  this.init = function(id) {
+    userId = id;
+    db
+      .collection("users")
+      .doc(userId)
+      .get()
+      .then(function(doc) {
+        if (doc.exists) {
+          // console.log(this);
+          // console.log(userId, "Document data:", doc.data());
+          userData = doc.data();
+          editInit();
+          loadMarkers();
+        } else {
+          console.log(id, "No such user!");
+          // userData.mod = false;
+        }
       });
+  };
+
+  this.reset = function() {
+    userId = null;
+    userData = {};
+    editInit();
+  };
+
+  this.isMod = function() {
+    // console.log(userData);
+    if (userData.mod) {
+      return true;
+    }
+    return false;
+  };
+}
+
+function loadDataBase() {
+  var dbSelect = db.collection("markers");
+  console.log(!appUser.isMod());
+  if (!appUser.isMod()) {
+    dbSelect = dbSelect.where("live", "==", true);
+  }
+  dbSelect.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      var dbData = doc.data();
+      dbData.id = doc.id;
+      createMarker(dbData);
+      features.push(dbData);
     });
+  });
 
   // db
   // .collection("markers")
@@ -672,8 +729,8 @@ function setLatLng(e) {
   return pos;
 }
 
-function deleteData() {
-  var docId = document.getElementById("data-id").value;
+function deleteData(docId) {
+  // var docId = document.getElementById("data-id").value;
 
   if ((docId !== "") & (docId !== undefined)) {
     db
@@ -688,20 +745,17 @@ function deleteData() {
       });
   }
   // delMarker(docId);
-  var apps = [
-    { id: 34, name: "My App", another: "thing" },
-    { id: 37, name: "My New App", another: "things" }
-  ];
 
-  // get index of object with id:37
   var removeIndex = features
     .map(function(item) {
       return item.id;
     })
     .indexOf(docId);
-
+  // console.log(removeIndex);
   // remove object
-  features.splice(removeIndex, 1);
+  if (removeIndex >= 0) {
+    features.splice(removeIndex, 1);
+  }
 
   deleteMarkers();
   // loadMarkers();
@@ -732,17 +786,12 @@ function updateData(id) {
   feature = getFeature(id);
   marker = getMarker(id);
   feature = updateFeature(feature);
-  // var docId = document.getElementById("data-id").value;
-  // console.log("data-id", docId);
-  // feature.title = document.getElementById("data-title").value;
-  // feature.userId = uid;
-  // feature.description = document.getElementById("data-description").value;
-  // feature.type = document.getElementById("data-type").value;
-  // feature.url = document.getElementById("data-url").value;
-  // if (feature.url === ""){
-  //   delete features.url;
-  // }
-  // marker.setTitle(feature.title);
+  if (appUser.isMod()) {
+    feature.live = true;
+  } else {
+    feature.live = false;
+  }
+
   deleteMarkers();
   loadLocalMarkers();
   updateDB(feature);
@@ -759,74 +808,37 @@ function updateDB(feature) {
     .catch(function(error) {
       console.error("Error adding document: ", error);
     });
-  // db
-  //   .collection("markers")
-  //   .doc(feature.id)
-  //   .update({
-  //     feature
-  //     // title: feature.title,
-  //     // description: feature.description,
-  //     // type: feature.type,
-  //     // url: feature.url
-  //     // "position.lat": data.position.lat,
-  //     // "position.lng": data.position.lng
-  //   })
-  //   .then(function() {
-  //     console.log("Document successfully updated!");
-  //   })
-  //   .catch(function(error) {
-  //     // The document probably doesn't exist.
-  //     console.error("Error updating document: ", error);
-  //   });
 }
 
 function saveData(id) {
+  if (!appUser.isMod()) {
+    $("#ReviewModal").modal("open");
+  }
   var marker = getMarker(id);
-
+  dataEntryModal.style.display = "none";
   var feature = {
     id: id,
+    live: false,
     position: {
       lat: marker.position.lat(),
       lng: marker.position.lng()
     }
   };
-  console.log(feature.position);
+  // console.log(feature.position);
+  if (appUser.isMod()) {
+    feature.live = true;
+  } else {
+    feature.live = false;
+  }
   feature = updateFeature(feature);
-  // var docId = document.getElementById("data-id").value;
-  // // console.log("data-id", docId);
-  // data.title = document.getElementById("data-title").value;
-  // data.userId = uid;
-  // data.description = document.getElementById("data-description").value;
-  // data.type = document.getElementById("data-type").value;
-  // data.url = document.getElementById("data-url").value;
-  // if (data.url === "") {
-  //   delete data.url;
-  // }
-  dataEntryModal.style.display = "none";
+
   feature.timestamp = Date.now();
   feature.userId = uid;
-  // feature.position.lat = marker.position.lat();
-  // feature.position.lng = marker.position.lng();
-  // delMarker(id);
-  // createMarker(feature);
 
-  // if (data.title !== "") {
   features.push(feature);
   deleteMarkers();
   loadLocalMarkers();
   updateDB(feature);
-  // db
-  //   .collection("markers")
-  //   .doc(id)
-  //   .set(feature)
-  //   .then(function() {
-  //     console.log("Document written with ID: ", id);
-  //   })
-  //   .catch(function(error) {
-  //     console.error("Error adding document: ", error);
-  //   });
-
-  // var updateRef = db.collection("markers").doc(docId);
 }
 
 function loadLocalMarkers() {
@@ -883,10 +895,12 @@ function getDms(val) {
 
 function initApp() {
   initMap();
+  loadMarkers();
   setupEventListeners();
   buildIconSelect();
-  setTimeout(function() {
-    areWeLoggedin();
-    $(".tooltipped").tooltip({ delay: 350 });
-  }, 2000);
+  // setTimeout(function() {
+  areWeLoggedin();
+  // loadMarkers();
+  $(".tooltipped").tooltip({ delay: 350 });
+  // }, 2000);
 }

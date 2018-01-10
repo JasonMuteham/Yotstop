@@ -9,6 +9,7 @@ var MAP_DATA ={
         },
         "zoom": 5,
         "iconBase": 'icons/',
+        "reviewIcon":'caution.png',
         "debugger": true
     },
     "icons": {
@@ -215,12 +216,14 @@ var MAP_DATA ={
             ],
             "VRUrl": "VR360/thunderbolt-pier-vr360.html",
             "vrPreviewImage": "thunderbolt-pier-360-preview.jpg",
+            "live": true,
             "enhanced": true
         },
         {
             "id":"1aa2226d-f9d5-47b2-9025-03c513cb8940",
             "type": "info",
             "title": "Reculver",
+            "live": true,
             "description": "Landmark",
             "position": { lng: 1.199122, lat: 51.379484
             },
@@ -234,6 +237,7 @@ var MAP_DATA ={
         {
             "id":"25a788aa-c0e0-45b4-9815-e9508dcb9460",
             "type": "info",
+            "live": true,
             "title": "SS Richard Montgomery",
             "description": "Historical Shipwreck",
             "url":"https://en.m.wikipedia.org/wiki/SS_Richard_Montgomery",
@@ -247,6 +251,7 @@ var MAP_DATA ={
         {
             "id":"40ba02ad-a094-42f3-adbe-f0e161bba3f6",
             "type": "anchor",
+            "live": true,
             "title": "Stangate Creek",
             "description": "Popular Anchorage",
             "position": { lng: 0.691754, lat: 51.404027
@@ -259,6 +264,7 @@ var MAP_DATA ={
         {
             "id":"8bffce5d-34a4-4468-9754-b41a85d4da6e",
             "type": "anchor",
+            "live": true,
             "title": "Sharfleet Creek",
             "description": "Sweet Anchorage",
             "position": { lat: 51.416838, lng: 0.679703
@@ -271,6 +277,7 @@ var MAP_DATA ={
         {
             "id":"f8787614-633c-451e-bd95-cdaf34ecd733",
             "type": "anchor",
+            "live": true,
             "title": "Slaughterhouse Point",
             "description": "Nice Anchorage",
             "position": { lat: 51.394631, lng: 0.693306
@@ -283,6 +290,7 @@ var MAP_DATA ={
         {
             "id":"2796caae-450e-4d97-8dcb-b8b49db033bb",
             "type": "marina",
+            "live": true,
             "title": "MDL Chatham",
             "description": "Nice Marina",
             "position": { lat: 51.40468070549327, lng: 0.5321609973907471
@@ -292,6 +300,7 @@ var MAP_DATA ={
             "id":"4f4239cd-f1fe-4014-a7b6-3f0325d9e29d",
             "type": "anchor",
             "title": "The Shade",
+            "live": true,
             "description": "Quiet Anchorage",
             "position": { lat: 51.394048, lng: 0.703077
             }
@@ -300,6 +309,7 @@ var MAP_DATA ={
             "id":"a9be1b58-4f7b-4157-b8e7-1df6f43dae3b",
             "type": "info",
             "title": "Fort Darnet",
+            "live": true,
             "description": "Historical Landmark",
             "url": "https://en.wikipedia.org/wiki/Fort_Darnet",
             "position": { lat: 51.406580, lng: 0.596438
@@ -312,6 +322,7 @@ var MAP_DATA ={
         {
             "id":"99c617f5-3cae-4bb9-96be-2c670f9aaa33",
             "type": "info",
+            "live": true,
             "title": "Fort Hoo",
             "description": "Historical Landmark",
             "url": "https://en.wikipedia.org/wiki/Fort_Hoo",
