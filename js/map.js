@@ -3,7 +3,7 @@ var infoWindow;
 var map;
 var markers = [];
 var markerCluster;
-var features;
+var features = [];
 var userAuth = false;
 var uid;
 
@@ -16,11 +16,11 @@ var dataClose = document.getElementById("dataClose");
 var icons = window.MAP_DATA.icons;
 
 function setupEventListeners() {
-  document.querySelector("#edit").addEventListener("click", function() {
-    // console.log("edit button clicked ", feature.id);
-    $(".button-collapse").sideNav("hide");
-    dataModalOn();
-  });
+  // document.querySelector("#edit").addEventListener("click", function() {
+  // console.log("edit button clicked ", feature.id);
+  // $(".button-collapse").sideNav("hide");
+  // dataModalOn();
+  // });
 }
 
 firebase.initializeApp({
@@ -43,6 +43,8 @@ var data = {
   position: null,
   description: null
 };
+
+function Data() {}
 
 function areWeLoggedin() {
   firebase.auth().onAuthStateChanged(
@@ -212,45 +214,68 @@ function initMap() {
         return;
       }
 
-      data.position = setLatLng(e);
+      var pos = setLatLng(e);
 
-      var content =
-        `"position": { lat: ` +
-        data.position.lat +
-        `, lng: ` +
-        data.position.lng +
-        ` }`;
+      // var content =
+      //   `"position": { lat: ` +
+      //   data.position.lat +
+      //   `, lng: ` +
+      //   data.position.lng +
+      //   ` }`;
 
       marker = new google.maps.Marker({
-        position: data.position,
+        position: pos,
         draggable: true,
         animation: google.maps.Animation.DROP,
         map: map,
-        id: null
+        id: generateUUID()
       });
 
       markers.push(marker);
 
       google.maps.event.addListener(marker, "click", function(e) {
         if (userAuth) {
-          data.position = setLatLng(e);
-          var lat = parseFloat(e.latLng.lat()).toFixed([5]);
-          var lng = parseFloat(e.latLng.lng()).toFixed([5]);
+          var newData = {
+            id: marker.id,
+            position: setLatLng(e),
+            title: "",
+            description: "",
+            type: "",
+            url: "",
+            new: true
+          };
+          map.panTo(setLatLng(e));
+          if (map.getZoom() < 15) {
+            map.setZoom(15);
+          }
+          // console.log(newData);
+          // data.id = generateUUID();
+          // data.position = setLatLng(e);
+          // console.log(marker.position.lat());
+          // var lat = parseFloat(e.latLng.lat()).toFixed([5]);
+          // var lng = parseFloat(e.latLng.lng()).toFixed([5]);
 
-          document.getElementById("data-entry-pos-lat").textContent = lat;
-          document.getElementById("data-entry-pos-lng").textContent = lng;
+          // document.getElementById("data-entry-pos-lat").textContent = lat;
+          // document.getElementById("data-entry-pos-lng").textContent = lng;
 
-          google.maps.event.addListener(marker, "dragend", function() {
-            lat = parseFloat(marker.position.lat()).toFixed([5]);
-            lng = parseFloat(marker.position.lng()).toFixed([5]);
-
-            document.getElementById("data-entry-pos-lat").textContent = lat;
-            document.getElementById("data-entry-pos-lng").textContent = lng;
+          google.maps.event.addListener(marker, "position_changed", function() {
+            // lat = parseFloat(marker.position.lat()).toFixed([5]);
+            // lng = parseFloat(marker.position.lng()).toFixed([5]);
+            var dmsCoords = ddToDms(
+              marker.position.lat(),
+              marker.position.lng()
+            );
+            document.getElementById(
+              "data-entry-pos-dms"
+            ).textContent = dmsCoords;
+            // document.getElementById("data-entry-pos-lat").textContent = lat;
+            // document.getElementById("data-entry-pos-lng").textContent = lng;
           });
-          data.title = "";
-          data.description = "";
-          data.type = "";
-          loadEditData(data);
+          // data.title = "";
+          // data.description = "";
+          // data.type = "";
+          // data.url = "";
+          loadEditData(newData);
           dataModalOn();
         } else {
           $("#noEditModal").modal("open");
@@ -258,8 +283,6 @@ function initMap() {
       });
     });
   }
-
-  features = MAP_DATA.features;
 
   infoWindow = new google.maps.InfoWindow();
   markerCluster = new MarkerClusterer(map, markers, {
@@ -380,10 +403,12 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 }
 
 function loadMarkers() {
+  features = JSON.parse(JSON.stringify(MAP_DATA.features));
+  loadLocalMarkers();
   loadDataBase();
-  features.forEach(function(feature) {
-    createMarker(feature);
-  });
+  // features.forEach(function(feature) {
+  //   createMarker(feature);
+  // });
 }
 
 function createMarker(feature) {
@@ -432,29 +457,55 @@ function createMarker(feature) {
     }
 
     mouseoverHTML.addEventListener("click", function() {
-      getSideNav(feature);
+      getSideNav(getFeature(marker.id));
+      // getSideNav(feature);
     });
 
     infoWindow.setContent(mouseoverHTML);
     infoWindow.open(map, marker);
   });
 
-  marker.addListener("click", function() {
-    // infoWindow.close(map, marker);
-    getSideNav(feature);
+  marker.addListener("rightclick", function(e) {
+    getSideNav(getFeature(marker.id));
+  });
+
+  marker.addListener("click", function(e) {
+    // console.log(e);
+    map.panTo(setLatLng(e));
+    if (map.getZoom() < 15) {
+      map.setZoom(15);
+    } else {
+      getSideNav(getFeature(marker.id));
+    }
   });
 
   markerCluster.addMarkers(markers);
 }
 
+function getFeature(id) {
+  var item = features.find(function(item) {
+    return item.id === id;
+  });
+
+  return item;
+}
+
+function getMarker(id) {
+  var item = markers.find(function(item) {
+    return item.id === id;
+  });
+
+  return item;
+}
+
 function getSideNav(feature) {
-  // console.log(feature);
-  var lat = parseFloat(feature.position.lat).toFixed([5]);
-  var lng = parseFloat(feature.position.lng).toFixed([5]);
-  data.position = {
-    lat: feature.position.lat,
-    lng: feature.position.lng
-  };
+  console.log(feature);
+  // var lat = parseFloat(feature.position.lat).toFixed([5]);
+  // var lng = parseFloat(feature.position.lng).toFixed([5]);
+  // data.position = {
+  //   lat: feature.position.lat,
+  //   lng: feature.position.lng
+  // };
   var sideNav = document.getElementById("slide-out");
   sideNav.querySelector("#nav-title").textContent = feature.title;
   sideNav.querySelector("#nav-description").textContent = feature.description;
@@ -501,25 +552,42 @@ function getSideNav(feature) {
     sideNav.querySelector("#nav-url").href = "";
     sideNav.querySelector("#nav-url").classList.add("hide");
   }
-
-  loadEditData(feature);
+  var editFunction = `editData("` + feature.id + `")`;
+  document.querySelector("#edit").setAttribute("onclick", editFunction);
+  // loadEditData(feature);
 
   $(".button-collapse").sideNav("show");
 }
 
+function editData(id) {
+  loadEditData(getFeature(id));
+  $(".button-collapse").sideNav("hide");
+  dataModalOn();
+}
+
 function loadEditData(feature) {
-  // console.log(feature);
-  var lat = parseFloat(feature.position.lat).toFixed([5]);
-  var lng = parseFloat(feature.position.lng).toFixed([5]);
-  document.getElementById("data-entry-pos-lat").textContent = lat;
-  document.getElementById("data-entry-pos-lng").textContent = lng;
+  if (feature.new) {
+    console.log("new", feature.new);
+    var saveFunction = `saveData("` + feature.id + `")`;
+  } else {
+    var saveFunction = `updateData("` + feature.id + `")`;
+  }
+  document.querySelector("#save-data").setAttribute("onclick", saveFunction);
+  var deleteFunction = `deleteData("` + feature.id + `")`;
+  document
+    .querySelector("#delete-data")
+    .setAttribute("onclick", deleteFunction);
+
+  var dmsCoords = ddToDms(feature.position.lat, feature.position.lng);
+  document.getElementById("data-entry-pos-dms").textContent = dmsCoords;
   document.getElementById("data-title").value = feature.title;
   if (feature.url !== undefined) {
     document.getElementById("data-url").value = feature.url;
+  } else {
+    document.getElementById("data-url").value = "";
   }
   document.getElementById("data-description").value = feature.description;
   setDefaultType(feature.type);
-  // document.getElementById("data-type").value = feature.type;
 
   document.getElementById("data-id").value = feature.id;
   Materialize.updateTextFields();
@@ -548,6 +616,7 @@ function deleteMarkers() {
 
   markerCluster.clearMarkers();
   markers = [];
+  // features = [];
   //console.log(markers);
 }
 
@@ -560,8 +629,37 @@ function loadDataBase() {
         var dbData = doc.data();
         dbData.id = doc.id;
         createMarker(dbData);
+        features.push(dbData);
       });
     });
+
+  // db
+  // .collection("markers")
+  // .onSnapshot(function(querySnapshot) {
+  //   querySnapshot.forEach(function(doc) {
+  //     var dbData = doc.data();
+  //     console.log(doc.type,doc.id);
+  //     dbData.id = doc.id;
+  //     createMarker(dbData);
+  //     features.push(dbData);
+  //   });
+  // });
+}
+
+function generateUUID() {
+  // Public Domain/MIT
+  var d = new Date().getTime();
+  if (
+    typeof performance !== "undefined" &&
+    typeof performance.now === "function"
+  ) {
+    d += performance.now(); //use high-precision timer if available
+  }
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+    var r = ((d + Math.random() * 16) % 16) | 0;
+    d = Math.floor(d / 16);
+    return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
+  });
 }
 
 function setLatLng(e) {
@@ -589,66 +687,152 @@ function deleteData() {
         console.error("Error removing document: ", error);
       });
   }
-  deleteMarkers();
-  loadMarkers();
+  // delMarker(docId);
+  var apps = [
+    { id: 34, name: "My App", another: "thing" },
+    { id: 37, name: "My New App", another: "things" }
+  ];
 
+  // get index of object with id:37
+  var removeIndex = features
+    .map(function(item) {
+      return item.id;
+    })
+    .indexOf(docId);
+
+  // remove object
+  features.splice(removeIndex, 1);
+
+  deleteMarkers();
+  // loadMarkers();
+  loadLocalMarkers();
   closeData();
 }
 
-function saveData() {
-  var docId = document.getElementById("data-id").value;
-  // console.log("data-id", docId);
-  data.title = document.getElementById("data-title").value;
-  data.userId = uid;
-  data.description = document.getElementById("data-description").value;
-  data.type = document.getElementById("data-type").value;
-  data.url = document.getElementById("data-url").value;
-  if (data.url === "") {
-    data.url = undefined;
-  }
-  dataEntryModal.style.display = "none";
-  data.timestamp = Date.now();
-  if (docId === undefined) {
-    docId = "";
-  }
-  if (docId === "") {
-    // if (data.title !== "") {
-    db
-      .collection("markers")
-      .add(data)
-      .then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
-      })
-      .catch(function(error) {
-        console.error("Error adding document: ", error);
-      });
-  } else {
-    // var updateRef = db.collection("markers").doc(docId);
+function delMarker(id) {
+  getMarker(id).setMap(null);
+}
 
-    // Set the "capital" field of the city 'DC'
-    // return updateRef
-    db
-      .collection("markers")
-      .doc(docId)
-      .update({
-        title: data.title,
-        description: data.description,
-        type: data.type,
-        url: data.url,
-        "position.lat": data.position.lat,
-        "position.lng": data.position.lng
-      })
-      .then(function() {
-        console.log("Document successfully updated!");
-      })
-      .catch(function(error) {
-        // The document probably doesn't exist.
-        console.error("Error updating document: ", error);
-      });
+function updateFeature(feature) {
+  feature.title = document.getElementById("data-title").value;
+  feature.description = document.getElementById("data-description").value;
+  feature.type = document.getElementById("data-type").value;
+  feature.url = document.getElementById("data-url").value;
+  if (feature.url === undefined) {
+    feature.url = "";
   }
-  console.log("deleteMarkers");
+  if (feature.url === "") {
+    delete feature.url;
+  }
+  return feature;
+}
+
+function updateData(id) {
+  dataEntryModal.style.display = "none";
+  feature = getFeature(id);
+  marker = getMarker(id);
+  feature = updateFeature(feature);
+  // var docId = document.getElementById("data-id").value;
+  // console.log("data-id", docId);
+  // feature.title = document.getElementById("data-title").value;
+  // feature.userId = uid;
+  // feature.description = document.getElementById("data-description").value;
+  // feature.type = document.getElementById("data-type").value;
+  // feature.url = document.getElementById("data-url").value;
+  // if (feature.url === ""){
+  //   delete features.url;
+  // }
+  // marker.setTitle(feature.title);
   deleteMarkers();
-  loadMarkers();
+  loadLocalMarkers();
+  updateDB(feature);
+}
+
+function updateDB(feature) {
+  db
+    .collection("markers")
+    .doc(feature.id)
+    .set(feature)
+    .then(function() {
+      console.log("Document updated with ID: ", feature.id);
+    })
+    .catch(function(error) {
+      console.error("Error adding document: ", error);
+    });
+  // db
+  //   .collection("markers")
+  //   .doc(feature.id)
+  //   .update({
+  //     feature
+  //     // title: feature.title,
+  //     // description: feature.description,
+  //     // type: feature.type,
+  //     // url: feature.url
+  //     // "position.lat": data.position.lat,
+  //     // "position.lng": data.position.lng
+  //   })
+  //   .then(function() {
+  //     console.log("Document successfully updated!");
+  //   })
+  //   .catch(function(error) {
+  //     // The document probably doesn't exist.
+  //     console.error("Error updating document: ", error);
+  //   });
+}
+
+function saveData(id) {
+  var marker = getMarker(id);
+
+  var feature = {
+    id: id,
+    position: {
+      lat: marker.position.lat(),
+      lng: marker.position.lng()
+    }
+  };
+  console.log(feature.position);
+  feature = updateFeature(feature);
+  // var docId = document.getElementById("data-id").value;
+  // // console.log("data-id", docId);
+  // data.title = document.getElementById("data-title").value;
+  // data.userId = uid;
+  // data.description = document.getElementById("data-description").value;
+  // data.type = document.getElementById("data-type").value;
+  // data.url = document.getElementById("data-url").value;
+  // if (data.url === "") {
+  //   delete data.url;
+  // }
+  dataEntryModal.style.display = "none";
+  feature.timestamp = Date.now();
+  feature.userId = uid;
+  // feature.position.lat = marker.position.lat();
+  // feature.position.lng = marker.position.lng();
+  // delMarker(id);
+  // createMarker(feature);
+
+  // if (data.title !== "") {
+  features.push(feature);
+  deleteMarkers();
+  loadLocalMarkers();
+  updateDB(feature);
+  // db
+  //   .collection("markers")
+  //   .doc(id)
+  //   .set(feature)
+  //   .then(function() {
+  //     console.log("Document written with ID: ", id);
+  //   })
+  //   .catch(function(error) {
+  //     console.error("Error adding document: ", error);
+  //   });
+
+  // var updateRef = db.collection("markers").doc(docId);
+}
+
+function loadLocalMarkers() {
+  features.forEach(function(item) {
+    createMarker(item);
+  });
 }
 
 // This function returns the coordinate

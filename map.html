@@ -25,7 +25,7 @@
     <body>
 
       <div class="hide">
-        <div id="version" class="noselect">v0.4</div>
+        <div id="version" class="noselect">v0.5</div>
       </div>
 
 
@@ -182,10 +182,8 @@
             <div id="data-id" class="hide"></div>
             <div id="data-entry-pos" class="center-align">
               <div id="nav-position">
-                <h6>LAT:
-                  <span id="data-entry-pos-lat"></span>, LNG:
-                  <span id="data-entry-pos-lng"></span>
-                </h6>
+                <h6 id="data-entry-pos-dms"></h6>
+        
               </div>
             </div>
           </div>
@@ -212,15 +210,15 @@
 
           <div class="data-modal-footer row">
             <div class="col s4 left-align">
-              <button onclick="saveData()" class="modal-action modal-close waves-effect waves-green green btn-floating">
+              <button id="save-data" onclick="saveData()" class="modal-action modal-close waves-effect waves-green green btn-floating">
                 <i class="material-icons">check</i>
               </button>
             </div>
             <div class="col s4 center-align">
-                <button onclick="deleteData()" class="modal-action modal-close waves-effect waves-red red btn-floating">
-                  <i class="material-icons">delete</i>
-                </button>
-              </div>
+              <button id="delete-data" onclick="deleteData()" class="modal-action modal-close waves-effect waves-red red btn-floating">
+                <i class="material-icons">delete</i>
+              </button>
+            </div>
             <div class="col s4 right-align">
               <button onclick="closeData()" class="modal-action modal-close waves-effect waves-red red btn-floating ">
                 <i class="material-icons">close</i>
@@ -263,10 +261,7 @@
           <h5 id="nav-title" class='nav-title z-depth-2'></h5>
         </li>
         <li id="nav-position" class="center-align">
-          <!-- <h6>LAT:
-            <span id="nav-position-lat"></span>, LNG:
-            <span id="nav-position-lng"></span>
-          </h6> -->
+
           <h6 id="nav-position-dms"></h6>
         </li>
         <li>
@@ -278,7 +273,12 @@
         <li>
           <div id="nav-description" class="z-depth-2 center-align"></div>
         </li>
-        
+
+        <li class="z-depth-2 center-align">
+          <div>
+            <a id="nav-url" class="hide" href="" target="_blank">website</a>
+          </div>
+        </li>
 
         <li id="nav-icon-bar" class="white z-depth-2 right-align">
 
@@ -295,11 +295,7 @@
             <i class="material-icons ">close</i>
           </button>
         </li>
-        <li class="z-depth-2 center-align">
-            <div>
-              <a id="nav-url" class = "hide" href="" target="_blank">website</a>
-            </div>
-          </li>
+
       </ul>
 
 
