@@ -22,13 +22,13 @@ function setupEventListeners() {
   // });
 }
 
-firebase.initializeApp({
-  apiKey: "AIzaSyArhLbX05ll-bTM_WrvrPgpnsQtFWLPZlg",
-  authDomain: "yotstop-1512497608857.firebaseapp.com",
-  databaseURL: "https://yotstop-1512497608857.firebaseio.com",
-  projectId: "yotstop-1512497608857",
-  storageBucket: "yotstop-1512497608857.appspot.com"
-});
+// firebase.initializeApp({
+//   apiKey: "AIzaSyArhLbX05ll-bTM_WrvrPgpnsQtFWLPZlg",
+//   authDomain: "yotstop-1512497608857.firebaseapp.com",
+//   databaseURL: "https://yotstop-1512497608857.firebaseio.com",
+//   projectId: "yotstop-1512497608857",
+//   storageBucket: "yotstop-1512497608857.appspot.com"
+// });
 
 // Initialize Cloud Firestore through Firebase
 var db = firebase.firestore();
@@ -653,9 +653,11 @@ function User() {
           userData = doc.data();
           editInit();
           loadMarkers();
+          setLoginIcon();
         } else {
           console.log(id, "No such user!");
           // userData.mod = false;
+          setLoginIcon();
         }
       });
   };
@@ -847,51 +849,41 @@ function loadLocalMarkers() {
   });
 }
 
-// This function returns the coordinate
-// conversion string in DD to DMS.
-function ddToDms(lat, lng) {
-  var lat = lat;
-  var lng = lng;
-  var latResult, lngResult, dmsResult;
+function getDD2DM(dms, type){
 
-  lat = parseFloat(lat);
-  lng = parseFloat(lng);
+  var sign = 1, Abs=0;
+  var days, minutes, secounds, direction;
 
-  latResult = lat >= 0 ? "N" : "S";
+  if(dms < 0)  { sign = -1; }
+  Abs = Math.abs( Math.round(dms * 1000000.));
+  //Math.round is used to eliminate the small error caused by rounding in the computer:
+  //e.g. 0.2 is not the same as 0.20000000000284
+  //Error checks
+  if(type == "lat" && Abs > (90 * 1000000)){
+      //alert(" Degrees Latitude must be in the range of -90. to 90. ");
+      return false;
+  } else if(type == "lon" && Abs > (180 * 1000000)){
+      //alert(" Degrees Longitude must be in the range of -180 to 180. ");
+      return false;
+  }
 
-  // Call to getDms(lat) function for the coordinates of Latitude in DMS.
-  // The result is stored in latResult variable.
-  latResult += getDms(lat);
-
-  lngResult = lng >= 0 ? "E" : "W";
-
-  // Call to getDms(lng) function for the coordinates of Longitude in DMS.
-  // The result is stored in lngResult variable.
-  lngResult += getDms(lng);
-
-  // Joining both variables and separate them with a space.
-  dmsResult = latResult + " " + lngResult;
-
-  // Return the resultant string
-  return dmsResult;
+  days = Math.floor(Abs / 1000000);
+  minutes = (((Abs/1000000) - days) * 60).toFixed(3);
+  secounds = ( Math.floor((( ((Abs/1000000) - days) * 60) - minutes) * 100000) *60/100000 ).toFixed();
+  days = days * sign;
+  if(type == 'lat') direction = days<0 ? 'S' : 'N';
+  if(type == 'lng') direction = days<0 ? 'W' : 'E';
+  //else return value     
+  return (days * sign) + 'º ' + minutes + direction;
 }
 
-function getDms(val) {
-  var valDeg, valMin, valSec, result;
 
-  val = Math.abs(val);
 
-  valDeg = Math.floor(val);
-  result = valDeg + "º";
-
-  valMin = Math.floor((val - valDeg) * 60);
-  result += valMin + "'";
-
-  valSec = Math.round((val - valDeg - valMin / 60) * 3600 * 1000) / 1000;
-  result += valSec + '"';
-
-  return result;
+function ddToDms(lat, lng){
+  return getDD2DM(lat,'lat') + ' , ' + getDD2DM(lng,'lng');
 }
+
+
 
 function initApp() {
   initMap();

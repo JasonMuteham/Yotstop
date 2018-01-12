@@ -11,10 +11,7 @@
   <!--Import materialize.css-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 
-  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
-  <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase-firestore.js"></script>
+  
 
 
   <!--Let browser know website is optimized for mobile-->
@@ -25,7 +22,7 @@
     <body>
 
       <div class="hide">
-        <div id="version" class="noselect">v0.6</div>
+        <div id="version" class="noselect">v0.7.3</div>
       </div>
 
 
@@ -36,16 +33,16 @@
       </div>
 
       <div id="ReviewModal" class="modal modal-fixed-footer blue lighten-4">
-          <div class="modal-content center-align blue lighten-4">
-            <h4>Thank You</h4>
-            <p>Subject to review your submission will live soon.</p>
-          </div>
-          <div class="modal-footer blue lighten-4">
-            <a href="#!" class="modal-action modal-close btn-floating waves-effect waves-light red">
-              <i class="material-icons">close</i>
-            </a>
-          </div>
+        <div class="modal-content center-align blue lighten-4">
+          <h4>Thank You</h4>
+          <p>Subject to review your submission will be live soon.</p>
         </div>
+        <div class="modal-footer blue lighten-4">
+          <a href="#!" class="modal-action modal-close btn-floating waves-effect waves-light red">
+            <i class="material-icons">close</i>
+          </a>
+        </div>
+      </div>
 
       <div id="noEditModal" class="modal modal-fixed-footer blue lighten-4">
         <div class="modal-content center-align blue lighten-4">
@@ -189,12 +186,12 @@
         <div class="container">
 
           <div class="center-align mb-20">
-            <h5 id="data-entry-modal-title" >Edit Marker</h5>
+            <h5 id="data-entry-modal-title">Edit Marker</h5>
             <div id="data-id" class="hide"></div>
             <div id="data-entry-pos" class="center-align">
               <div id="nav-position">
                 <h6 id="data-entry-pos-dms"></h6>
-        
+
               </div>
             </div>
           </div>
@@ -317,13 +314,19 @@
 
 
       <div id="fab-main" class="hide">
-        <div class="fixed-action-btn click-to-toggle">
-          <a class="btn-floating btn-large light-blue waves-effect waves-dark lighten-2 z-depth-4" onClick="setLoginIcon()">
+        <div class="fixed-action-btn">
+          <a class="btn-floating btn-large light-blue waves-effect waves-dark lighten-2 z-depth-4">
             <i class="material-icons">menu</i>
           </a>
           <ul>
             <li>
-              <a id="gps-icon" class="btn-floating red z-depth-4 tooltipped" data-position="left" data-delay="50" data-tooltip="Current Location"
+              <a class="btn-floating light-blue lighten-2 z-depth-4 tooltipped" data-position="left" data-delay="50" data-tooltip="refresh"
+                onClick="loadMarkers()">
+                <i class="material-icons">autorenew</i>
+              </a>
+            </li>
+            <li>
+              <a id="gps-icon" class="btn-floating light-blue lighten-2 z-depth-4 tooltipped" data-position="left" data-delay="50" data-tooltip="Current Location"
                 onClick="getLocation()">
                 <i class="material-icons">gps_not_fixed</i>
               </a>
@@ -374,6 +377,23 @@
       </div>
 
 
+      <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
+      <!-- <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script> -->
+      <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-firestore.js"></script>
+      <script>
+        // Initialize Firebase
+       
+        var config = {
+          apiKey: "AIzaSyArhLbX05ll-bTM_WrvrPgpnsQtFWLPZlg",
+          authDomain: "yotstop-1512497608857.firebaseapp.com",
+          databaseURL: "https://yotstop-1512497608857.firebaseio.com",
+          projectId: "yotstop-1512497608857",
+          storageBucket: "yotstop-1512497608857.appspot.com",
+          messagingSenderId: "85287802086"
+        };
+        firebase.initializeApp(config);
+      
+      </script>
       <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
       <script src="data/UK.json"></script>

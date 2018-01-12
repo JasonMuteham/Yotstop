@@ -205,6 +205,17 @@ var MAP_DATA ={
     },
     "features": [
         {
+            "timestamp": 1513462647933,
+            "title": "Pirates Cave",
+            "live": true,
+            "sender": null,
+            "description": "Chandlery",
+            "url": "https://www.piratescave.co.uk",
+            "position": { "lat": 51.40036310961224, "lng": 0.5123099684715271 },
+            "type": "info",
+            "id": "0qvLESUDKE0tTMaFUgKh"
+          },
+        {
             "id":"537c3fe8-6f0d-4d97-bbdc-90f3cd2903a8",
             "type": "marina",
             "title": "Thunderbolt Pier",
