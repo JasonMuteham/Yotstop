@@ -1,35 +1,206 @@
-{
-    "type": "FeatureCollection",
-    "features": [
-        {
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    0.525174,
-                    51.394564
-                ]
-            },
-            "type": "Feature",
-            "properties": {
-                "category": "yotstop",
-                "description": "Private Mooring",
-                "title": "Thunderbolt Pier"
-            }
+var MAP_DATA ={
+    "settings": {
+        "imagePath": "images/",
+        "preview": "300px/",
+        "full": "1200px/",
+        "mapCenter": {
+            "lat": 54.50,
+            "lng": -2.50
         },
-        {
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    0.691754,
-                    51.404027
+        "zoom": 5,
+        "iconBase": 'icons/',
+        "reviewIcon":'caution.png',
+        "debugger": true
+    },
+    "icons": {
+        "marina": {
+            "description": "Marina",
+            "icon": 'marina.png',
+            "enhanced": 'marina-en.png'
+        },
+        "moor": {
+            "description": "Visitor Mooring",
+            "icon": 'visitor.png',
+            "enhanced": 'visitor.png'
+        },
+        "anchor": {
+            "description": "Anchorage",
+            "icon": 'anchor.png',
+            "enhanced": 'anchor-en.png'
+        },
+        "info": {
+            "description": "Information",
+            "icon": 'info.png',
+            "enhanced": 'info-en.png'
+        },
+        "sailing": {
+            "description": "Yacht Club",
+            "icon": 'sailing.png',
+            "enhanced": 'sailing-en.png'
+        },
+        "chandlery": {
+            "description": "chandlery",
+            "icon": 'info.png',
+            "enhanced": 'info-en.png'
+        }
+    },
+    "map": {
+        "styles": [
+            {
+                "featureType": "administrative",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
                 ]
             },
-            "type": "Feature",
-            "properties": {
-                "category": "yotstop",
-                "description": "Nice anchorage",
-                "title": "Stangate Creek"
+            {
+                "featureType": "administrative.land_parcel",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative.land_parcel",
+                "elementType": "labels",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative.locality",
+                "stylers": [
+                    {
+                        "visibility": "simplified"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative.neighborhood",
+                "stylers": [
+                    {
+                        "visibility": "simplified"
+                    }
+                ]
+            },
+            {
+                "featureType": "landscape",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi",
+                "stylers": [
+                    {
+                        "visibility": "simplified"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi",
+                "elementType": "labels.text",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.business",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.government",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.place_of_worship",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.school",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.sports_complex",
+                "stylers": [
+                    {
+                        "visibility": "simplified"
+                    }
+                ]
+            },
+            {
+                "featureType": "road",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "road.arterial",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "road.highway",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "road.local",
+                "elementType": "labels",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "transit",
+                "stylers": [
+                    {
+                        "visibility": "simplified"
+                    }
+                ]
+            },
+            {
+                "featureType": "water",
+                "stylers": [
+                    {
+                        "visibility": "simplified"
+                    }
+                ]
             }
-        }
-    ]
+        ]
+    }
 }

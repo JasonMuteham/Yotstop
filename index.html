@@ -1,77 +1,85 @@
 <!DOCTYPE html>
-<html >
-    <head>
-        <meta charset="UTF-8">
-        <title>YotStop - Anchor Moor Explore</title>
-        <link rel="shortcut icon" href="/icons/res/mipmap-mdpi/ic_launcher_yotstop.png" type="image/x-icon">
+<html>
 
-        <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates:600" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Zilla+Slab+Highlight:700" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Zilla+Slab:600" rel="stylesheet">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8">
+    <title>YotStop - Anchor Moor Explore</title>
+    <link rel="shortcut icon" href="/icons/res/mipmap-mdpi/ic_launcher_yotstop.png" type="image/x-icon">
 
-        <link rel="stylesheet" href="css/style.css">  
+    <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates:600" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Zilla+Slab+Highlight:700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Zilla+Slab:600" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+        crossorigin="anonymous">
 
-
-
-    </head>
-
-    <body id="body-back-img">
-        <div id="back-img-cover">
-            <div class="container">
-
-                <nav class="navbar navbar-toggleable-sm navbar-inverse rounded">
-                    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <a class="navbar-brand" href="#"><img width="30" height="30" class="d-inline-block align-top" src="/icons/res/mipmap-hdpi/ic_launcher_yotstop.png">OTSTOP</a>
-
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="map.html">Explore <span class="sr-only">(current)</span></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link disabled" href="#">About</a>
-                            </li>
-                            
-                        </ul>
-                        
-                    </div>
-                </nav>
+    <link rel="stylesheet" href="css/style.css">
 
 
-                <div class="row">
-                    <div class="col-12">
-                        <div id="content" class="rounded">
+
+</head>
+
+<body id="body-back-img">
+    <div id="back-img-cover">
+        <div class="container">
+
+            <!-- <nav class="navbar navbar-toggleable-sm navbar-inverse rounded">
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <img width="30" height="30" class="d-inline-block align-top" src="/icons/res/mipmap-hdpi/ic_launcher_yotstop.png">OTSTOP</a>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="map.html">Explore
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#">About</a>
+                        </li>
+
+                    </ul>
+
+                </div>
+            </nav> -->
 
 
-                            <h1 class="display-1"> <img class="img-fluid d-inline-block align-middle" id ="brand-icon-large" src="/icons/web_hi_res_512.png">otStop</h1>
+            <div class="row">
+                <div class="col-12">
+                    <div id="content" class="rounded">
 
-                            <h2 class="display-5 ws">Anchor Moor Explore</h2>
-                            <a href="map.html"><button id="exploreButton" type="button" class="btn btn-secondary btn-lg">Explore</button></a>
-                            
-                        </div>
+
+                        <h1 class="display-1">
+                            <img class="img-fluid d-inline-block align-middle" id="brand-icon-large" src="/icons/web_hi_res_512.png">otStop</h1>
+
+                        <h2 class="display-5 ws">Anchor Moor Explore</h2>
+                        <a href="map.html">
+                            <button id="exploreButton" type="button" class="btn btn-secondary btn-lg">Explore</button>
+                        </a>
+
                     </div>
                 </div>
-                
             </div>
+
         </div>
-        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
 
 
-        
-        <script type="text/javascript" src="js/yotstop.js"></script>
 
-   
+    <script type="text/javascript" src="js/yotstop.js"></script>
 
-    </body>
+
+
+</body>
+
 </html>
-
-
-
-
-

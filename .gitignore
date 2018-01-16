@@ -8,3 +8,8 @@
 .firebaserc
 *.code-workspace
 firebase-debug.log
+*.json
+*.json
+data/map.json
+*.bak
+data/UK.json

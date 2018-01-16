@@ -1,4 +1,5 @@
 var MAP_DATA = window.MAP_DATA;
+var MAP_BASE = window.MAP_BASE;
 var infoWindow;
 var map;
 var markers = [];
@@ -15,6 +16,14 @@ var appUser = new User();
 var icons = window.MAP_DATA.icons;
 
 function setupEventListeners() {
+  // google.maps.event.addDomListener(map, 'click', function() {
+  //   // console.log('Map was clicked!');
+  //   $('.fixed-action-btn').closeFAB();
+  // });
+  // google.maps.event.addDomListener(map, 'drag', function() {
+  //   // console.log('Map was clicked!');
+  //   $('.fixed-action-btn').closeFAB();
+  // });
   // document.querySelector("#edit").addEventListener("click", function() {
   // console.log("edit button clicked ", feature.id);
   // $(".button-collapse").sideNav("hide");
@@ -35,6 +44,7 @@ var db = firebase.firestore();
 
 function setLoginIcon() {
   var loginIcon = document.querySelector("#map-login-icon");
+  // var loginIcon = document.querySelector("#login-icon");
   loginIcon.classList.remove("red");
   loginIcon.classList.remove("pulse");
   loginIcon.classList.remove("light-blue");
@@ -74,7 +84,7 @@ function areWeLoggedin() {
         uid = user.uid;
 
         appUser.init(user.uid);
-        // loadMarkers();
+        //  loadMarkers();
         setLoginIcon();
         var phoneNumber = user.phoneNumber;
         var providerData = user.providerData;
@@ -219,8 +229,12 @@ function initMap() {
   versionDiv.index = 1;
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(versionDiv);
 
-  map.addListener("mousemove", function() {
+  map.addListener("drag", function() {
+    $(".fixed-action-btn").closeFAB();
+  });
+  map.addListener("click", function() {
     infoWindow.close(map);
+    $(".fixed-action-btn").closeFAB();
   });
 
   if (MAP_DATA.settings.debugger) {
@@ -286,7 +300,7 @@ function initMap() {
     maxZoom: 15
   });
 
-  // loadMarkers();
+  //  loadMarkers();
 }
 
 // When the user clicks the button, open the modal
@@ -368,7 +382,12 @@ function getLocation() {
         gpsIcon.classList.add("light-blue");
         gpsIcon.classList.add("lighten-2");
         infoWindow.setPosition(pos);
-        infoWindow.setContent("You");
+        var dmsCoords = ddToDms(pos.lat, pos.lng);
+        var content =
+          '<div class="center-align">Your Location <br><strong>' +
+          dmsCoords +
+          "</strong></div>";
+        infoWindow.setContent(content);
         infoWindow.open(map);
         map.panTo(pos);
         if (map.getZoom() < 15) {
@@ -398,10 +417,11 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 }
 
 function loadMarkers() {
-  features = JSON.parse(JSON.stringify(MAP_DATA.features));
+  features = JSON.parse(JSON.stringify(MAP_BASE.features));
   deleteMarkers();
   loadLocalMarkers();
   loadDataBase();
+  // markerCluster.addMarkers(markers);
   // features.forEach(function(feature) {
   //   createMarker(feature);
   // });
@@ -433,6 +453,8 @@ function createMarker(feature) {
     map: map,
     id: feature.id
   });
+
+  markerCluster.addMarker(marker);
 
   markers.push(marker);
 
@@ -471,15 +493,16 @@ function createMarker(feature) {
 
   marker.addListener("click", function(e) {
     // console.log(e);
-    map.panTo(setLatLng(e));
+
     if (map.getZoom() < 15) {
       map.setZoom(15);
     } else {
       getSideNav(getFeature(marker.id));
     }
+    map.panTo(setLatLng(e));
   });
 
-  markerCluster.addMarkers(markers);
+  
 }
 
 function getFeature(id) {
@@ -658,6 +681,7 @@ function User() {
           console.log(id, "No such user!");
           // userData.mod = false;
           setLoginIcon();
+          loadMarkers();
         }
       });
   };
@@ -678,31 +702,41 @@ function User() {
 }
 
 function loadDataBase() {
-  var dbSelect = db.collection("markers");
-  console.log(!appUser.isMod());
-  if (!appUser.isMod()) {
-    dbSelect = dbSelect.where("live", "==", true);
+  if(!userAuth){
+    preloader(false);
+    return;
   }
-  dbSelect.get().then(function(querySnapshot) {
-    querySnapshot.forEach(function(doc) {
-      var dbData = doc.data();
-      dbData.id = doc.id;
-      createMarker(dbData);
-      features.push(dbData);
-    });
+  var dbSelect = db.collection("markers");
+  // console.log(!appUser.isMod());
+  dbSelect = dbSelect.where("base", "==", false);
+  if (!appUser.isMod()) {
+    dbSelect = dbSelect.where("live", "==", true).where("base", "==", false);
+  }
+  dbSelect
+  .get()
+  .then(function(querySnapshot) {
+    querySnapshot
+      .forEach(function(doc) {
+        var dbData = doc.data();
+        dbData.id = doc.id;
+        createMarker(dbData);
+        features.push(dbData);
+      })
+      preloader(false);
+  })
+  .catch(function(error) {
+    console.error("Error loading markers: ", error);
+    preloader(false);
   });
 
-  // db
-  // .collection("markers")
-  // .onSnapshot(function(querySnapshot) {
-  //   querySnapshot.forEach(function(doc) {
-  //     var dbData = doc.data();
-  //     console.log(doc.type,doc.id);
-  //     dbData.id = doc.id;
-  //     createMarker(dbData);
-  //     features.push(dbData);
-  //   });
-  // });
+}
+
+function preloader(start) {
+  if (!start) {
+    document.querySelector("#preloader").classList.add("hide");
+  } else {
+    document.querySelector("#preloader").classList.remove("hide");
+  }
 }
 
 function generateUUID() {
@@ -762,6 +796,7 @@ function deleteData(docId) {
   deleteMarkers();
   // loadMarkers();
   loadLocalMarkers();
+  // markerCluster.addMarkers(markers);
   closeData();
 }
 
@@ -788,6 +823,9 @@ function updateData(id) {
   feature = getFeature(id);
   marker = getMarker(id);
   feature = updateFeature(feature);
+  if (feature.base === undefined){
+    feature.base = false;
+  } 
   if (appUser.isMod()) {
     feature.live = true;
   } else {
@@ -796,6 +834,7 @@ function updateData(id) {
 
   deleteMarkers();
   loadLocalMarkers();
+  // markerCluster.addMarkers(markers);
   updateDB(feature);
 }
 
@@ -821,6 +860,7 @@ function saveData(id) {
   var feature = {
     id: id,
     live: false,
+    base: false,
     position: {
       lat: marker.position.lat(),
       lng: marker.position.lng()
@@ -849,50 +889,51 @@ function loadLocalMarkers() {
   });
 }
 
-function getDD2DM(dms, type){
-
-  var sign = 1, Abs=0;
+function getDD2DM(dms, type) {
+  var sign = 1,
+    Abs = 0;
   var days, minutes, secounds, direction;
 
-  if(dms < 0)  { sign = -1; }
-  Abs = Math.abs( Math.round(dms * 1000000.));
-  //Math.round is used to eliminate the small error caused by rounding in the computer:
-  //e.g. 0.2 is not the same as 0.20000000000284
-  //Error checks
-  if(type == "lat" && Abs > (90 * 1000000)){
-      //alert(" Degrees Latitude must be in the range of -90. to 90. ");
-      return false;
-  } else if(type == "lon" && Abs > (180 * 1000000)){
-      //alert(" Degrees Longitude must be in the range of -180 to 180. ");
-      return false;
+  if (dms < 0) {
+    sign = -1;
+  }
+  Abs = Math.abs(Math.round(dms * 1000000));
+ 
+  if (type == "lat" && Abs > 90 * 1000000) {
+    
+    return false;
+  } else if (type == "lon" && Abs > 180 * 1000000) {
+    
+    return false;
   }
 
   days = Math.floor(Abs / 1000000);
-  minutes = (((Abs/1000000) - days) * 60).toFixed(3);
-  secounds = ( Math.floor((( ((Abs/1000000) - days) * 60) - minutes) * 100000) *60/100000 ).toFixed();
+  minutes = ((Abs / 1000000 - days) * 60).toFixed(3);
+  secounds = (
+    Math.floor(((Abs / 1000000 - days) * 60 - minutes) * 100000) *
+    60 /
+    100000
+  ).toFixed();
   days = days * sign;
-  if(type == 'lat') direction = days<0 ? 'S' : 'N';
-  if(type == 'lng') direction = days<0 ? 'W' : 'E';
-  //else return value     
-  return (days * sign) + 'º ' + minutes + direction;
+  if (type == "lat") direction = days < 0 ? "S" : "N";
+  if (type == "lng") direction = days < 0 ? "W" : "E";
+  //else return value
+  return days * sign + "º " + minutes + direction;
 }
 
-
-
-function ddToDms(lat, lng){
-  return getDD2DM(lat,'lat') + ' , ' + getDD2DM(lng,'lng');
+function ddToDms(lat, lng) {
+  return getDD2DM(lat, "lat") + " , " + getDD2DM(lng, "lng");
 }
-
-
 
 function initApp() {
   initMap();
-  loadMarkers();
-  setupEventListeners();
+  // init();
+}
+// setupEventListeners();
+function init() {
   buildIconSelect();
-  // setTimeout(function() {
-  areWeLoggedin();
-  // loadMarkers();
-  $(".tooltipped").tooltip({ delay: 350 });
-  // }, 2000);
+  setTimeout(function() {
+    areWeLoggedin();
+    $(".tooltipped").tooltip({ delay: 350 });
+  }, 2000);
 }
