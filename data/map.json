@@ -1,7 +1,10 @@
 var MAP_DATA ={
     "settings": {
-        "imagePath": "images/",
-        "preview": "300px/",
+        "imageCloudName": "yotstop",
+        "uploadPreset":"l2fptshe",
+        "imagePath": "https://res.cloudinary.com/yotstop/image/upload/",
+        "preview": "c_scale,e_unsharp_mask:100,q_auto:best,w_360/",
+        "thumbnail": "c_scale,e_unsharp_mask:100,q_auto:best,w_100/",
         "full": "1200px/",
         "mapCenter": {
             "lat": 54.50,
@@ -16,32 +19,38 @@ var MAP_DATA ={
         "marina": {
             "description": "Marina",
             "icon": 'marina.png',
-            "enhanced": 'marina-en.png'
+            "enhanced": 'marina-en.png',
+            "addPhoto":false
         },
         "moor": {
             "description": "Visitor Mooring",
             "icon": 'visitor.png',
-            "enhanced": 'visitor.png'
+            "enhanced": 'visitor.png',
+            "addPhoto":true
         },
         "anchor": {
             "description": "Anchorage",
             "icon": 'anchor.png',
-            "enhanced": 'anchor-en.png'
+            "enhanced": 'anchor-en.png',
+            "addPhoto":true
         },
         "info": {
             "description": "Information",
             "icon": 'info.png',
-            "enhanced": 'info-en.png'
+            "enhanced": 'info-en.png',
+            "addPhoto":true
         },
         "sailing": {
             "description": "Yacht Club",
             "icon": 'sailing.png',
-            "enhanced": 'sailing-en.png'
+            "enhanced": 'sailing-en.png',
+            "addPhoto":true
         },
         "chandlery": {
             "description": "chandlery",
             "icon": 'info.png',
-            "enhanced": 'info-en.png'
+            "enhanced": 'info-en.png',
+            "addPhoto":false
         }
     },
     "map": {

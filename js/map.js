@@ -13,22 +13,17 @@ var dataEntryModal = document.getElementById("data-entry-modal");
 var vrClose = document.getElementById("vrClose");
 var dataClose = document.getElementById("dataClose");
 var appUser = new User();
-var icons = window.MAP_DATA.icons;
+var icons = MAP_DATA.icons;
+const CLOUDNAME = MAP_DATA.settings.imageCloudName;
+const UPLOADPRESET = MAP_DATA.settings.uploadPreset;
+const imagePath = MAP_DATA.settings.imagePath;
+const imagePreview = MAP_DATA.settings.preview;
+const thumbnail = MAP_DATA.settings.thumbnail;
 
 function setupEventListeners() {
-  // google.maps.event.addDomListener(map, 'click', function() {
-  //   // console.log('Map was clicked!');
-  //   $('.fixed-action-btn').closeFAB();
-  // });
-  // google.maps.event.addDomListener(map, 'drag', function() {
-  //   // console.log('Map was clicked!');
-  //   $('.fixed-action-btn').closeFAB();
-  // });
-  // document.querySelector("#edit").addEventListener("click", function() {
-  // console.log("edit button clicked ", feature.id);
-  // $(".button-collapse").sideNav("hide");
-  // dataModalOn();
-  // });
+  document
+    .getElementById("imagefileInput")
+    .addEventListener("change", handleFileSelect, false);
 }
 
 // firebase.initializeApp({
@@ -41,6 +36,8 @@ function setupEventListeners() {
 
 // Initialize Cloud Firestore through Firebase
 var db = firebase.firestore();
+var storage = firebase.storage();
+var storageRef = firebase.storage().ref();
 
 function setLoginIcon() {
   var loginIcon = document.querySelector("#map-login-icon");
@@ -77,6 +74,7 @@ function areWeLoggedin() {
       if (user) {
         // User is signed in.
         userAuth = true;
+
         var displayName = user.displayName;
         var email = user.email;
         var emailVerified = user.emailVerified;
@@ -132,6 +130,7 @@ function login() {
   // if (!loginIcon.classList.contains("red")) {
   if (userAuth) {
     firebase.auth().signOut();
+    Materialize.toast("You have logout", 5000, "light-blue lighten-2");
   } else {
     var widgetURL = "login.html";
     window.open(
@@ -182,7 +181,7 @@ function FABControl(FABDiv, map) {
 }
 
 function authorised(permission) {
-  console.log(permission);
+  // console.log(permission);
   if (userAuth) {
     return true;
   }
@@ -190,117 +189,124 @@ function authorised(permission) {
 }
 
 function initMap() {
-  // Create the map
-  map = new google.maps.Map(document.getElementsByClassName("map")[0], {
-    zoom: MAP_DATA.settings.zoom,
-    zoomControlOptions: {
-      position: google.maps.ControlPosition.LEFT_BOTTOM
-    },
-    mapTypeId: "hybrid",
-    streetViewControl: false,
-    center: MAP_DATA.settings.mapCenter,
-    mapTypeControl: false,
-    gestureHandling: "greedy",
-    fullscreenControl: false,
-    fullscreenControlOptions: {
-      position: google.maps.ControlPosition.RIGHT_CENTER
-    },
-    disableDoubleClickZoom: true,
-    styles: MAP_DATA.map.styles
-  });
+  return new Promise((resolve, reject) => {
+    // Create the map
+    map = new google.maps.Map(document.getElementsByClassName("map")[0], {
+      zoom: MAP_DATA.settings.zoom,
+      zoomControlOptions: {
+        position: google.maps.ControlPosition.LEFT_BOTTOM
+      },
+      mapTypeId: "hybrid",
+      streetViewControl: false,
+      center: MAP_DATA.settings.mapCenter,
+      mapTypeControl: false,
+      gestureHandling: "greedy",
+      fullscreenControl: false,
+      fullscreenControlOptions: {
+        position: google.maps.ControlPosition.RIGHT_CENTER
+      },
+      disableDoubleClickZoom: true,
+      styles: MAP_DATA.map.styles
+    });
 
-  // Create the DIV to hold the control and call the mainTitle()
-  // constructor passing in this DIV.
-  var titleDiv = document.createElement("div");
-  var mainTitle = new MainTitle(titleDiv, map);
+    // Create the DIV to hold the control and call the mainTitle()
+    // constructor passing in this DIV.
+    var titleDiv = document.createElement("div");
+    var mainTitle = new MainTitle(titleDiv, map);
 
-  titleDiv.index = 1;
-  map.controls[google.maps.ControlPosition.TOP_CENTER].push(titleDiv);
+    titleDiv.index = 1;
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(titleDiv);
 
-  var FABDiv = document.createElement("div");
-  var FABCtrl = new FABControl(FABDiv, map);
+    var FABDiv = document.createElement("div");
+    var FABCtrl = new FABControl(FABDiv, map);
 
-  FABDiv.index = 1;
-  map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(FABDiv);
+    FABDiv.index = 1;
+    map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(FABDiv);
 
-  var versionDiv = document.createElement("div");
-  var versionText = new getVersion(versionDiv, map);
+    var versionDiv = document.createElement("div");
+    var versionText = new getVersion(versionDiv, map);
 
-  versionDiv.index = 1;
-  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(versionDiv);
+    versionDiv.index = 1;
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(versionDiv);
 
-  map.addListener("drag", function() {
-    $(".fixed-action-btn").closeFAB();
-  });
-  map.addListener("click", function() {
-    infoWindow.close(map);
-    $(".fixed-action-btn").closeFAB();
-  });
+    map.addListener("drag", function() {
+      $(".fixed-action-btn").closeFAB();
+    });
+    map.addListener("click", function() {
+      infoWindow.close(map);
+      $(".fixed-action-btn").closeFAB();
+    });
 
-  if (MAP_DATA.settings.debugger) {
-    map.addListener("dblclick", function(e) {
-      if (!authorised()) {
-        $("#noEditModal").modal("open");
-      } else {
-        if (
-          document.getElementById("data-entry-modal").style.display == "block"
-        ) {
-          // no more markers if data entry in progress
-          return;
-        }
-
-        var pos = setLatLng(e);
-
-        marker = new google.maps.Marker({
-          position: pos,
-          draggable: true,
-          animation: google.maps.Animation.DROP,
-          map: map,
-          id: generateUUID()
-        });
-
-        markers.push(marker);
-
-        google.maps.event.addListener(marker, "click", function(e) {
-          var newData = {
-            id: marker.id,
-            position: setLatLng(e),
-            title: "",
-            description: "",
-            type: "",
-            url: "",
-            new: true
-          };
-          map.panTo(setLatLng(e));
-          if (map.getZoom() < 15) {
-            map.setZoom(15);
+    if (MAP_DATA.settings.debugger) {
+      map.addListener("dblclick", function(e) {
+        if (!authorised()) {
+          $("#noEditModal").modal("open");
+        } else {
+          if (
+            document.getElementById("data-entry-modal").style.display == "block"
+          ) {
+            // no more markers if data entry in progress
+            return;
           }
 
-          google.maps.event.addListener(marker, "position_changed", function() {
-            var dmsCoords = ddToDms(
-              marker.position.lat(),
-              marker.position.lng()
-            );
-            document.getElementById(
-              "data-entry-pos-dms"
-            ).textContent = dmsCoords;
+          var pos = setLatLng(e);
+
+          marker = new google.maps.Marker({
+            position: pos,
+            draggable: true,
+            animation: google.maps.Animation.DROP,
+            map: map,
+            id: generateUUID()
           });
 
-          loadEditData(newData);
-          dataModalOn();
-        });
-      }
+          markers.push(marker);
+
+          google.maps.event.addListener(marker, "click", function(e) {
+            var newData = {
+              id: marker.id,
+              position: setLatLng(e),
+              title: "",
+              description: "",
+              type: "",
+              url: "",
+              new: true
+            };
+            map.panTo(setLatLng(e));
+            if (map.getZoom() < 15) {
+              map.setZoom(15);
+            }
+
+            google.maps.event.addListener(
+              marker,
+              "position_changed",
+              function() {
+                var dmsCoords = ddToDms(
+                  marker.position.lat(),
+                  marker.position.lng()
+                );
+                document.getElementById(
+                  "data-entry-pos-dms"
+                ).textContent = dmsCoords;
+              }
+            );
+
+            loadEditData(newData);
+            dataModalOn();
+          });
+        }
+      });
+    }
+
+    infoWindow = new google.maps.InfoWindow();
+    markerCluster = new MarkerClusterer(map, markers, {
+      imagePath: "icons/m",
+      gridSize: 40,
+      maxZoom: 15
     });
-  }
 
-  infoWindow = new google.maps.InfoWindow();
-  markerCluster = new MarkerClusterer(map, markers, {
-    imagePath: "icons/m",
-    gridSize: 40,
-    maxZoom: 15
+    //  loadMarkers();
+    resolve(true);
   });
-
-  //  loadMarkers();
 }
 
 // When the user clicks the button, open the modal
@@ -309,24 +315,28 @@ function vrModalOn() {
   $(".button-collapse").sideNav("hide");
 }
 
-function setDefaultType(type) {
-  var optionBuild = document.getElementById("data-type");
-  var optionRef = optionBuild.querySelectorAll("option");
-  optionRef.forEach(function(option) {
-    // console.log(option);
-    if (option.value === type) {
-      option.setAttribute("selected", "");
-    } else {
-      option.removeAttribute("selected");
-    }
+async function setDefaultType(type) {
+  return new Promise((resolve, reject) => {
+    var optionBuild = document.getElementById("data-type");
+    var optionRef = optionBuild.querySelectorAll("option");
+    optionRef.forEach(function(option) {
+      // console.log(option);
+      if (option.value === type) {
+        option.setAttribute("selected", "");
+      } else {
+        option.removeAttribute("selected");
+      }
+      // $("select").material_select();
+    });
     $("select").material_select();
+    resolve(true);
   });
 }
 
 function buildIconSelect() {
   var optionBuild = document.getElementById("data-type");
   // console.log(optionBuild);
-  optionBuild.innerHTML = "";
+  // optionBuild.innerHTML = "";
   Object.keys(icons).forEach(function(key) {
     var item = icons[key];
     var option =
@@ -438,7 +448,8 @@ function createMarker(feature) {
   }
   if (feature.live) {
     if (feature.enhanced == true) {
-      iconImg += icons[tmpType].enhanced;
+      // iconImg += icons[tmpType].enhanced;
+      iconImg += icons[tmpType].icon;
     } else {
       iconImg += icons[tmpType].icon;
     }
@@ -462,20 +473,13 @@ function createMarker(feature) {
     var mouseoverHTML = document.querySelector("#mouseover").cloneNode(true);
     mouseoverHTML.querySelector("#mouseover-title").textContent = this.title;
     var imagePreview = "";
-    if (feature.vrPreviewImage !== undefined) {
-      imagePreview = feature.vrPreviewImage;
-    } else if (feature.images !== undefined) {
-      imagePreview = feature.images[0];
-    }
-    if (imagePreview !== "") {
-      var imgPath =
-        MAP_DATA.settings.imagePath + MAP_DATA.settings.preview + imagePreview;
-      mouseoverHTML
-        .querySelector("#map-mouseover-img")
-        .classList.toggle("hide");
-      mouseoverHTML
-        .querySelector("#map-mouseover-img")
-        .setAttribute("src", imgPath);
+
+    if (feature.images !== undefined) {
+      var infoImage = mouseoverHTML.querySelector("#map-mouseover-img");
+      var imageUrl = imagePath + thumbnail + feature.images[0];
+      infoImage.src = imageUrl;
+
+      infoImage.classList.toggle("hide");
     }
 
     mouseoverHTML.addEventListener("click", function() {
@@ -501,8 +505,6 @@ function createMarker(feature) {
     }
     map.panTo(setLatLng(e));
   });
-
-  
 }
 
 function getFeature(id) {
@@ -522,7 +524,6 @@ function getMarker(id) {
 }
 
 function getSideNav(feature) {
-  console.log(feature);
   // var lat = parseFloat(feature.position.lat).toFixed([5]);
   // var lng = parseFloat(feature.position.lng).toFixed([5]);
   // data.position = {
@@ -530,6 +531,7 @@ function getSideNav(feature) {
   //   lng: feature.position.lng
   // };
   var sideNav = document.getElementById("slide-out");
+  sideNav.dataset.id = feature.id;
   sideNav.querySelector("#nav-title").textContent = feature.title;
   sideNav.querySelector("#nav-description").textContent = feature.description;
   // sideNav.querySelector("#nav-position-lat").textContent = lat;
@@ -538,43 +540,61 @@ function getSideNav(feature) {
   sideNav.querySelector("#nav-position-dms").textContent = dmsCoords;
 
   if (feature.VRUrl !== undefined) {
-    var imgPath =
-      MAP_DATA.settings.imagePath +
-      MAP_DATA.settings.preview +
-      feature.vrPreviewImage;
+    var imgPath = imagePath + imagePreview + feature.vrPreviewImage;
     sideNav.querySelector("#nav-imagevr").classList.remove("hide");
     sideNav.querySelector("#nav-imagevr").src = imgPath;
+    sideNav
+      .querySelector("#nav-imagevr-div")
+      .setAttribute("onClick", "vrModalOn()");
+    sideNav.querySelector("#nav-imagevr-div").style.cursor = "pointer";
     var vr = document.getElementById("vr");
     vr.src = feature.VRUrl;
   } else {
     sideNav.querySelector("#nav-imagevr").classList.add("hide");
     sideNav.querySelector("#nav-imagevr").src = "";
+    sideNav.querySelector("#nav-imagevr-div").setAttribute("onClick", "");
+    sideNav.querySelector("#nav-imagevr-div").style.cursor = "auto";
   }
 
   if (feature.images !== undefined) {
-    var imgPath =
-      MAP_DATA.settings.imagePath +
-      MAP_DATA.settings.preview +
-      feature.images[0];
+    var imgPath = imagePath + imagePreview + feature.images[0];
+    // var imgPathFull = MAP_DATA.settings.imagePath + MAP_DATA.settings.full + feature.images[0];
+    // var imgPathFull = feature.images[0];
     sideNav.querySelector("#nav-image").classList.remove("hide");
+    sideNav.querySelector("#no-photo-nav-icon").classList.add("hide");
     sideNav.querySelector("#nav-image").src = imgPath;
+    sideNav.querySelector("#nav-photo").classList.remove("hide");
+    sideNav.querySelector("#nav-photo").src = imgPath;
   } else {
     sideNav.querySelector("#nav-image").classList.add("hide");
     sideNav.querySelector("#nav-image").src = "";
+    sideNav.querySelector("#no-photo-nav-icon").classList.remove("hide");
+    sideNav.querySelector("#nav-photo").classList.add("hide");
+    sideNav.querySelector("#nav-photo").src = "";
   }
 
   if (feature.url !== undefined) {
     sideNav.querySelector("#nav-url").href = feature.url;
-    sideNav.querySelector("#nav-url").classList.remove("hide");
-    if (feature.url.includes("wikipedia")) {
-      sideNav.querySelector("#nav-url").textContent = "wikipedia";
-    } else {
-      sideNav.querySelector("#nav-url").textContent = "website";
-    }
+    sideNav.querySelector("#nav-web-btn").classList.remove("disabled");
+    sideNav.querySelector("#nav-url").classList.remove("disabled");
+    // if (feature.url.includes("wikipedia")) {
+      // sideNav.querySelector("#nav-web-description").textContent = "wikipedia";
+    // } else {
+      // sideNav.querySelector("#nav-web-description").textContent = "website";
+    // }
   } else {
     sideNav.querySelector("#nav-url").href = "";
-    sideNav.querySelector("#nav-url").classList.add("hide");
+    sideNav.querySelector("#nav-url").classList.add("disabled");
+    sideNav.querySelector("#nav-web-btn").classList.add("disabled");
+    // sideNav.querySelector("#nav-web").classList.add("hide");
   }
+
+  if (feature.type == "anchor") {
+    sideNav.querySelector("#anchorage-details").classList.remove("hide");
+  } else {
+    sideNav.querySelector("#anchorage-details").classList.add("hide");
+  }
+
   var editFunction = `editData("` + feature.id + `")`;
   document.querySelector("#edit").setAttribute("onclick", editFunction);
   // loadEditData(feature);
@@ -592,7 +612,7 @@ function editData(id) {
   }
 }
 
-function loadEditData(feature) {
+async function loadEditData(feature) {
   if (feature.new) {
     // console.log("new", feature.new);
     document.getElementById("data-entry-modal-title").textContent =
@@ -617,8 +637,16 @@ function loadEditData(feature) {
   } else {
     document.getElementById("data-url").value = "";
   }
+
+  if (feature.VRUrl !== undefined) {
+    document.getElementById("data-VRurl").value = feature.VRurl;
+  } else {
+    document.getElementById("data-VRurl").value = "";
+  }
+
   document.getElementById("data-description").value = feature.description;
-  setDefaultType(feature.type);
+  document.getElementById("data-type").value = feature.type;
+  await setDefaultType(feature.type);
 
   document.getElementById("data-id").value = feature.id;
   Materialize.updateTextFields();
@@ -652,10 +680,14 @@ function deleteMarkers() {
 }
 
 function editInit() {
-  if (appUser.isMod()) {
-    document.querySelector("#edit").classList.remove("disabled");
+  if (userAuth) {
+    if (appUser.isMod()) {
+      document.querySelector("#edit").classList.remove("disabled");
+    }
+    document.querySelector("#add-photo").classList.remove("disabled");
   } else {
     document.querySelector("#edit").classList.add("disabled");
+    document.querySelector("#add-photo").classList.add("disabled");
   }
 }
 
@@ -674,15 +706,24 @@ function User() {
           // console.log(this);
           // console.log(userId, "Document data:", doc.data());
           userData = doc.data();
-          editInit();
-          loadMarkers();
-          setLoginIcon();
+          Materialize.toast(
+            "Logged in as " + userData.name,
+            4000,
+            "light-blue lighten-2"
+          );
+
+          // loadMarkers();
+          // setLoginIcon();
         } else {
-          console.log(id, "No such user!");
+          Materialize.toast("Logged in", 4000, "light-blue lighten-2");
+          // console.log(id, "No such user!");
           // userData.mod = false;
-          setLoginIcon();
-          loadMarkers();
+          // setLoginIcon();
+          // loadMarkers();
         }
+        editInit();
+        loadMarkers();
+        setLoginIcon();
       });
   };
 
@@ -702,7 +743,7 @@ function User() {
 }
 
 function loadDataBase() {
-  if(!userAuth){
+  if (!userAuth) {
     preloader(false);
     return;
   }
@@ -713,22 +754,20 @@ function loadDataBase() {
     dbSelect = dbSelect.where("live", "==", true).where("base", "==", false);
   }
   dbSelect
-  .get()
-  .then(function(querySnapshot) {
-    querySnapshot
-      .forEach(function(doc) {
+    .get()
+    .then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {
         var dbData = doc.data();
         dbData.id = doc.id;
         createMarker(dbData);
         features.push(dbData);
-      })
+      });
       preloader(false);
-  })
-  .catch(function(error) {
-    console.error("Error loading markers: ", error);
-    preloader(false);
-  });
-
+    })
+    .catch(function(error) {
+      console.error("Error loading markers: ", error);
+      preloader(false);
+    });
 }
 
 function preloader(start) {
@@ -809,12 +848,24 @@ function updateFeature(feature) {
   feature.description = document.getElementById("data-description").value;
   feature.type = document.getElementById("data-type").value;
   feature.url = document.getElementById("data-url").value;
+  feature.VRUrl = document.getElementById("data-VRurl").value;
   if (feature.url === undefined) {
     feature.url = "";
   }
   if (feature.url === "") {
     delete feature.url;
   }
+  if (feature.VRUrl === undefined) {
+    feature.VRUrl = "";
+  }
+  if (feature.VRUrl === "") {
+    delete feature.VRUrl;
+  } else {
+    if(feature.vrPreviewImage === undefined){
+      feature.vrPreviewImage = feature.images[0];
+    }
+  }
+  
   return feature;
 }
 
@@ -823,9 +874,9 @@ function updateData(id) {
   feature = getFeature(id);
   marker = getMarker(id);
   feature = updateFeature(feature);
-  if (feature.base === undefined){
+  if (feature.base === undefined) {
     feature.base = false;
-  } 
+  }
   if (appUser.isMod()) {
     feature.live = true;
   } else {
@@ -845,6 +896,10 @@ function updateDB(feature) {
     .set(feature)
     .then(function() {
       console.log("Document updated with ID: ", feature.id);
+      if(appUser.isMod()){
+        console.log(feature);
+      }
+      
     })
     .catch(function(error) {
       console.error("Error adding document: ", error);
@@ -853,7 +908,12 @@ function updateDB(feature) {
 
 function saveData(id) {
   if (!appUser.isMod()) {
-    $("#ReviewModal").modal("open");
+    // $("#ReviewModal").modal("open");
+    Materialize.toast(
+      "Subject to review your submission will be live soon",
+      5000,
+      "light-blue lighten-2"
+    );
   }
   var marker = getMarker(id);
   dataEntryModal.style.display = "none";
@@ -898,12 +958,10 @@ function getDD2DM(dms, type) {
     sign = -1;
   }
   Abs = Math.abs(Math.round(dms * 1000000));
- 
+
   if (type == "lat" && Abs > 90 * 1000000) {
-    
     return false;
   } else if (type == "lon" && Abs > 180 * 1000000) {
-    
     return false;
   }
 
@@ -925,15 +983,141 @@ function ddToDms(lat, lng) {
   return getDD2DM(lat, "lat") + " , " + getDD2DM(lng, "lng");
 }
 
+function imageError(theImg) {
+  // theImg.style.display = "none";
+  theImg.classList.add("hide");
+}
+
+function getImageURL(imageId) {
+  storageRef
+    .child("images/" + imageId)
+    .getDownloadURL()
+    .then(function(url) {
+      console.log(url);
+      return url;
+    })
+    .catch(function(error) {
+      console.log(error + imageId);
+    });
+}
+
+function getInfoWindowImage(imageDiv, imageId) {
+  storageRef
+    .child("images/" + imageId)
+    .getDownloadURL()
+    .then(function(url) {
+      imageDiv.src = url;
+      imageDiv.classList.toggle("hide");
+    })
+    .catch(function(error) {
+      console.log(error + imageId);
+    });
+}
+
+function uploadImage() {
+  cloudinary.openUploadWidget(
+    {
+      cloud_name: CLOUDNAME,
+      upload_preset: UPLOADPRESET,
+      theme: "white",
+      sources: ["local", "google_photos"],
+      multiple: false,
+      resource_type: "image"
+    },
+    function(error, result) {
+      console.log(error, result);
+      if (error === null) {
+        var featureId = document.getElementById("slide-out").dataset.id;
+        var feature = getFeature(featureId);
+        if (feature.images == undefined) {
+          feature.images = [];
+        }
+        feature.images = [];
+        var imageFileName = result[0].public_id;
+        imageFileName += ".jpg";
+        feature.images.push(imageFileName);
+        console.log(imageFileName);
+        var url = imagePath + imagePreview + imageFileName;
+        // feature.imageNames.push(storageId);
+        document.querySelector("#nav-photo").classList.remove("hide");
+        document.querySelector("#nav-photo").src = url;
+        document.querySelector("#nav-image").src = url;
+        document.querySelector("#nav-image").classList.remove("hide");
+        console.log(feature);
+      }
+    }
+  );
+}
+
+function handleFileSelect(evt) {
+  console.log(evt);
+  evt.stopPropagation();
+  evt.preventDefault();
+  var file = evt.target.files[0];
+  var storageId = generateUUID();
+  var metadata = {
+    contentType: file.type,
+    customMetadata: {
+      user: uid,
+      name: file.name
+    }
+  };
+  // Push to child path.
+  // [START oncomplete]
+  storageRef
+    .child("images/" + storageId)
+    .put(file, metadata)
+    .then(function(snapshot) {
+      console.log("Uploaded", snapshot.totalBytes, "bytes.");
+      console.log(snapshot.metadata);
+      var url = snapshot.downloadURL;
+      console.log("File available at", url);
+      var featureId = document.getElementById("slide-out").dataset.id;
+      var feature = getFeature(featureId);
+      if (feature.images == undefined) {
+        feature.images = [];
+      }
+      if (feature.imageNames == undefined) {
+        feature.imageNames = [];
+      }
+      feature.images.push(url);
+      // feature.imageNames.push(storageId);
+      document.querySelector("#nav-photo").classList.remove("hide");
+      document.querySelector("#nav-photo").src = url;
+      document.querySelector("#nav-image").src = url;
+      document.querySelector("#nav-image").classList.remove("hide");
+      console.log(feature);
+      // [START_EXCLUDE]
+      // document.getElementById('linkbox').innerHTML = '<a href="' +  url + '">Click For File</a>';
+      // [END_EXCLUDE]
+    })
+    .catch(function(error) {
+      // [START onfailure]
+      console.error("Upload failed:", error);
+      // [END onfailure]
+    });
+  // [END oncomplete]
+}
+
+function stopPulse(div) {
+  div.classList.remove("pulse");
+}
+function expandToggle(div) {
+  var iconDiv = div.querySelector(".material-icons");
+  if (iconDiv.innerHTML === "expand_more") {
+    iconDiv.innerHTML = "expand_less";
+  } else {
+    iconDiv.innerHTML = "expand_more";
+  }
+}
+
 function initApp() {
   initMap();
-  // init();
-}
-// setupEventListeners();
-function init() {
+
   buildIconSelect();
+  // setupEventListeners();
   setTimeout(function() {
     areWeLoggedin();
     $(".tooltipped").tooltip({ delay: 350 });
-  }, 2000);
+  }, 3000);
 }

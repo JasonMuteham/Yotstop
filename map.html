@@ -17,284 +17,423 @@
   <!--Let browser know website is optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <head>
+</head>
 
-    <body>
+<body>
 
-      <div class="hide">
-        <div id="version" class="noselect">v0.7.5</div>
+  <div class="hide">
+    <div id="version" class="noselect">v0.7.9.5</div>
+  </div>
+
+
+  <div class="hide">
+    <span id="main-title" class="valign-wrapper noselect text-shadow">
+      <img id="nav-logo-img" class="circle-shadow" src="/icons/res/mipmap-hdpi/ic_launcher_yotstop.png">OTSTOP
+    </span>
+  </div>
+
+  <div id="ReviewModal" class="modal modal-fixed-footer blue lighten-4">
+    <div class="modal-content center-align blue lighten-4">
+      <h4>Thank You</h4>
+      <p>Subject to review your submission will be live soon.</p>
+    </div>
+    <div class="modal-footer blue lighten-4">
+      <a href="#!" class="modal-action modal-close btn-floating waves-effect waves-light red">
+        <i class="material-icons">close</i>
+      </a>
+    </div>
+  </div>
+
+  <div id="noEditModal" class="modal modal-fixed-footer blue lighten-4">
+    <div class="modal-content center-align blue lighten-4">
+      <h4>Please log In</h4>
+      <p>Only registered users may add or edit data.</p>
+    </div>
+    <div class="modal-footer blue lighten-4">
+      <a href="#!" class="modal-action modal-close btn-floating waves-effect waves-light red">
+        <i class="material-icons">close</i>
+      </a>
+    </div>
+  </div>
+
+
+  <div id="help-modal" class="modal modal-fixed-footer blue lighten-4">
+    <div class="modal-content left-align  blue lighten-4">
+      <div class="z-depth-2 white pt-5 pb-5 mb-10">
+        <h5 class="center-align">Help</h5>
       </div>
 
-
-      <div class="hide">
-        <span id="main-title" class="valign-wrapper noselect text-shadow">
-          <img id="nav-logo-img" class="circle-shadow" src="/icons/res/mipmap-hdpi/ic_launcher_yotstop.png">OTSTOP
-        </span>
-      </div>
-
-      <div id="ReviewModal" class="modal modal-fixed-footer blue lighten-4">
-        <div class="modal-content center-align blue lighten-4">
-          <h4>Thank You</h4>
-          <p>Subject to review your submission will be live soon.</p>
-        </div>
-        <div class="modal-footer blue lighten-4">
-          <a href="#!" class="modal-action modal-close btn-floating waves-effect waves-light red">
-            <i class="material-icons">close</i>
+      <div class="row valign-wrapper">
+        <div class="col s3 l1 center-align">
+          <a class="login-icon btn-floating light-blue lighten-2 z-depth-2">
+            <i class="material-icons tiny">person_outline</i>
           </a>
         </div>
+        <div class="col s9 l11 left-align">
+          <span>You are logged in.</span>
+        </div>
       </div>
 
-      <div id="noEditModal" class="modal modal-fixed-footer blue lighten-4">
-        <div class="modal-content center-align blue lighten-4">
-          <h4>Please log In</h4>
-          <p>Only registered users may add or edit data.</p>
-        </div>
-        <div class="modal-footer blue lighten-4">
-          <a href="#!" class="modal-action modal-close btn-floating waves-effect waves-light red">
-            <i class="material-icons">close</i>
+      <div class="row valign-wrapper">
+        <div class="col s3 l1 center-align">
+          <a class="login-icon btn-floating red z-depth-2 pulse">
+            <i class="material-icons tiny">person_outline</i>
           </a>
         </div>
+        <div class="col s9 l11 left-align">
+          <span>You are logged out. Log in for latest updates.</span>
+        </div>
       </div>
 
-      <div id="help-modal" class="modal modal-fixed-footer blue lighten-4">
-        <div class="modal-content left-align  blue lighten-4">
-          <div class="z-depth-2 white pt-5 pb-5 mb-10">
-            <h5 class="center-align">Help</h5>
-          </div>
+      <div class="row valign-wrapper">
+        <div class="col s3 l1 center-align">
+          <img src="/icons/map-marker.png" alt="" width="40" height="48">
+        </div>
+        <div class="col s9 l11 left-align">
+          <span>Double click map to add a marker. Single click marker to edit details.</span>
+        </div>
+      </div>
 
+      <div class="row valign-wrapper">
+        <div class="col s3 l1 center-align">
+          <img src="/icons/anchor.png" alt="" width="40" height="48">
+        </div>
+        <div class="col s9 l11 left-align">
+          <span>
+            <strong>Anchorage</strong>. Click icon to zoom then click again to view details.</span>
+        </div>
+      </div>
 
+      <div class="row valign-wrapper">
+        <div class="col s3 l1 center-align">
+          <img src="/icons/marina.png" alt="" width="40" height="48">
+        </div>
+        <div class="col s9 l11 left-align">
+          <span>
+            <strong>Marina</strong>, pontoons or other mooring. Click marker to zoom then click again to view details.</span>
+        </div>
+      </div>
 
-          <div class="row valign-wrapper">
-            <div class="col s3 l1 center-align">
-              <a class="login-icon btn-floating light-blue lighten-2 z-depth-2">
-                <i class="material-icons tiny">person_outline</i>
-              </a>
-            </div>
-            <div class="col s9 l11 left-align">
-              <span>You are logged in.</span>
-            </div>
-          </div>
+      <div class="row valign-wrapper">
+        <div class="col s3 l1 center-align">
+          <img src="/icons/info.png" alt="" width="40" height="48">
+        </div>
+        <div class="col s9 l11 left-align">
+          <span>
+            <strong>A point of interest</strong> or a feature to explore. Click marker to zoom then click again to view details.</span>
+        </div>
+      </div>
 
-          <div class="row valign-wrapper">
-            <div class="col s3 l1 center-align">
-              <a class="login-icon btn-floating red z-depth-2 pulse">
-                <i class="material-icons tiny">person_outline</i>
-              </a>
-            </div>
-            <div class="col s9 l11 left-align">
-              <span>You are logged out. Log in for latest updates.</span>
-            </div>
-          </div>
+      <div class="row valign-wrapper">
+        <div class="col s3 l1 center-align">
+          <img src="/icons/sailing.png" alt="" width="40" height="48">
+        </div>
+        <div class="col s9 l11 left-align">
+          <span>
+            <strong>Yacht Club</strong>. Click marker to zoom then click again to view details.</span>
+        </div>
+      </div>
 
-          <div class="row valign-wrapper">
-            <div class="col s3 l1 center-align">
-              <img src="/icons/map-marker.png" alt="" width="40" height="48">
-            </div>
-            <div class="col s9 l11 left-align">
-              <span>Double click map to add a marker. Single click marker to edit details.</span>
-            </div>
-          </div>
+    </div>
 
-          <div class="row valign-wrapper">
-            <div class="col s3 l1 center-align">
-              <img src="/icons/anchor.png" alt="" width="40" height="48">
-            </div>
-            <div class="col s9 l11 left-align">
-              <span><strong>Anchorage</strong>. Click icon to zoom then click again to view details.</span>
-            </div>
-          </div>
+    <div class="modal-footer blue lighten-4">
+      <a href="mailto:info@yotstop.com" target="_blank" class="blue left btn-floating waves-effect waves-light">
+        <i class="material-icons">email</i>
+      </a>
+      <a href="#!" class="modal-action modal-close btn-floating waves-effect waves-light red">
+        <i class="material-icons">close</i>
+      </a>
+    </div>
 
-          <div class="row valign-wrapper">
-            <div class="col s3 l1 center-align">
-              <img src="/icons/marina.png" alt="" width="40" height="48">
-            </div>
-            <div class="col s9 l11 left-align">
-              <span><strong>Marina</strong>, pontoons or other mooring. Click marker to zoom then click again to view details.</span>
-            </div>
-          </div>
+  </div>
 
-          <div class="row valign-wrapper">
-            <div class="col s3 l1 center-align">
-              <img src="/icons/info.png" alt="" width="40" height="48">
-            </div>
-            <div class="col s9 l11 left-align">
-              <span><strong>A point of interest</strong> or a feature to explore. Click marker to zoom then click again to view details.</span>
-            </div>
-          </div>
+  <div id="about-modal" class="modal modal-fixed-footer blue lighten-4">
+    <div class="modal-content left-align blue lighten-4">
+      <div class="flow-text">
 
-          <div class="row valign-wrapper">
-            <div class="col s3 l1 center-align">
-              <img src="/icons/sailing.png" alt="" width="40" height="48">
-            </div>
-            <div class="col s9 l11 left-align">
-              <span><strong>Yacht Club</strong>. Click marker to zoom then click again to view details.</span>
-            </div>
-          </div>
+        <div class="z-depth-2 white pt-5 pb-5 mb-10">
+          <h5 class="center-align">About</h5>
 
         </div>
+        <blockquote>
+          “Believe me, my young friend, there is nothing - absolutely nothing - half so much worth doing as simply messing about in
+          boats.” ―
+          <strong>Kenneth Grahame, The Wind in the Willows</strong>
+        </blockquote>
+        <p>A user friendly source of information on where to anchor or moor and what to explore in your boat.</p>
+        <h5>Want to help?</h5>
+        <p> If you have a favorite anchorage that you would like to share then add an entry, especially if you have taken a great
+          photo.
+        </p>
+        <p>If you would like to help financially consider either the Paypal or Patreon buttons below.</p>
+      </div>
 
-        <div class="modal-footer blue lighten-4">
-            <a  href="mailto:info@yotstop.com" target="_blank" class = "blue left btn-floating waves-effect waves-light"><i class="material-icons">email</i></a>
-          <a href="#!" class="modal-action modal-close btn-floating waves-effect waves-light red">
+      <!--  non-working buttons for demo only -->
+      <div class="row">
+        <div class="col l3 s12 mb-10 center-align">
+          <img src="/icons/paypal_donate.gif" alt="">
+        </div>
+        <div class="col l3 s12 center-align">
+          <img src="/icons/become_a_patron_button.png" alt="">
+        </div>
+      </div>
+      <!--  non-working buttons for demo only -->
+
+    </div>
+
+    <div class="modal-footer blue lighten-4">
+      <a href="mailto:info@yotstop.com" target="_blank" class="blue left btn-floating waves-effect waves-light">
+        <i class="material-icons">email</i>
+      </a>
+      <a href="#!" class="modal-action modal-close btn-floating waves-effect waves-light red">
+        <i class="material-icons">close</i>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- D a t a  E n t r y -->
+
+  <div id="data-entry-modal" class="no-modal white">
+    <div class="container">
+
+      <div class="center-align mb-20">
+        <h5 id="data-entry-modal-title">Edit Marker</h5>
+        <div id="data-id" class="hide"></div>
+        <div id="data-entry-pos" class="center-align">
+          <div id="nav-position">
+            <h6 id="data-entry-pos-dms"></h6>
+
+          </div>
+        </div>
+      </div>
+
+      <form id="data-form">
+        <div class="input-field">
+          <input type="text" name="title" id="data-title" required>
+          <label for="title">Place Name</label>
+        </div>
+        <div class="input-field">
+          <input type="text" name="description" id="data-description" required>
+          <label for="description">Description</label>
+        </div>
+        <div class="input-field">
+          <select id="data-type" required>
+            <option value="" disabled selected>Select type</option>
+          </select>
+          <label>Type</label>
+        </div>
+        <div class="input-field">
+          <input class="validate" type="url" name="website" id="data-url">
+          <label for="website">https://www.website.com</label>
+        </div>
+        <div class="input-field">
+          <input class="validate" type="url" name="vr360 url" id="data-VRurl">
+          <label for="vr360 url">/VR360/something-vr360.html</label>
+        </div>
+      </form>
+
+      <div class="data-modal-footer row">
+        <div class="col s4 left-align">
+          <button id="save-data" onclick="saveData()" class="modal-action modal-close waves-effect waves-green green btn-floating">
+            <i class="material-icons">check</i>
+          </button>
+        </div>
+        <div class="col s4 center-align">
+          <button id="delete-data" onclick="deleteData()" class="modal-action modal-close waves-effect waves-red red btn-floating">
+            <i class="material-icons">delete</i>
+          </button>
+        </div>
+        <div class="col s4 right-align">
+          <button onclick="closeData()" class="modal-action modal-close waves-effect waves-red red btn-floating ">
             <i class="material-icons">close</i>
-          </a>
+          </button>
         </div>
 
       </div>
+    </div>
+  </div>
 
-      <div id="about-modal" class="modal modal-fixed-footer blue lighten-4">
-        <div class="modal-content left-align blue lighten-4">
-          <div class="flow-text">
 
-            <div class="z-depth-2 white pt-5 pb-5 mb-10">
-              <h5 class="center-align">About</h5>
+  <div id="vr-modal">
+    <div class="modal-content z-depth-2">
+      <span id="vrClose" class="close">
+        <i class="material-icons black-text">close</i>
+      </span>
+      <iframe id="vr" class="img-360" src="" frameborder="0" scrolling="no"></iframe>
+    </div>
+  </div>
 
-            </div>
-            <blockquote>
-              “Believe me, my young friend, there is nothing - absolutely nothing - half so much worth doing as simply messing about in
-              boats.” ―
-              <strong>Kenneth Grahame, The Wind in the Willows</strong>
-            </blockquote>
-            <p>A user friendly source of information on where to anchor or moor and what to explore in your boat.</p>
-            <h5>Want to help?</h5>
-            <p> If you have a favorite anchorage that you would like to share then add an entry, especially if you have taken
-              a great photo.</p>
-            <p>If you would like to help financially consider either the Paypal or Patreon buttons below.</p>
-          </div>
-
-          <!--  non-working buttons for demo only -->
-          <div class="row">
-            <div class="col l3 s12 mb-10 center-align">
-              <img src="/icons/paypal_donate.gif" alt="">
-            </div>
-            <div class="col l3 s12 center-align">
-              <img src="/icons/become_a_patron_button.png" alt="">
-            </div>
-          </div>
-          <!--  non-working buttons for demo only -->
-          
-        </div>
-
-        <div class="modal-footer blue lighten-4">
-            <a  href="mailto:info@yotstop.com" target="_blank" class = "blue left btn-floating waves-effect waves-light"><i class="material-icons">email</i></a>
-          <a href="#!" class="modal-action modal-close btn-floating waves-effect waves-light red">
-            <i class="material-icons">close</i>
-          </a>
-        </div>
-
+  <div class="hide">
+    <div id="mouseover" class="center-align">
+      <div>
+        <strong>
+          <span id="mouseover-title"></span>
+        </strong>
       </div>
+      <img id="map-mouseover-img" src="" alt="" class="hide mouseover-img center-align" onerror="imageError(this);">
+    </div>
+  </div>
 
-      <div id="data-entry-modal" class="no-modal blue lighten-4">
-        <div class="container">
 
-          <div class="center-align mb-20">
-            <h5 id="data-entry-modal-title">Edit Marker</h5>
-            <div id="data-id" class="hide"></div>
-            <div id="data-entry-pos" class="center-align">
-              <div id="nav-position">
-                <h6 id="data-entry-pos-dms"></h6>
+
+  <!-- S I D E  N A V -->
+
+  <div>
+    <ul id="slide-out" class="side-nav">
+      <li>
+        <div id='nav-close-icon' class="right">
+          <span class="close" onclick="$('.button-collapse').sideNav('hide');">
+            <!-- <i class="material-icons white-text">arrow_back</i> -->
+            <i class="material-icons black-text">close</i>
+          </span>
+        </div>
+        <div class="user-view">
+          <div class="background blue">
+            <img id="nav-image" class="hide responsive-img" src="" onerror="imageError(this);">
+            <!-- <img class="responsive-img hide" src=""> -->
+          </div>
+          <h5 id="nav-title" class='nav-title center-align z-depth-2 black-text'></h5>
+          <!-- </div> -->
+          <!-- <li id="nav-position" class="center-align"> -->
+          <i id="no-photo-nav-icon" class="material-icons large blue-text text-lighten-4 align-middle">photo</i>
+
+          <h6 class="center-align z-depth-2 nav-title-pos black-text" id="nav-position-dms"></h6>
+          <!-- </li> -->
+        </div>
+      </li>
+
+
+      <li>
+        <p class="black-text" id="nav-description"></p>
+      </li>
+
+      <li>
+        <div class="row z-depth-2">
+          <div id="nav-imagevr-div" class="col s6 nopad image-line-pos blue">
+            <div class="info-window-img">
+              <img id="nav-imagevr" class="hide info-window-img" src="" onerror="imageError(this);">
+              <i class="material-icons blue-text text-lighten-4 regular overlay-bottom-left">panorama_horizontal</i>
+            </div>
+          </div>
+          <div class="col s6 nopad image-line-pos blue">
+            <div class="info-window-img">
+              <img id="nav-photo" class="hide materialboxed! info-window-img" src="" onerror="imageError(this);">
+
+
+              <i class="material-icons text-lighten-4 blue-text regular overlay-bottom-left">photo_library</i>
+            </div>
+          </div>
+        </div>
+
+      </li>
+
+      <li>
+        <div id="anchorage-details" class="hide">
+          <div class="divider"></div>
+          <ul class="collapsible" data-collapsible="expandable">
+            <li>
+              <div class="collapsible-header" onclick="expandToggle(this);">
+                <span class="valign-wrapper black-text align-center">
+                  <H6>Anchorage Details</H6>
+                  <i class="material-icons">expand_more</i>
+                </span>
 
               </div>
-            </div>
-          </div>
+              <!-- <h6 class="center-align">
+                <strong>Anchorage Details</strong>
+              </h6> -->
+              <!-- <div class="divider"></div> -->
+              <div class="collapsible-body white">
+                <ul class="collapsible" data-collapsible="expandable">
+                  <li>
+                    <div class="collapsible-header" onclick="expandToggle(this);">
+                      <span class="ml-25p valign-wrapper blue-text">
+                        <i class="material-icons">expand_more</i>
+                        <span>Approach</span>
+                      </span>
 
-          <form id="data-form">
-            <div class="input-field">
-              <input class="validate" type="text" name="title" id="data-title" required>
-              <label for="title">Place Name</label>
-            </div>
-            <div class="input-field">
-              <input class="validate" type="text" name="description" id="data-description" required>
-              <label for="description">Description</label>
-            </div>
-            <div class="input-field">
-              <select id="data-type" required>
-              </select>
-              <label>Type</label>
-            </div>
-            <div class="input-field">
-              <input class="validate" type="url" name="website" id="data-url">
-              <label for="website">https://www.website.com</label>
-            </div>
-          </form>
+                    </div>
+                    <div class="collapsible-body white">
+                      <div class="ml-10 mr-10 center-align">
+                        <span>From west, pass inshore of Middle Mouse, and turn into centre of bay when it opens. Beware strong
+                          tidal set across entrance. Anchor with white farmhouse and brickworks in line, in 5m. Occas. overfalls
+                          off entrance in wind over tide conditions. From east, look out for ruined brickworks and turn to
+                          port rapidly before tide sweeps craft past entrance.</span>
+                      </div>
 
-          <div class="data-modal-footer row">
-            <div class="col s4 left-align">
-              <button id="save-data" onclick="saveData()" class="modal-action modal-close waves-effect waves-green green btn-floating">
-                <i class="material-icons">check</i>
-              </button>
-            </div>
-            <div class="col s4 center-align">
-              <button id="delete-data" onclick="deleteData()" class="modal-action modal-close waves-effect waves-red red btn-floating">
-                <i class="material-icons">delete</i>
-              </button>
-            </div>
-            <div class="col s4 right-align">
-              <button onclick="closeData()" class="modal-action modal-close waves-effect waves-red red btn-floating ">
-                <i class="material-icons">close</i>
-              </button>
-            </div>
+                    </div>
+                  </li>
 
-          </div>
+                  <li>
+                    <div class="collapsible-header" onclick="expandToggle(this);">
+                      <span class="ml-25p valign-wrapper blue-text">
+                        <i class="material-icons">expand_more</i>
+                        <span>Dangers</span>
+                      </span>
+                    </div>
+                    <div class="collapsible-body white">
+                      <div class="ml-10 mr-10 center-align">
+                        <span>Lorem ipsum dolor sit amet.</span>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="collapsible-header" onclick="expandToggle(this);">
+                      <span class="ml-25p valign-wrapper blue-text">
+                        <i class="material-icons">expand_more</i>
+                        <span>Shelter</span>
+                      </span>
+                    </div>
+                    <div class="collapsible-body white">
+                      <div class="ml-10 mr-10 center-align">
+                        <span>Lorem ipsum dolor sit amet.</span>
+                      </div>
+
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="collapsible-header" onclick="expandToggle(this);">
+                      <span class="ml-25p valign-wrapper blue-text">
+                        <i class="material-icons">expand_more</i>
+                        <span>Lights & Marks</span>
+                      </span>
+                    </div>
+                    <div class="collapsible-body white">
+                      <div class="ml-10 mr-10 center-align">
+                        <span>Llanbadrig Church and Tower on headland offer marks to east of Bay. Middle Mouse provides best mark.
+                          To the west, Wylfa Nuclear Power Station is conspic., as is TV aerial on Wylfa Head. There are
+                          no navigation marks or lights. A wind farm is conspic. inland and east of Cemaes village.</span>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- <div class="divider"></div> -->
+                </ul>
+              </div>
+            </li>
+            <div class="divider"></div>
+          </ul>
+
         </div>
-      </div>
 
+      </li>
 
-      <div id="vr-modal">
-        <div class="modal-content light-blue lighten-2 z-depth-2">
-          <span id="vrClose" class="close">
-            <i class="material-icons white-text">close</i>
-          </span>
-          <iframe id="vr" class="img-360" src="" frameborder="0" scrolling="no"></iframe>
-        </div>
-      </div>
+      <li>
+        <!-- <div class="divider"></div> -->
 
-      <div class="hide">
-        <div id="mouseover" class="center-align">
-          <div>
-            <strong>
-              <span id="mouseover-title"></span>
-            </strong>
-          </div>
-          <img id="map-mouseover-img" src="" alt="" class="hide mouseover-img center-align">
-        </div>
-      </div>
+        <div id="nav-icon-bar" class="right-align z-depth-0">
 
-      <ul id="slide-out" class="side-nav light-blue lighten-2">
-        <div id='nav-close-icon'>
-          <span class="close" onclick=" $('.button-collapse').sideNav('hide');">
-            <!-- <i class="material-icons white-text">arrow_back</i> -->
-            <i class="material-icons white-text">close</i>
-          </span>
-        </div>
-        <li>
-          <h5 id="nav-title" class='nav-title z-depth-2'></h5>
-        </li>
-        <li id="nav-position" class="center-align">
-
-          <h6 id="nav-position-dms"></h6>
-        </li>
-        <li>
-          <img id="nav-imagevr" class="hide info-window-img z-depth-2" style="cursor:pointer;" onclick="vrModalOn()" src="">
-        </li>
-        <li>
-          <img id="nav-image" class="hide info-window-img responsive-img z-depth-2" src="">
-        </li>
-        <li>
-          <div id="nav-description" class="z-depth-2 center-align"></div>
-        </li>
-
-        <li class="z-depth-2 center-align">
-          <div>
-            <a id="nav-url" class="hide" href="" target="_blank">website</a>
-          </div>
-        </li>
-
-        <li id="nav-icon-bar" class="white z-depth-2 right-align">
-
-          <button class="btn-floating z-depth-2 waves-effect waves-light light-blue lighten-2 disabled icon-li">
-            <i class="material-icons">info_outline</i>
+          <button id="add-photo" class="btn-floating z-depth-2 waves-effect waves-light light-blue lighten-2 disabled icon-li" onclick="uploadImage();">
+            <i class="material-icons">add_a_photo</i>
           </button>
+
+          <a id="nav-url" href="" target="_blank">
+            <button id="nav-web-btn" class="btn-floating z-depth-2 waves-effect waves-light light-blue lighten-2 disabled icon-li">
+              <i class="material-icons">language</i>
+            </button>
+          </a>
 
 
           <button id="edit" class="btn-floating z-depth-2 waves-effect disabled waves-light red icon-li">
@@ -304,137 +443,170 @@
           <button class="btn-floating z-depth-2 waves-effect waves-light red icon-li" onclick=" $('.button-collapse').sideNav('hide');">
             <i class="material-icons ">close</i>
           </button>
-        </li>
-
-      </ul>
+        </div>
 
 
-      <!-- <ul id="slide-out" class="side-nav light-blue lighten-2">
-      </ul> -->
 
-      <a href="#" data-activates="slide-out" class="button-collapse"></a>
+      </li>
+
+    </ul>
+    <a href="#" data-activates="slide-out" class="button-collapse"></a>
+
+  </div>
+
+  <!-- <input id="imagefileInput" type="file" class="hide" accept="image/*"/> -->
 
 
-      <div id="fab-main" class="hide click-to-toggle">
-        <div class="fixed-action-btn  click-to-toggle">
-          <a class="btn-floating btn-large light-blue waves-effect waves-dark lighten-2 z-depth-4">
-            <i class="material-icons">menu</i>
+  <div id="fab-main" class="hide click-to-toggle">
+    <div class="fixed-action-btn  click-to-toggle">
+      <a class="btn-floating btn-large light-blue pulse waves-effect waves-dark  z-depth-2" onclick="stopPulse(this);">
+        <i class="material-icons">menu</i>
+      </a>
+      <ul>
+
+        <li>
+          <a class="btn-floating light-blue lighten-2 z-depth-2 tooltipped" data-position="left" data-delay="50" data-tooltip="refresh"
+            onClick="loadMarkers()">
+            <i class="material-icons">autorenew</i>
           </a>
-          <ul>
-            <li>
-              <a class="btn-floating light-blue lighten-2 z-depth-4 tooltipped" data-position="left" data-delay="50" data-tooltip="refresh"
-                onClick="loadMarkers()">
-                <i class="material-icons">autorenew</i>
-              </a>
-            </li>
-            <li>
-              <a id="gps-icon" class="btn-floating light-blue lighten-2 z-depth-4 tooltipped" data-position="left" data-delay="50" data-tooltip="Current Location"
-                onClick="getLocation()">
-                <i class="material-icons">gps_not_fixed</i>
-              </a>
-            </li>
-            <li>
-              <a class="btn-floating red z-depth-4 tooltipped" data-position="left" data-delay="50" data-tooltip="Search">
-                <i class="material-icons">search</i>
-              </a>
-            </li>
-            <li>
-              <a class="btn-floating red z-depth-4 tooltipped" data-position="left" data-delay="50" data-tooltip="Filter Icons">
-                <i class="material-icons">list</i>
-              </a>
-            </li>
-            <li>
-              <a id="login-icon" class="login-icon btn-floating red z-depth-4 pulse tooltipped" onClick="login()" data-position="left"
-                data-delay="50" data-tooltip="Login Logout">
-                <i class="material-icons tiny">person_outline</i>
-              </a>
-            </li>
-            <li>
-              <a class="btn-floating red z-depth-4 tooltipped" data-position="left" data-delay="50" data-tooltip="Settings">
-                <i class="material-icons">settings</i>
-              </a>
-            </li>
-            <li>
-              <a class="btn-floating light-blue lighten-2 z-depth-4 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Help"
-                href="#help-modal">
-                <i class="material-icons">help</i>
-              </a>
-            </li>
-            <li>
-              <a class="btn-floating light-blue lighten-2 z-depth-4 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="About"
-                href="#about-modal">
-                <i class="material-icons">info_outline</i>
-              </a>
-            </li>
-          </ul>
-        </div>
+        </li>
+        <li>
+          <a id="gps-icon" class="btn-floating light-blue lighten-2 z-depth-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Current Location"
+            onClick="getLocation()">
+            <i class="material-icons">gps_not_fixed</i>
+          </a>
+        </li>
+        <li>
+          <a class="btn-floating red z-depth-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Search">
+            <i class="material-icons">search</i>
+          </a>
+        </li>
+        <li>
+          <a class="btn-floating red z-depth-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Filter Icons">
+            <i class="material-icons">list</i>
+          </a>
+        </li>
+        <li>
+          <a id="login-icon" class="login-icon btn-floating red z-depth-2 pulse tooltipped" onClick="login()" data-position="left"
+            data-delay="50" data-tooltip="Login Logout">
+            <i class="material-icons tiny">person_outline</i>
+          </a>
+        </li>
+        <li>
+          <a class="btn-floating red z-depth-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Settings">
+            <i class="material-icons">settings</i>
+          </a>
+        </li>
+        <li>
+          <a class="btn-floating light-blue lighten-2 z-depth-2 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Help"
+            href="#help-modal">
+            <i class="material-icons">help</i>
+          </a>
+        </li>
+        <li>
+          <a class="btn-floating light-blue lighten-2 z-depth-2 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="About"
+            href="#about-modal">
+            <i class="material-icons">info_outline</i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="mapcanvas" class="map"></div>
+
+  <div id="preloader" class="preloader-wrapper big active center-screen">
+    <div class="spinner-layer spinner-light-blue-only lighten-2">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
       </div>
-
-      <div id="mapcanvas" class="map"></div>
-
-
-      <div id="preloader" class="preloader-wrapper big active center-screen">
-        <div class="spinner-layer spinner-light-blue-only lighten-2">
-          <div class="circle-clipper left">
-            <div class="circle"></div>
-          </div>
-          <div class="gap-patch">
-            <div class="circle"></div>
-          </div>
-          <div class="circle-clipper right">
-            <div class="circle"></div>
-          </div>
-        </div>
+      <div class="gap-patch">
+        <div class="circle"></div>
       </div>
-
-
-
-      <div class="copyright noselect grey-text">
-        <a class="#hide-on-med-and-down" href="https://mapicons.mapsmarker.com" target="_blank"><img src="https://mapicons.mapsmarker.com/wp-content/uploads/2011/03/miclogo-88x31.gif" height="20" alt=""></a>
-        <a  href="mailto:info@yotstop.com" target="_blank" class = ""><span id = "my-copyright"><i class="material-icons light-blue-text text-lighten-2 ">email</i></span></a>
-        <span class="ml-10">© 2018 YOTSTOP</span>
-       
+      <div class="circle-clipper right">
+        <div class="circle"></div>
       </div>
+    </div>
+  </div>
 
 
-      <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
-      <!-- <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script> -->
-      <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-firestore.js"></script>
-      <script>
-        // Initialize Firebase
 
-        var config = {
-          apiKey: "AIzaSyArhLbX05ll-bTM_WrvrPgpnsQtFWLPZlg",
-          authDomain: "yotstop-1512497608857.firebaseapp.com",
-          databaseURL: "https://yotstop-1512497608857.firebaseio.com",
-          projectId: "yotstop-1512497608857",
-          storageBucket: "yotstop-1512497608857.appspot.com",
-          messagingSenderId: "85287802086"
-        };
-        firebase.initializeApp(config);
 
-      </script>
-      <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-      <script src="data/map.json"></script>
-      <script src="data/UK.json"></script>
-      <script src="js/map.js"></script>
-      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPU-L8tah6RaZcNHcrKTOsld_T-V6gy5s&callback=initApp">
-      </script>
-      <script src="js/markerclusterer.js"></script>
 
-      <script>
-        $(document).ready(function () {
-          $(".button-collapse").sideNav();
-          $('select').material_select();
-          $('.modal').modal();
-          init();
-        });
+  <div class="copyright noselect grey-text">
+    <a class="#hide-on-med-and-down" href="https://mapicons.mapsmarker.com" target="_blank">
+      <img src="https://mapicons.mapsmarker.com/wp-content/uploads/2011/03/miclogo-88x31.gif" height="20" alt="">
+    </a>
+    <a href="mailto:info@yotstop.com" target="_blank">
+  </div>
 
-      </script>
 
-      <script src="js/admin.js"></script>
+  <!-- <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script> -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script> -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-firestore.js"></script> -->
+  <!-- <script> -->
 
-    </body>
+  <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-firestore.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyArhLbX05ll-bTM_WrvrPgpnsQtFWLPZlg",
+      authDomain: "yotstop-1512497608857.firebaseapp.com",
+      databaseURL: "https://yotstop-1512497608857.firebaseio.com",
+      projectId: "yotstop-1512497608857",
+      storageBucket: "yotstop-1512497608857.appspot.com",
+      messagingSenderId: "85287802086"
+    };
+    firebase.initializeApp(config);
+  </script>
+
+  </script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+  <script src="/lodash/lodash.js" type="text/javascript"></script>
+  <script src="/cloudinary-core/cloudinary-core.js" type="text/javascript"></script>
+
+  <script src="https://widget.cloudinary.com/global/all.js" type="text/javascript">  
+  </script>
+  <script src="data/map.json"></script>
+  <script src="data/UK.json"></script>
+  <script src="js/map.js"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPU-L8tah6RaZcNHcrKTOsld_T-V6gy5s&callback=initApp">
+  </script>
+  <script src="js/markerclusterer.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $(".button-collapse").sideNav();
+      $('select').material_select();
+      $('.carousel.carousel-slider').carousel({ fullWidth: true });
+      $('.modal').modal();
+      $('.button-collapse').sideNav({
+        menuWidth: 360, // Default is 300
+        draggable: false, // Choose whether you can drag to open on touch screens,
+        opacity: .0,
+      }
+      );
+
+      $('#anchor-info').modal({
+        dismissible: true, // Modal can be dismissed by clicking outside of the modal
+        opacity: .3, // Opacity of modal background
+        inDuration: 300, // Transition in duration
+        outDuration: 200, // Transition out duration
+        startingTop: '4%', // Starting top style attribute
+        endingTop: '8%', // Ending top style attribute
+
+      }
+      );
+      // init();
+    });
+
+  </script>
+
+  <script src="js/admin.js"></script>
+
+</body>
 
 </html>

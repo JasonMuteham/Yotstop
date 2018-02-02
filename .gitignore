@@ -13,3 +13,5 @@ firebase-debug.log
 data/map.json
 *.bak
 data/UK.json
+firebase.json
+functions/node_modules/**
