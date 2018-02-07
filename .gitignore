@@ -15,3 +15,7 @@ data/map.json
 data/UK.json
 firebase.json
 functions/node_modules/**
+storage-test.html
+*.png
+*.png
+icons/map-marker.png

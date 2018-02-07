@@ -8,7 +8,7 @@ var TransitionIncrement = 0.1;
 
 var IncrementInterval = 50;
 
-var PauseBeforeNextImage = 10000;
+var PauseBeforeNextImage = 5000;
 
 
           

@@ -97,9 +97,9 @@ body {
   /* height: auto; */
 }
 
-.hide {
+/* .hide {
   display: none;
-}
+} */
 
 #fab-main {
   color: white;
@@ -239,9 +239,7 @@ a.disabled {
   width: 300px;
   height: 169px;
 }
-#nav-imagevr-div {
-  cursor: pointer;
-}
+
 #nav-description {
   text-align: center;
   line-height: 1.5em;
@@ -326,4 +324,7 @@ a.disabled {
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+}
+.pointer{
+  cursor: pointer;
 }

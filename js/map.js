@@ -43,7 +43,8 @@ function setLoginIcon() {
   var loginIcon = document.querySelector("#map-login-icon");
   // var loginIcon = document.querySelector("#login-icon");
   loginIcon.classList.remove("red");
-  loginIcon.classList.remove("pulse");
+  stopPulse(loginIcon);
+  // loginIcon.classList.remove("pulse");
   loginIcon.classList.remove("light-blue");
   loginIcon.classList.remove("lighten-2");
   loginIcon.classList.remove("yellow");
@@ -62,10 +63,13 @@ function setLoginIcon() {
   } else {
     loginIcon.classList.add("red");
 
-    loginIcon.classList.add("pulse");
+    // loginIcon.classList.add("pulse");
+    startPulse(loginIcon);
     loginIcon.setAttribute("data-tooltip", "Login");
   }
-  $(".tooltipped").tooltip({ delay: 350 });
+  $(".tooltipped").tooltip({
+    delay: 350
+  });
 }
 
 function areWeLoggedin() {
@@ -84,10 +88,11 @@ function areWeLoggedin() {
         appUser.init(user.uid);
         //  loadMarkers();
         setLoginIcon();
+
         var phoneNumber = user.phoneNumber;
         var providerData = user.providerData;
 
-        // document.querySelector("#burger-fab").classList.remove("pulse");
+        document.querySelector("#map-fab-main-btn").classList.remove("pulse");
         console.log(displayName);
         console.log(photoURL);
 
@@ -126,8 +131,6 @@ function areWeLoggedin() {
 }
 
 function login() {
-  // var loginIcon = document.getElementById("map-login-icon");
-  // if (!loginIcon.classList.contains("red")) {
   if (userAuth) {
     firebase.auth().signOut();
     Materialize.toast("You have logout", 5000, "light-blue lighten-2");
@@ -176,6 +179,7 @@ function FABControl(FABDiv, map) {
   var FABText = document.querySelector("#fab-main").cloneNode(true);
   FABText.id = "map-fab-main";
   FABText.querySelector("#login-icon").id = "map-login-icon";
+  FABText.querySelector("#fab-main-btn").id = "map-fab-main-btn";
   FABText.classList.toggle("hide");
   controlUI.appendChild(FABText);
 }
@@ -335,8 +339,7 @@ async function setDefaultType(type) {
 
 function buildIconSelect() {
   var optionBuild = document.getElementById("data-type");
-  // console.log(optionBuild);
-  // optionBuild.innerHTML = "";
+
   Object.keys(icons).forEach(function(key) {
     var item = icons[key];
     var option =
@@ -349,7 +352,6 @@ function buildIconSelect() {
 
 function dataModalOn() {
   dataEntryModal.style.display = "block";
-  // $('#data-entry-modal').modal('open');
 }
 
 // When the user clicks on <span> (x), close the modal
@@ -361,17 +363,6 @@ function closeData() {
   // marker.setMap(null);
   dataEntryModal.style.display = "none";
 }
-
-// When the user clicks anywhere outside of the modal, close it
-// window.onclick = function(event) {
-//   console.log(event.target);
-//   if (event.target == vrModal) {
-//     console.log(event);
-//     vrModal.style.display = "none";
-//   } else if (event.target == dataEntryModal) {
-//     // dataEntryModal.style.display = "none";
-//   }
-// };
 
 function getLocation() {
   //Start of Location code
@@ -539,21 +530,34 @@ function getSideNav(feature) {
   var dmsCoords = ddToDms(feature.position.lat, feature.position.lng);
   sideNav.querySelector("#nav-position-dms").textContent = dmsCoords;
 
+  if (feature.gEarthImage !== undefined) {
+    var imgPath = imagePath + feature.gEarthImage;
+    sideNav.querySelector("#nav-gearth-image").classList.remove("hide");
+    sideNav.querySelector("#nav-gearth-image").src = imgPath;
+  } else {
+    sideNav.querySelector("#nav-gearth-image").classList.add("hide");
+    sideNav.querySelector("#nav-gearth-image").src = "";
+  }
+
   if (feature.VRUrl !== undefined) {
-    var imgPath = imagePath + imagePreview + feature.vrPreviewImage;
-    sideNav.querySelector("#nav-imagevr").classList.remove("hide");
-    sideNav.querySelector("#nav-imagevr").src = imgPath;
-    sideNav
-      .querySelector("#nav-imagevr-div")
-      .setAttribute("onClick", "vrModalOn()");
-    sideNav.querySelector("#nav-imagevr-div").style.cursor = "pointer";
+    // var imgPath = imagePath + imagePreview + feature.vrPreviewImage;
+    // sideNav.querySelector("#nav-imagevr").classList.remove("hide");
+    // sideNav.querySelector("#nav-imagevr").src = imgPath;
+    // sideNav
+    // .querySelector("#nav-imagevr-div")
+    // .setAttribute("onClick", "vrModalOn()");
+    // sideNav.querySelector("#nav-imagevr-div").style.cursor = "pointer";
     var vr = document.getElementById("vr");
     vr.src = feature.VRUrl;
+    sideNav.querySelector("#photo-360-btn").classList.remove("disabled");
+    sideNav.querySelector("#no-gephoto-nav-icon").classList.add("hide");
   } else {
-    sideNav.querySelector("#nav-imagevr").classList.add("hide");
-    sideNav.querySelector("#nav-imagevr").src = "";
-    sideNav.querySelector("#nav-imagevr-div").setAttribute("onClick", "");
-    sideNav.querySelector("#nav-imagevr-div").style.cursor = "auto";
+    sideNav.querySelector("#photo-360-btn").classList.add("disabled");
+    sideNav.querySelector("#no-gephoto-nav-icon").classList.remove("hide");
+    // sideNav.querySelector("#nav-imagevr").classList.add("hide");
+    // sideNav.querySelector("#nav-imagevr").src = "";
+    // sideNav.querySelector("#nav-imagevr-div").setAttribute("onClick", "");
+    // sideNav.querySelector("#nav-imagevr-div").style.cursor = "auto";
   }
 
   if (feature.images !== undefined) {
@@ -578,9 +582,9 @@ function getSideNav(feature) {
     sideNav.querySelector("#nav-web-btn").classList.remove("disabled");
     sideNav.querySelector("#nav-url").classList.remove("disabled");
     // if (feature.url.includes("wikipedia")) {
-      // sideNav.querySelector("#nav-web-description").textContent = "wikipedia";
+    // sideNav.querySelector("#nav-web-description").textContent = "wikipedia";
     // } else {
-      // sideNav.querySelector("#nav-web-description").textContent = "website";
+    // sideNav.querySelector("#nav-web-description").textContent = "website";
     // }
   } else {
     sideNav.querySelector("#nav-url").href = "";
@@ -639,7 +643,7 @@ async function loadEditData(feature) {
   }
 
   if (feature.VRUrl !== undefined) {
-    document.getElementById("data-VRurl").value = feature.VRurl;
+    document.getElementById("data-VRurl").value = feature.VRUrl;
   } else {
     document.getElementById("data-VRurl").value = "";
   }
@@ -683,17 +687,77 @@ function editInit() {
   if (userAuth) {
     if (appUser.isMod()) {
       document.querySelector("#edit").classList.remove("disabled");
+      document.querySelector("#add-gearth-photo").classList.remove("hide");
+    } else {
+      document.querySelector("#add-gearth-photo").classList.add("hide");
     }
     document.querySelector("#add-photo").classList.remove("disabled");
   } else {
     document.querySelector("#edit").classList.add("disabled");
     document.querySelector("#add-photo").classList.add("disabled");
+    document.querySelector("#add-gearth-photo").classList.add("hide");
   }
 }
 
 function User() {
-  var userId;
+  var userId = "";
   var userData = {};
+
+  this.getName = function() {
+    return userData.name;
+  };
+
+  this.getUserData = function() {
+    if (userId === "") {
+      console.log("no user id try User.init");
+      return;
+    }
+    db
+      .collection("users")
+      .doc(userId)
+      .get()
+      .then(function(doc) {
+        if (doc.exists) {
+          userData = doc.data();
+          // console.log(userData.myImages);
+          // return userData.myImages;
+        } else {
+          userData = {};
+        }
+      });
+  };
+
+  this.addImage = function(uploadedImage) {
+    // push.userData.myImages(uploadedImage);
+    db
+      .collection("users")
+      .doc(userId)
+      .get()
+      .then(function(doc) {
+        if (doc.exists) {
+          userData = doc.data();
+          // console.log(userData.myImages);
+          // return userData.myImages;
+        } else {
+          userData = {
+            myImages: []
+          };
+        }
+        console.log(userData.myImages);
+        userData.myImages.push(uploadedImage);
+        db
+          .collection("users")
+          .doc(userId)
+          .update({
+            myImages: userData.myImages
+          })
+          .then(function(doc) {
+            console.log(
+              "user " + userId + " images updated " + userData.myImages
+            );
+          });
+      });
+  };
 
   this.init = function(id) {
     userId = id;
@@ -703,23 +767,29 @@ function User() {
       .get()
       .then(function(doc) {
         if (doc.exists) {
-          // console.log(this);
-          // console.log(userId, "Document data:", doc.data());
           userData = doc.data();
+        } else {
+          userData = {
+            name: "Boatless",
+            mod: false,
+            myImages: []
+          };
+          db
+            .collection("users")
+            .doc(userId)
+            .set(userData)
+            .then(function(doc) {
+              console.log("new " + userId + " added to users");
+            });
+        }
+        if (userData.name != undefined) {
           Materialize.toast(
             "Logged in as " + userData.name,
             4000,
             "light-blue lighten-2"
           );
-
-          // loadMarkers();
-          // setLoginIcon();
         } else {
           Materialize.toast("Logged in", 4000, "light-blue lighten-2");
-          // console.log(id, "No such user!");
-          // userData.mod = false;
-          // setLoginIcon();
-          // loadMarkers();
         }
         editInit();
         loadMarkers();
@@ -740,6 +810,33 @@ function User() {
     }
     return false;
   };
+}
+
+function featureAddImage(id, imageFileName) {
+  db
+    .collection("markers")
+    .doc(id)
+    .get()
+    .then(function(doc) {
+      if (doc.exists) {
+        var markerData = doc.data();
+        if (markerData.images == undefined) {
+          markerData.images = [];
+        }
+        markerData.images.push(imageFileName);
+        db
+          .collection("markers")
+          .doc(id)
+          .update({
+            images: markerData.images
+          })
+          .then(function(doc) {
+            console.log(
+              "new image " + imageFileName + " added to marker " + id
+            );
+          });
+      }
+    });
 }
 
 function loadDataBase() {
@@ -861,11 +958,11 @@ function updateFeature(feature) {
   if (feature.VRUrl === "") {
     delete feature.VRUrl;
   } else {
-    if(feature.vrPreviewImage === undefined){
+    if (feature.vrPreviewImage === undefined) {
       feature.vrPreviewImage = feature.images[0];
     }
   }
-  
+
   return feature;
 }
 
@@ -896,10 +993,9 @@ function updateDB(feature) {
     .set(feature)
     .then(function() {
       console.log("Document updated with ID: ", feature.id);
-      if(appUser.isMod()){
+      if (appUser.isMod()) {
         console.log(feature);
       }
-      
     })
     .catch(function(error) {
       console.error("Error adding document: ", error);
@@ -983,10 +1079,10 @@ function ddToDms(lat, lng) {
   return getDD2DM(lat, "lat") + " , " + getDD2DM(lng, "lng");
 }
 
-function imageError(theImg) {
-  // theImg.style.display = "none";
-  theImg.classList.add("hide");
-}
+// function imageError(theImg) {
+//   // theImg.style.display = "none";
+//   theImg.classList.add("hide");
+// }
 
 function getImageURL(imageId) {
   storageRef
@@ -1014,7 +1110,7 @@ function getInfoWindowImage(imageDiv, imageId) {
     });
 }
 
-function uploadImage() {
+function uploadImage(imgOpt = "images") {
   cloudinary.openUploadWidget(
     {
       cloud_name: CLOUDNAME,
@@ -1022,28 +1118,46 @@ function uploadImage() {
       theme: "white",
       sources: ["local", "google_photos"],
       multiple: false,
-      resource_type: "image"
+      resource_type: "image",
+      client_allowed_formats: ["jpeg"],
+      cropping: "server",
+      cropping_aspect_ratio: 1.78,
+      cropping_show_dimensions: false,
+      cropping_coordinates_mode: "custom",
+      cropping_show_back_button: true,
+      max_image_width: 1920,
+      context: {
+        "user id": uid,
+        "user name": appUser.getName()
+      }
     },
     function(error, result) {
       console.log(error, result);
       if (error === null) {
         var featureId = document.getElementById("slide-out").dataset.id;
         var feature = getFeature(featureId);
-        if (feature.images == undefined) {
-          feature.images = [];
-        }
-        feature.images = [];
         var imageFileName = result[0].public_id;
         imageFileName += ".jpg";
-        feature.images.push(imageFileName);
-        console.log(imageFileName);
-        var url = imagePath + imagePreview + imageFileName;
-        // feature.imageNames.push(storageId);
-        document.querySelector("#nav-photo").classList.remove("hide");
-        document.querySelector("#nav-photo").src = url;
-        document.querySelector("#nav-image").src = url;
-        document.querySelector("#nav-image").classList.remove("hide");
-        console.log(feature);
+        appUser.addImage(imageFileName);
+
+        if (imgOpt === "images") {
+          if (feature.images == undefined) {
+            feature.images = [];
+          }
+          feature.images.push(imageFileName);
+          featureAddImage(featureId, imageFileName);
+          var url = imagePath + imagePreview + imageFileName;
+          document.querySelector("#nav-photo").classList.remove("hide");
+          document.querySelector("#nav-photo").src = url;
+          document.querySelector("#nav-image").src = url;
+          document.querySelector("#nav-image").classList.remove("hide");
+        }
+        if(imgOpt==="gEarthImage"){
+          feature.gEarthImage = imageFileName;
+          var url = imagePath + imageFileName;
+          document.querySelector("#nav-gearth-image").src = url;
+          document.querySelector("#nav-gearth-image").classList.remove("hide");
+        }
       }
     }
   );
@@ -1102,6 +1216,10 @@ function handleFileSelect(evt) {
 function stopPulse(div) {
   div.classList.remove("pulse");
 }
+function startPulse(div) {
+  div.classList.add("pulse");
+}
+
 function expandToggle(div) {
   var iconDiv = div.querySelector(".material-icons");
   if (iconDiv.innerHTML === "expand_more") {
@@ -1118,6 +1236,8 @@ function initApp() {
   // setupEventListeners();
   setTimeout(function() {
     areWeLoggedin();
-    $(".tooltipped").tooltip({ delay: 350 });
+    $(".tooltipped").tooltip({
+      delay: 350
+    });
   }, 3000);
 }

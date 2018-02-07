@@ -1,9 +1,9 @@
 <html>
 
 <head>
-  <title>Yotstop Map</title>
+  <title>Yotstop/title>
   <link rel="stylesheet" href="/css/map.css">
-  <link rel="shortcut icon" href="/icons/res/mipmap-mdpi/ic_launcher_yotstop.png" type="image/x-icon">
+  <link rel="shortcut icon" href="icons/res/mipmap-mdpi/ic_launcher_yotstop.png" type="image/x-icon">
   <!--Import Google Icon Font-->
   <link href="https://fonts.googleapis.com/css?family=Zilla+Slab:600" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +11,23 @@
   <!--Import materialize.css-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 
+  <link rel="manifest" href="/manifest.json">
 
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#1a237e">
+  <link rel="apple-touch-icon" href="/icons/res/mipmap-xxhdpi/ic_launcher_yotstop.png" sizes="144x144">
+
+  <link rel="apple-touch-icon" href="/icons/res/mipmap-hdpi/ic_launcher_yotstop.png" sizes="72x72">
+  <link rel="apple-touch-icon" href="/icons/res/mipmap-xhdpi/ic_launcher_yotstop.png" sizes="96x96">
+  <link rel="apple-touch-icon" href="/icons/res/mipmap-xxxhdpi/ic_launcher_yotstop.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="/icons/web_hi_res_512.png" sizes="512x512">
+
+  <script>
+    function imageError(theImg) {
+      // theImg.style.display = "none";
+      theImg.classList.add("hide");
+    }
+  </script>
 
 
   <!--Let browser know website is optimized for mobile-->
@@ -22,13 +38,12 @@
 <body>
 
   <div class="hide">
-    <div id="version" class="noselect">v0.7.9.5</div>
+    <div id="version" class="noselect">v0.7.9.7</div>
   </div>
-
 
   <div class="hide">
     <span id="main-title" class="valign-wrapper noselect text-shadow">
-      <img id="nav-logo-img" class="circle-shadow" src="/icons/res/mipmap-hdpi/ic_launcher_yotstop.png">OTSTOP
+      <img id="nav-logo-img" class="circle-shadow!" src="/icons/res/mipmap-hdpi/ic_launcher_yotstop.png">OTSTOP
     </span>
   </div>
 
@@ -310,15 +325,16 @@
 
       <li>
         <div class="row z-depth-2">
-          <div id="nav-imagevr-div" class="col s6 nopad image-line-pos blue">
+          <div class="col s6 nopad image-line-pos blue">
             <div class="info-window-img">
-              <img id="nav-imagevr" class="hide info-window-img" src="" onerror="imageError(this);">
-              <i class="material-icons blue-text text-lighten-4 regular overlay-bottom-left">panorama_horizontal</i>
+              <img id="nav-gearth-image" class="hide info-window-img materialboxed" src="" onerror="imageError(this);">
+              <i id="no-gephoto-nav-icon" class="material-icons blue-text text-lighten-4 regular align-middle">panorama_horizontal</i>
+              <i id="add-gearth-photo" class="material-icons text-lighten-4 blue-text regular overlay-bottom-left pointer" onclick="uploadImage('gEarthImage');">add_a_photo</i>
             </div>
           </div>
           <div class="col s6 nopad image-line-pos blue">
             <div class="info-window-img">
-              <img id="nav-photo" class="hide materialboxed! info-window-img" src="" onerror="imageError(this);">
+              <img id="nav-photo" class="hide info-window-img" src="" onerror="imageError(this);">
 
 
               <i class="material-icons text-lighten-4 blue-text regular overlay-bottom-left">photo_library</i>
@@ -425,22 +441,31 @@
 
         <div id="nav-icon-bar" class="right-align z-depth-0">
 
-          <button id="add-photo" class="btn-floating z-depth-2 waves-effect waves-light light-blue lighten-2 disabled icon-li" onclick="uploadImage();">
+          <button id="add-photo" class="btn-floating z-depth-2 waves-effect waves-light light-blue lighten-2 disabled icon-li tooltipped"
+            onclick="uploadImage();" data-position="top" data-delay="50" data-tooltip="Add a photo">
             <i class="material-icons">add_a_photo</i>
           </button>
 
+          <button id="photo-360-btn" class="btn-floating z-depth-2 waves-effect waves-light light-blue lighten-2 disabled icon-li tooltipped"
+            onclick="vrModalOn();" data-position="top" data-delay="50" data-tooltip="360 experience">
+            <i class="material-icons">panorama_horizontal</i>
+          </button>
+
           <a id="nav-url" href="" target="_blank">
-            <button id="nav-web-btn" class="btn-floating z-depth-2 waves-effect waves-light light-blue lighten-2 disabled icon-li">
+            <button id="nav-web-btn" class="btn-floating z-depth-2 waves-effect waves-light light-blue lighten-2 disabled icon-li tooltipped"
+              data-position="top" data-delay="50" data-tooltip="Go to website">
               <i class="material-icons">language</i>
             </button>
           </a>
 
 
-          <button id="edit" class="btn-floating z-depth-2 waves-effect disabled waves-light red icon-li">
+          <button id="edit" class="btn-floating z-depth-2 waves-effect disabled waves-light red icon-li tooltipped" data-position="top"
+            data-delay="50" data-tooltip="Edit entry">
             <i class="material-icons">edit</i>
           </button>
 
-          <button class="btn-floating z-depth-2 waves-effect waves-light red icon-li" onclick=" $('.button-collapse').sideNav('hide');">
+          <button class="btn-floating z-depth-2 waves-effect waves-light red icon-li tooltipped" onclick=" $('.button-collapse').sideNav('hide');"
+            data-position="top" data-delay="50" data-tooltip="Close">
             <i class="material-icons ">close</i>
           </button>
         </div>
@@ -459,7 +484,7 @@
 
   <div id="fab-main" class="hide click-to-toggle">
     <div class="fixed-action-btn  click-to-toggle">
-      <a class="btn-floating btn-large light-blue pulse waves-effect waves-dark  z-depth-2" onclick="stopPulse(this);">
+      <a id="fab-main-btn" class="btn-floating btn-large light-blue pulse waves-effect waves-dark  z-depth-2" onclick="stopPulse(this);">
         <i class="material-icons">menu</i>
       </a>
       <ul>
@@ -568,7 +593,7 @@
   <script src="/lodash/lodash.js" type="text/javascript"></script>
   <script src="/cloudinary-core/cloudinary-core.js" type="text/javascript"></script>
 
-  <script src="https://widget.cloudinary.com/global/all.js" type="text/javascript">  
+  <script src="https://widget.cloudinary.com/global/all.js" type="text/javascript">
   </script>
   <script src="data/map.json"></script>
   <script src="data/UK.json"></script>
@@ -581,14 +606,15 @@
     $(document).ready(function () {
       $(".button-collapse").sideNav();
       $('select').material_select();
-      $('.carousel.carousel-slider').carousel({ fullWidth: true });
+      $('.carousel.carousel-slider').carousel({
+        fullWidth: true
+      });
       $('.modal').modal();
       $('.button-collapse').sideNav({
         menuWidth: 360, // Default is 300
         draggable: false, // Choose whether you can drag to open on touch screens,
-        opacity: .0,
-      }
-      );
+        // opacity: .9,
+      });
 
       $('#anchor-info').modal({
         dismissible: true, // Modal can be dismissed by clicking outside of the modal
@@ -598,11 +624,9 @@
         startingTop: '4%', // Starting top style attribute
         endingTop: '8%', // Ending top style attribute
 
-      }
-      );
+      });
       // init();
     });
-
   </script>
 
   <script src="js/admin.js"></script>
