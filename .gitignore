@@ -17,5 +17,4 @@ firebase.json
 functions/node_modules/**
 storage-test.html
 *.png
-*.png
-icons/map-marker.png
+icons/**
