@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <title>Yotstop/title>
+  <title>Yotstop</title>
   <link rel="stylesheet" href="/css/map.css">
   <link rel="shortcut icon" href="icons/res/mipmap-mdpi/ic_launcher_yotstop.png" type="image/x-icon">
   <!--Import Google Icon Font-->
@@ -9,9 +9,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!--Import materialize.css-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <link rel="stylesheet" href="/css/materialize.min.css">
+  <link rel="stylesheet" href="/css/animate.css">
 
-  <link rel="manifest" href="/manifest.json">
+
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.6.2/firebaseui.css" />
+
+  <link rel="stylesheet" href="https://webapiv2.navionics.com/dist/webapi/webapi.min.css">
+
+  <script type="text/javascript" src="https://webapiv2.navionics.com/dist/webapi/webapi.min.no-dep.js"></script>
+
+  <link rel="manifest" href="manifest.json">
 
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="#1a237e">
@@ -21,6 +29,9 @@
   <link rel="apple-touch-icon" href="/icons/res/mipmap-xhdpi/ic_launcher_yotstop.png" sizes="96x96">
   <link rel="apple-touch-icon" href="/icons/res/mipmap-xxxhdpi/ic_launcher_yotstop.png" sizes="192x192">
   <link rel="apple-touch-icon" href="/icons/web_hi_res_512.png" sizes="512x512">
+  <meta name="theme-color" content="#1a237e" />
+
+  <script rel="text/javascript" src="/js/servicing.js"></script>
 
   <script>
     function imageError(theImg) {
@@ -35,10 +46,10 @@
 
 </head>
 
-<body>
+<body data-root="https://webapiv2.navionics.com/dist/webapi/images">
 
   <div class="hide">
-    <div id="version" class="noselect">v0.7.9.7</div>
+    <div id="version" class="noselect">v0.8.8</div>
   </div>
 
   <div class="hide">
@@ -59,9 +70,68 @@
     </div>
   </div>
 
+  <div id="filter-modal" class="modal modal-fixed-footer blue lighten-4">
+    <div class="modal-content center-align blue lighten-4">
+      <div class="z-depth-2 white pt-5 pb-5 mb-10">
+        <h5 class="center-align">Filter Icons</h5>
+      </div>
+      <ul id="filter-icons">
+        <li id = "filter-icons-li" class="mt-10">
+          <div class="switch row z-depth-2 white pt-5 pb-5 mb-10 valign-wrapper">
+
+            <div class="col s6 m4 offset-m2">
+              <label>
+                Off
+                <input class = "filter-checked" type="checkbox" checked="checked">
+                <span class="lever"></span>
+                On
+              </label>
+            </div>
+            <div class="col s6 m4 left-align">
+              <span id="filter-description"></span>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+
+    </div>
+    <div class="modal-footer blue lighten-4">
+      <a href="#!" class="modal-action modal-close btn-floating waves-effect waves-light red">
+        <i class="material-icons">close</i>
+      </a>
+    </div>
+  </div>
+
+  <div id="ChartModal" class="animated hide">
+    <div class="modal-content z-depth-2">
+      <div class="right-align ChartClose">
+        <span id="ChartClose">
+          <i class="material-icons black-text pointer">close</i>
+        </span>
+      </div>
+      <div id="navionics-chart"></div>
+    </div>
+  </div>
+
+  <div id="LoginModal" class="modal modal-fixed-footer blue lighten-4">
+    <div class="modal-content center-align blue lighten-4">
+      <div class="z-depth-2 white pt-5 pb-5 mb-10">
+        <h5 class="center-align">Login</h5>
+      </div>
+
+      <div id="firebaseui-auth-container"></div>
+    </div>
+    <div class="modal-footer blue lighten-4">
+      <a href="#!" class="modal-action modal-close btn-floating waves-effect waves-light red">
+        <i class="material-icons">close</i>
+      </a>
+    </div>
+  </div>
+
   <div id="noEditModal" class="modal modal-fixed-footer blue lighten-4">
     <div class="modal-content center-align blue lighten-4">
-      <h4>Please log In</h4>
+      <h4>Please Login</h4>
       <p>Only registered users may add or edit data.</p>
     </div>
     <div class="modal-footer blue lighten-4">
@@ -306,15 +376,14 @@
         <div class="user-view">
           <div class="background blue">
             <img id="nav-image" class="hide responsive-img" src="" onerror="imageError(this);">
-            <!-- <img class="responsive-img hide" src=""> -->
+
           </div>
           <h5 id="nav-title" class='nav-title center-align z-depth-2 black-text'></h5>
-          <!-- </div> -->
-          <!-- <li id="nav-position" class="center-align"> -->
+
           <i id="no-photo-nav-icon" class="material-icons large blue-text text-lighten-4 align-middle">photo</i>
 
           <h6 class="center-align z-depth-2 nav-title-pos black-text" id="nav-position-dms"></h6>
-          <!-- </li> -->
+
         </div>
       </li>
 
@@ -328,7 +397,7 @@
           <div class="col s6 nopad image-line-pos blue">
             <div class="info-window-img">
               <img id="nav-gearth-image" class="hide info-window-img materialboxed" src="" onerror="imageError(this);">
-              <i id="no-gephoto-nav-icon" class="material-icons blue-text text-lighten-4 regular align-middle">panorama_horizontal</i>
+              <i id="no-gephoto-icon" class="material-icons blue-text text-lighten-4 regular align-middle">photo</i>
               <i id="add-gearth-photo" class="material-icons text-lighten-4 blue-text regular overlay-bottom-left pointer" onclick="uploadImage('gEarthImage');">add_a_photo</i>
             </div>
           </div>
@@ -446,6 +515,11 @@
             <i class="material-icons">add_a_photo</i>
           </button>
 
+          <button id="chart-btn" class="btn-floating z-depth-2 waves-effect waves-light light-blue lighten-2 icon-li tooltipped" onclick="chartOn();"
+            data-position="top" data-delay="50" data-tooltip="Chart">
+            <i class="material-icons">layers</i>
+          </button>
+
           <button id="photo-360-btn" class="btn-floating z-depth-2 waves-effect waves-light light-blue lighten-2 disabled icon-li tooltipped"
             onclick="vrModalOn();" data-position="top" data-delay="50" data-tooltip="360 experience">
             <i class="material-icons">panorama_horizontal</i>
@@ -464,8 +538,7 @@
             <i class="material-icons">edit</i>
           </button>
 
-          <button class="btn-floating z-depth-2 waves-effect waves-light red icon-li tooltipped" onclick=" $('.button-collapse').sideNav('hide');"
-            data-position="top" data-delay="50" data-tooltip="Close">
+          <button class="btn-floating z-depth-2 waves-effect waves-light red icon-li" onclick=" $('.button-collapse').sideNav('hide');">
             <i class="material-icons ">close</i>
           </button>
         </div>
@@ -484,11 +557,16 @@
 
   <div id="fab-main" class="hide click-to-toggle">
     <div class="fixed-action-btn  click-to-toggle">
-      <a id="fab-main-btn" class="btn-floating btn-large light-blue pulse waves-effect waves-dark  z-depth-2" onclick="stopPulse(this);">
+      <a id="fab-main-btn" class="btn-floating btn-large light-blue pulse waves-effect waves-dark  z-depth-2 mb-10" onclick="stopPulse(this);">
         <i class="material-icons">menu</i>
       </a>
       <ul>
-
+        <li>
+          <a id="layer-icon" class="btn-floating light-blue lighten-2 z-depth-2 tooltipped disabled" data-position="left" data-delay="50"
+            data-tooltip="Navionics Charts" onClick="toggleChart()">
+            <i class="material-icons">layers</i>
+          </a>
+        </li>
         <li>
           <a class="btn-floating light-blue lighten-2 z-depth-2 tooltipped" data-position="left" data-delay="50" data-tooltip="refresh"
             onClick="loadMarkers()">
@@ -502,12 +580,13 @@
           </a>
         </li>
         <li>
-          <a class="btn-floating red z-depth-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Search">
+          <a class="btn-floating red z-depth-2 tooltipped disabled" data-position="left" data-delay="50" data-tooltip="Search">
             <i class="material-icons">search</i>
           </a>
         </li>
         <li>
-          <a class="btn-floating red z-depth-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Filter Icons">
+          <a class="btn-floating light-blue lighten-2 z-depth-2 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Filter Icons"
+            href="#filter-modal">
             <i class="material-icons">list</i>
           </a>
         </li>
@@ -518,7 +597,7 @@
           </a>
         </li>
         <li>
-          <a class="btn-floating red z-depth-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Settings">
+          <a class="btn-floating red z-depth-2 tooltipped disabled" data-position="left" data-delay="50" data-tooltip="Settings">
             <i class="material-icons">settings</i>
           </a>
         </li>
@@ -566,18 +645,15 @@
   </div>
 
 
-  <!-- <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script> -->
-  <!-- <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script> -->
-  <!-- <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-firestore.js"></script> -->
-  <!-- <script> -->
 
-  <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase-firestore.js"></script>
   <script>
     // Initialize Firebase
     var config = {
       apiKey: "AIzaSyArhLbX05ll-bTM_WrvrPgpnsQtFWLPZlg",
-      authDomain: "yotstop-1512497608857.firebaseapp.com",
+      // authDomain: "yotstop-1512497608857.firebaseapp.com",
+      authDomain: "app.yotstop.com",
       databaseURL: "https://yotstop-1512497608857.firebaseio.com",
       projectId: "yotstop-1512497608857",
       storageBucket: "yotstop-1512497608857.appspot.com",
@@ -585,22 +661,29 @@
     };
     firebase.initializeApp(config);
   </script>
+  <script src="https://cdn.firebase.com/libs/firebaseui/2.6.1/firebaseui.js"></script>
 
-  </script>
-  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+  <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
 
-  <script src="/lodash/lodash.js" type="text/javascript"></script>
-  <script src="/cloudinary-core/cloudinary-core.js" type="text/javascript"></script>
+  <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+
+  <script src="/js/materialize.min.js"></script>
+
 
   <script src="https://widget.cloudinary.com/global/all.js" type="text/javascript">
   </script>
+
+
+
   <script src="data/map.json"></script>
   <script src="data/UK.json"></script>
   <script src="js/map.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPU-L8tah6RaZcNHcrKTOsld_T-V6gy5s&callback=initApp">
-  </script>
   <script src="js/markerclusterer.js"></script>
+
+
+  <script async defer src="https://maps.googleapis.com/maps/api/js?v=3.30&key=AIzaSyBPU-L8tah6RaZcNHcrKTOsld_T-V6gy5s&callback=initApp">
+  </script>
+
 
   <script>
     $(document).ready(function () {

@@ -275,7 +275,7 @@ var APP_DATA = {
     ],
     "name": "ThunderBolt Pier VR360",
     "settings": {
-        "tilePath":"tiles/thunderbolt-pier/",
+        "tilePath":"https://images.yotstop.com/file/yotstop/VR360/tiles/thunderbolt-pier/",
         "mouseViewMode": "drag",
         "autorotateEnabled": true,
         "fullscreenButton": true,

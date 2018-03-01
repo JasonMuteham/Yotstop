@@ -13,18 +13,14 @@ var dataEntryModal = document.getElementById("data-entry-modal");
 var vrClose = document.getElementById("vrClose");
 var dataClose = document.getElementById("dataClose");
 var appUser = new User();
+
 var icons = MAP_DATA.icons;
+var navionics_nauticalchart_layer;
 const CLOUDNAME = MAP_DATA.settings.imageCloudName;
 const UPLOADPRESET = MAP_DATA.settings.uploadPreset;
 const imagePath = MAP_DATA.settings.imagePath;
 const imagePreview = MAP_DATA.settings.preview;
 const thumbnail = MAP_DATA.settings.thumbnail;
-
-function setupEventListeners() {
-  document
-    .getElementById("imagefileInput")
-    .addEventListener("change", handleFileSelect, false);
-}
 
 // firebase.initializeApp({
 //   apiKey: "AIzaSyArhLbX05ll-bTM_WrvrPgpnsQtFWLPZlg",
@@ -38,20 +34,74 @@ function setupEventListeners() {
 var db = firebase.firestore();
 var storage = firebase.storage();
 var storageRef = firebase.storage().ref();
+var ui = new firebaseui.auth.AuthUI(firebase.auth());
+var uiConfig = {
+  callbacks: {
+    // Called when the user has been successfully signed in.
+    signInSuccess: function(user, credential, redirectUrl) {
+      $("#LoginModal").modal("close");
+      // areWeLoggedin();
+      // Do not redirect.
+      console.log(redirectUrl);
+      return false;
+    }
+  },
+  signInFlow: "popup",
+  signInSuccessUrl: "/map.html",
+  signInOptions: [
+    // Leave the lines as is for the providers you want to offer your users.
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+    // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+    // firebase.auth.GithubAuthProvider.PROVIDER_ID,
+    firebase.auth.EmailAuthProvider.PROVIDER_ID
+    // firebase.auth.PhoneAuthProvider.PROVIDER_ID
+  ],
+  // Terms of service url.
+  tosUrl: "/index.html"
+};
+if (ui.isPendingRedirect()) {
+  ui.start("#firebaseui-auth-container", uiConfig);
+}
+// var navionicswebapi = new JNC.Views.BoatingNavionicsMap({
+//   tagId: "#navionics-chart",
+//   center: [12.0, 46.0],
+//   LayerControl: false,
+//   SonarControl: false,
+//   navKey: MAP_DATA.settings.navKey
+// });
+
+function setupEventListeners() {
+  // When the user clicks on <span> (x), close the modal
+  vrClose.onclick = function() {
+    vrModal.style.display = "none";
+  };
+  document.querySelector("#ChartClose").onclick = function() {
+    // document.querySelector("#ChartModal").classList.add("hide");
+
+    document.querySelector("#ChartModal").classList.add("zoomOut");
+
+    setTimeout(() => {
+      document.querySelector("#ChartModal").classList.add("hide");
+      document.querySelector("#ChartModal").classList.remove("zoomIn");
+    }, 1000);
+
+    document.querySelector("#navionics-chart").innerHTML = "";
+  };
+}
 
 function setLoginIcon() {
   var loginIcon = document.querySelector("#map-login-icon");
-  // var loginIcon = document.querySelector("#login-icon");
   loginIcon.classList.remove("red");
   stopPulse(loginIcon);
-  // loginIcon.classList.remove("pulse");
   loginIcon.classList.remove("light-blue");
   loginIcon.classList.remove("lighten-2");
   loginIcon.classList.remove("yellow");
   loginIcon.classList.remove("accent-3");
+  document.querySelector("#map-layer-icon").classList.add("disabled");
   if (userAuth) {
     loginIcon.setAttribute("data-tooltip", "Logout");
-
+    document.querySelector("#map-layer-icon").classList.remove("disabled");
     if (appUser.isMod()) {
       loginIcon.classList.add("yellow");
       loginIcon.classList.add("accent-3");
@@ -63,7 +113,6 @@ function setLoginIcon() {
   } else {
     loginIcon.classList.add("red");
 
-    // loginIcon.classList.add("pulse");
     startPulse(loginIcon);
     loginIcon.setAttribute("data-tooltip", "Login");
   }
@@ -133,14 +182,25 @@ function areWeLoggedin() {
 function login() {
   if (userAuth) {
     firebase.auth().signOut();
+    //  ui.reset();
     Materialize.toast("You have logout", 5000, "light-blue lighten-2");
   } else {
-    var widgetURL = "login.html";
-    window.open(
-      widgetURL,
-      "Sign In",
-      "width=500,height=500,left=300,top=100,dialog=yes,minimizable=no"
-    );
+    // var widgetURL = "login.html";
+    // window.open(
+    //   widgetURL,
+    //   "Sign In",
+    //   "width=500,height=500,left=300,top=100,dialog=yes,minimizable=no"
+    // );
+    $("#LoginModal").modal("open");
+
+    // Initialize the FirebaseUI Widget using Firebase.
+    // ui = new firebaseui.auth.AuthUI(firebase.auth());
+    // The start method will wait until the DOM is loaded.
+    ui.reset();
+    //  ui.disableAutoSignIn();
+    // ui.start('#firebaseui-auth-container', uiConfig);
+    // if (ui.isPendingRedirect()) {
+    ui.start("#firebaseui-auth-container", uiConfig);
   }
 }
 
@@ -179,6 +239,7 @@ function FABControl(FABDiv, map) {
   var FABText = document.querySelector("#fab-main").cloneNode(true);
   FABText.id = "map-fab-main";
   FABText.querySelector("#login-icon").id = "map-login-icon";
+  FABText.querySelector("#layer-icon").id = "map-layer-icon";
   FABText.querySelector("#fab-main-btn").id = "map-fab-main-btn";
   FABText.classList.toggle("hide");
   controlUI.appendChild(FABText);
@@ -193,123 +254,125 @@ function authorised(permission) {
 }
 
 function initMap() {
-  return new Promise((resolve, reject) => {
-    // Create the map
-    map = new google.maps.Map(document.getElementsByClassName("map")[0], {
-      zoom: MAP_DATA.settings.zoom,
-      zoomControlOptions: {
-        position: google.maps.ControlPosition.LEFT_BOTTOM
-      },
-      mapTypeId: "hybrid",
-      streetViewControl: false,
-      center: MAP_DATA.settings.mapCenter,
-      mapTypeControl: false,
-      gestureHandling: "greedy",
-      fullscreenControl: false,
-      fullscreenControlOptions: {
-        position: google.maps.ControlPosition.RIGHT_CENTER
-      },
-      disableDoubleClickZoom: true,
-      styles: MAP_DATA.map.styles
-    });
+  // return new Promise((resolve, reject) => {
+  // Create the map
+  console.log("Google Maps API version: " + google.maps.version);
+  map = new google.maps.Map(document.getElementsByClassName("map")[0], {
+    zoom: MAP_DATA.settings.zoom,
+    zoomControlOptions: {
+      position: google.maps.ControlPosition.LEFT_CENTER
+    },
+    mapTypeId: "hybrid",
+    streetViewControl: false,
+    center: MAP_DATA.settings.mapCenter,
+    mapTypeControl: false,
+    gestureHandling: "greedy",
+    fullscreenControl: false,
+    fullscreenControlOptions: {
+      position: google.maps.ControlPosition.RIGHT_CENTER
+    },
+    disableDoubleClickZoom: true,
+    styles: MAP_DATA.map.styles
+  });
 
-    // Create the DIV to hold the control and call the mainTitle()
-    // constructor passing in this DIV.
-    var titleDiv = document.createElement("div");
-    var mainTitle = new MainTitle(titleDiv, map);
+  // Create the DIV to hold the control and call the mainTitle()
+  // constructor passing in this DIV.
+  var titleDiv = document.createElement("div");
+  var mainTitle = new MainTitle(titleDiv, map);
 
-    titleDiv.index = 1;
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(titleDiv);
+  titleDiv.index = 1;
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(titleDiv);
 
-    var FABDiv = document.createElement("div");
-    var FABCtrl = new FABControl(FABDiv, map);
+  var FABDiv = document.createElement("div");
+  var FABCtrl = new FABControl(FABDiv, map);
 
-    FABDiv.index = 1;
-    map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(FABDiv);
+  FABDiv.index = 1;
+  map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(FABDiv);
 
-    var versionDiv = document.createElement("div");
-    var versionText = new getVersion(versionDiv, map);
+  var versionDiv = document.createElement("div");
+  var versionText = new getVersion(versionDiv, map);
 
-    versionDiv.index = 1;
-    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(versionDiv);
+  versionDiv.index = 1;
+  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(versionDiv);
 
-    map.addListener("drag", function() {
-      $(".fixed-action-btn").closeFAB();
-    });
-    map.addListener("click", function() {
-      infoWindow.close(map);
-      $(".fixed-action-btn").closeFAB();
-    });
+  //Navionics NauticalChart
+  navionics_nauticalchart_layer = new JNC.Google.NavionicsOverlay({
+    navKey: MAP_DATA.settings.navKey,
+    chartType: JNC.Google.NavionicsOverlay.CHARTS.NAUTICAL
+  });
 
-    if (MAP_DATA.settings.debugger) {
-      map.addListener("dblclick", function(e) {
-        if (!authorised()) {
-          $("#noEditModal").modal("open");
-        } else {
-          if (
-            document.getElementById("data-entry-modal").style.display == "block"
-          ) {
-            // no more markers if data entry in progress
-            return;
+  // map.overlayMapTypes.insertAt(0, navionics_nauticalchart_layer);
+
+  map.addListener("drag", function() {
+    $(".fixed-action-btn").closeFAB();
+  });
+  map.addListener("click", function() {
+    infoWindow.close(map);
+    $(".fixed-action-btn").closeFAB();
+  });
+
+  if (MAP_DATA.settings.debugger) {
+    map.addListener("dblclick", function(e) {
+      if (!authorised()) {
+        $("#noEditModal").modal("open");
+      } else {
+        if (
+          document.getElementById("data-entry-modal").style.display == "block"
+        ) {
+          // no more markers if data entry in progress
+          return;
+        }
+
+        var pos = setLatLng(e);
+
+        marker = new google.maps.Marker({
+          position: pos,
+          draggable: true,
+          animation: google.maps.Animation.DROP,
+          map: map,
+          id: generateUUID()
+        });
+
+        markers.push(marker);
+
+        google.maps.event.addListener(marker, "click", function(e) {
+          var newData = {
+            id: marker.id,
+            position: setLatLng(e),
+            title: "",
+            description: "",
+            type: "",
+            url: "",
+            new: true
+          };
+          map.panTo(setLatLng(e));
+          if (map.getZoom() < 15) {
+            map.setZoom(15);
           }
 
-          var pos = setLatLng(e);
-
-          marker = new google.maps.Marker({
-            position: pos,
-            draggable: true,
-            animation: google.maps.Animation.DROP,
-            map: map,
-            id: generateUUID()
-          });
-
-          markers.push(marker);
-
-          google.maps.event.addListener(marker, "click", function(e) {
-            var newData = {
-              id: marker.id,
-              position: setLatLng(e),
-              title: "",
-              description: "",
-              type: "",
-              url: "",
-              new: true
-            };
-            map.panTo(setLatLng(e));
-            if (map.getZoom() < 15) {
-              map.setZoom(15);
-            }
-
-            google.maps.event.addListener(
-              marker,
-              "position_changed",
-              function() {
-                var dmsCoords = ddToDms(
-                  marker.position.lat(),
-                  marker.position.lng()
-                );
-                document.getElementById(
-                  "data-entry-pos-dms"
-                ).textContent = dmsCoords;
-              }
+          google.maps.event.addListener(marker, "position_changed", function() {
+            var dmsCoords = ddToDms(
+              marker.position.lat(),
+              marker.position.lng()
             );
-
-            loadEditData(newData);
-            dataModalOn();
+            document.getElementById(
+              "data-entry-pos-dms"
+            ).textContent = dmsCoords;
           });
-        }
-      });
-    }
 
-    infoWindow = new google.maps.InfoWindow();
-    markerCluster = new MarkerClusterer(map, markers, {
-      imagePath: "icons/m",
-      gridSize: 40,
-      maxZoom: 15
+          loadEditData(newData);
+          dataModalOn();
+        });
+      }
     });
+  }
 
-    //  loadMarkers();
-    resolve(true);
+  infoWindow = new google.maps.InfoWindow();
+  markerCluster = new MarkerClusterer(map, markers, {
+    imagePath: "icons/m",
+    gridSize: 40,
+    maxZoom: 15,
+    zoomOnClick: true
   });
 }
 
@@ -319,8 +382,8 @@ function vrModalOn() {
   $(".button-collapse").sideNav("hide");
 }
 
-async function setDefaultType(type) {
-  return new Promise((resolve, reject) => {
+var setDefaultType = function(type) {
+  return new Promise(function(resolve, reject) {
     var optionBuild = document.getElementById("data-type");
     var optionRef = optionBuild.querySelectorAll("option");
     optionRef.forEach(function(option) {
@@ -332,32 +395,54 @@ async function setDefaultType(type) {
       }
       // $("select").material_select();
     });
-    $("select").material_select();
+    // $("select").material_select();
     resolve(true);
   });
-}
+};
 
 function buildIconSelect() {
   var optionBuild = document.getElementById("data-type");
-
+  var filterBuild = document.getElementById("filter-icons");
+  var filterLi = document.getElementById("filter-icons-li").cloneNode(true);
+  filterBuild.innerHTML = "";
   Object.keys(icons).forEach(function(key) {
     var item = icons[key];
     var option =
       `<option value = "` + key + `">` + item.description + `</option>`;
 
     optionBuild.innerHTML += option;
+    filterLi.querySelector("#filter-description").textContent =
+      item.description;
+    filterLi.querySelector("input").dataset.type = key;
+    var tmpNode = filterLi.cloneNode(true);
+    filterBuild.appendChild(tmpNode);
   });
   $("select").material_select();
+  $(".filter-checked").on("click", function(){
+    filterMarkers();
+  });
+}
+
+function filterMarkers() {
+  console.log("filterMarkers");
+  setMapOnAll(null);
+  markerCluster.clearMarkers();
+
+  $(".filter-checked:checked").each(function() {
+    console.log(this.dataset.type);
+    for (var i = 0; i < markers.length; i++) {
+      var feature = getFeature(markers[i].id);
+      if (feature.type === this.dataset.type) {
+        markers[i].setMap(map);
+        markerCluster.addMarker(markers[i]);
+      }
+    }
+  });
 }
 
 function dataModalOn() {
   dataEntryModal.style.display = "block";
 }
-
-// When the user clicks on <span> (x), close the modal
-vrClose.onclick = function() {
-  vrModal.style.display = "none";
-};
 
 function closeData() {
   // marker.setMap(null);
@@ -422,10 +507,7 @@ function loadMarkers() {
   deleteMarkers();
   loadLocalMarkers();
   loadDataBase();
-  // markerCluster.addMarkers(markers);
-  // features.forEach(function(feature) {
-  //   createMarker(feature);
-  // });
+  filterMarkers();
 }
 
 function createMarker(feature) {
@@ -447,10 +529,15 @@ function createMarker(feature) {
   } else {
     iconImg += MAP_DATA.settings.reviewIcon;
   }
+  var dragMe = false;
+  if (appUser.isMod()) {
+    dragMe = true;
+  }
 
   var marker = new google.maps.Marker({
     title: feature.title,
     position: feature.position,
+    draggable: dragMe,
     icon: iconImg,
     map: map,
     id: feature.id
@@ -459,6 +546,14 @@ function createMarker(feature) {
   markerCluster.addMarker(marker);
 
   markers.push(marker);
+
+  if (appUser.isMod()) {
+    google.maps.event.addListener(marker, "position_changed", function() {
+      var feature = getFeature(marker.id);
+      feature.position.lat = marker.position.lat();
+      feature.position.lng = marker.position.lng();
+    });
+  }
 
   marker.addListener("mouseover", function() {
     var mouseoverHTML = document.querySelector("#mouseover").cloneNode(true);
@@ -475,7 +570,6 @@ function createMarker(feature) {
 
     mouseoverHTML.addEventListener("click", function() {
       getSideNav(getFeature(marker.id));
-      // getSideNav(feature);
     });
 
     infoWindow.setContent(mouseoverHTML);
@@ -487,8 +581,6 @@ function createMarker(feature) {
   });
 
   marker.addListener("click", function(e) {
-    // console.log(e);
-
     if (map.getZoom() < 15) {
       map.setZoom(15);
     } else {
@@ -515,58 +607,40 @@ function getMarker(id) {
 }
 
 function getSideNav(feature) {
-  // var lat = parseFloat(feature.position.lat).toFixed([5]);
-  // var lng = parseFloat(feature.position.lng).toFixed([5]);
-  // data.position = {
-  //   lat: feature.position.lat,
-  //   lng: feature.position.lng
-  // };
   var sideNav = document.getElementById("slide-out");
   sideNav.dataset.id = feature.id;
   sideNav.querySelector("#nav-title").textContent = feature.title;
   sideNav.querySelector("#nav-description").textContent = feature.description;
-  // sideNav.querySelector("#nav-position-lat").textContent = lat;
-  // sideNav.querySelector("#nav-position-lng").textContent = lng;
+
   var dmsCoords = ddToDms(feature.position.lat, feature.position.lng);
   sideNav.querySelector("#nav-position-dms").textContent = dmsCoords;
 
   if (feature.gEarthImage !== undefined) {
-    var imgPath = imagePath + feature.gEarthImage;
+    // var imgPath = imagePath + feature.gEarthImage;
+    var geImage = imagePath + MAP_DATA.settings.geImage + feature.gEarthImage;
     sideNav.querySelector("#nav-gearth-image").classList.remove("hide");
-    sideNav.querySelector("#nav-gearth-image").src = imgPath;
+    sideNav.querySelector("#nav-gearth-image").src = geImage;
+    sideNav.querySelector("#no-gephoto-icon").classList.add("hide");
   } else {
     sideNav.querySelector("#nav-gearth-image").classList.add("hide");
     sideNav.querySelector("#nav-gearth-image").src = "";
+    sideNav.querySelector("#no-gephoto-icon").classList.remove("hide");
   }
 
   if (feature.VRUrl !== undefined) {
-    // var imgPath = imagePath + imagePreview + feature.vrPreviewImage;
-    // sideNav.querySelector("#nav-imagevr").classList.remove("hide");
-    // sideNav.querySelector("#nav-imagevr").src = imgPath;
-    // sideNav
-    // .querySelector("#nav-imagevr-div")
-    // .setAttribute("onClick", "vrModalOn()");
-    // sideNav.querySelector("#nav-imagevr-div").style.cursor = "pointer";
     var vr = document.getElementById("vr");
     vr.src = feature.VRUrl;
     sideNav.querySelector("#photo-360-btn").classList.remove("disabled");
-    sideNav.querySelector("#no-gephoto-nav-icon").classList.add("hide");
   } else {
     sideNav.querySelector("#photo-360-btn").classList.add("disabled");
-    sideNav.querySelector("#no-gephoto-nav-icon").classList.remove("hide");
-    // sideNav.querySelector("#nav-imagevr").classList.add("hide");
-    // sideNav.querySelector("#nav-imagevr").src = "";
-    // sideNav.querySelector("#nav-imagevr-div").setAttribute("onClick", "");
-    // sideNav.querySelector("#nav-imagevr-div").style.cursor = "auto";
   }
 
   if (feature.images !== undefined) {
     var imgPath = imagePath + imagePreview + feature.images[0];
-    // var imgPathFull = MAP_DATA.settings.imagePath + MAP_DATA.settings.full + feature.images[0];
-    // var imgPathFull = feature.images[0];
+    var navImage = imagePath + MAP_DATA.settings.navImage + feature.images[0];
     sideNav.querySelector("#nav-image").classList.remove("hide");
     sideNav.querySelector("#no-photo-nav-icon").classList.add("hide");
-    sideNav.querySelector("#nav-image").src = imgPath;
+    sideNav.querySelector("#nav-image").src = navImage;
     sideNav.querySelector("#nav-photo").classList.remove("hide");
     sideNav.querySelector("#nav-photo").src = imgPath;
   } else {
@@ -581,16 +655,19 @@ function getSideNav(feature) {
     sideNav.querySelector("#nav-url").href = feature.url;
     sideNav.querySelector("#nav-web-btn").classList.remove("disabled");
     sideNav.querySelector("#nav-url").classList.remove("disabled");
-    // if (feature.url.includes("wikipedia")) {
-    // sideNav.querySelector("#nav-web-description").textContent = "wikipedia";
-    // } else {
-    // sideNav.querySelector("#nav-web-description").textContent = "website";
-    // }
   } else {
     sideNav.querySelector("#nav-url").href = "";
     sideNav.querySelector("#nav-url").classList.add("disabled");
     sideNav.querySelector("#nav-web-btn").classList.add("disabled");
-    // sideNav.querySelector("#nav-web").classList.add("hide");
+  }
+
+  if (icons[feature.type].addPhoto == false) {
+    sideNav.querySelector("#add-photo").classList.add("disabled");
+  } else {
+    sideNav.querySelector("#add-photo").classList.remove("disabled");
+  }
+  if (appUser.isMod()) {
+    sideNav.querySelector("#add-photo").classList.remove("disabled");
   }
 
   if (feature.type == "anchor") {
@@ -601,7 +678,6 @@ function getSideNav(feature) {
 
   var editFunction = `editData("` + feature.id + `")`;
   document.querySelector("#edit").setAttribute("onclick", editFunction);
-  // loadEditData(feature);
 
   $(".button-collapse").sideNav("show");
 }
@@ -616,7 +692,7 @@ function editData(id) {
   }
 }
 
-async function loadEditData(feature) {
+function loadEditData(feature) {
   if (feature.new) {
     // console.log("new", feature.new);
     document.getElementById("data-entry-modal-title").textContent =
@@ -650,7 +726,10 @@ async function loadEditData(feature) {
 
   document.getElementById("data-description").value = feature.description;
   document.getElementById("data-type").value = feature.type;
-  await setDefaultType(feature.type);
+
+  setDefaultType(feature.type).then(function() {
+    $("select").material_select();
+  });
 
   document.getElementById("data-id").value = feature.id;
   Materialize.updateTextFields();
@@ -692,9 +771,11 @@ function editInit() {
       document.querySelector("#add-gearth-photo").classList.add("hide");
     }
     document.querySelector("#add-photo").classList.remove("disabled");
+    document.querySelector("#chart-btn").classList.remove("disabled");
   } else {
     document.querySelector("#edit").classList.add("disabled");
     document.querySelector("#add-photo").classList.add("disabled");
+    document.querySelector("#chart-btn").classList.add("disabled");
     document.querySelector("#add-gearth-photo").classList.add("hide");
   }
 }
@@ -902,8 +983,6 @@ function setLatLng(e) {
 }
 
 function deleteData(docId) {
-  // var docId = document.getElementById("data-id").value;
-
   if ((docId !== "") & (docId !== undefined)) {
     db
       .collection("markers")
@@ -982,7 +1061,6 @@ function updateData(id) {
 
   deleteMarkers();
   loadLocalMarkers();
-  // markerCluster.addMarkers(markers);
   updateDB(feature);
 }
 
@@ -1004,7 +1082,6 @@ function updateDB(feature) {
 
 function saveData(id) {
   if (!appUser.isMod()) {
-    // $("#ReviewModal").modal("open");
     Materialize.toast(
       "Subject to review your submission will be live soon",
       5000,
@@ -1022,7 +1099,7 @@ function saveData(id) {
       lng: marker.position.lng()
     }
   };
-  // console.log(feature.position);
+
   if (appUser.isMod()) {
     feature.live = true;
   } else {
@@ -1079,11 +1156,6 @@ function ddToDms(lat, lng) {
   return getDD2DM(lat, "lat") + " , " + getDD2DM(lng, "lng");
 }
 
-// function imageError(theImg) {
-//   // theImg.style.display = "none";
-//   theImg.classList.add("hide");
-// }
-
 function getImageURL(imageId) {
   storageRef
     .child("images/" + imageId)
@@ -1119,7 +1191,7 @@ function uploadImage(imgOpt = "images") {
       sources: ["local", "google_photos"],
       multiple: false,
       resource_type: "image",
-      client_allowed_formats: ["jpeg"],
+      // client_allowed_formats: ["jpeg"],
       cropping: "server",
       cropping_aspect_ratio: 1.78,
       cropping_show_dimensions: false,
@@ -1152,7 +1224,7 @@ function uploadImage(imgOpt = "images") {
           document.querySelector("#nav-image").src = url;
           document.querySelector("#nav-image").classList.remove("hide");
         }
-        if(imgOpt==="gEarthImage"){
+        if (imgOpt === "gEarthImage") {
           feature.gEarthImage = imageFileName;
           var url = imagePath + imageFileName;
           document.querySelector("#nav-gearth-image").src = url;
@@ -1216,6 +1288,7 @@ function handleFileSelect(evt) {
 function stopPulse(div) {
   div.classList.remove("pulse");
 }
+
 function startPulse(div) {
   div.classList.add("pulse");
 }
@@ -1229,15 +1302,76 @@ function expandToggle(div) {
   }
 }
 
+function toggleChart() {
+  var layerIcon = document.querySelector("#map-layer-icon");
+  var iconTxt = layerIcon.querySelector(".material-icons");
+  // console.log("layer - ",layerIcon);
+  if (iconTxt.textContent === "layers") {
+    iconTxt.textContent = "layers_clear";
+    layerIcon.setAttribute("data-tooltip", "Clear Navionics Charts");
+    map.overlayMapTypes.setAt(0, navionics_nauticalchart_layer);
+    document
+      .querySelector(".g-navionics-overlay-logo")
+      .classList.remove("hide");
+    document
+      .querySelector(".g-navionics-overlay-ackno")
+      .classList.remove("hide");
+
+    // map.overlayMapTypes.push(navionics_nauticalchart_layer);
+  } else {
+    iconTxt.textContent = "layers";
+    layerIcon.setAttribute("data-tooltip", "Navionics Charts");
+    document.querySelector(".g-navionics-overlay-logo").classList.add("hide");
+    document.querySelector(".g-navionics-overlay-ackno").classList.add("hide");
+    map.overlayMapTypes.removeAt(0);
+    // map.overlayMapTypes.clear();
+  }
+  $(".tooltipped").tooltip({
+    delay: 350
+  });
+}
+
+function chartOn() {
+  // document.querySelector("#ChartModal").classList.remove("hide");
+  // document.querySelector("#ChartModal").classList.add("scale-in");
+  document.querySelector("#ChartModal").classList.remove("zoomOut");
+  document.querySelector("#ChartModal").classList.remove("hide");
+  document.querySelector("#ChartModal").classList.add("zoomIn");
+
+  var sideNav = document.getElementById("slide-out");
+  var feature = getFeature(sideNav.dataset.id);
+
+  var navionicswebapi = new JNC.Views.BoatingNavionicsMap({
+    tagId: "#navionics-chart",
+    center: [feature.position.lng, feature.position.lat],
+    LayerControl: false,
+    SonarControl: false,
+    zoom: 12,
+    DepthUnitControl: false,
+    DistanceUnitControl: false,
+    navKey: MAP_DATA.settings.navKey
+  });
+
+  // navionicswebapi.goToCoord(feature.position.lng, feature.position.lat,10);
+
+  // navionicswebapi.showBalloon({
+  //   title: feature.title,
+  //   coordinates: [feature.position.lng, feature.position.lat],
+  // })
+
+  console.log(feature.position);
+}
+
 function initApp() {
   initMap();
 
   buildIconSelect();
-  // setupEventListeners();
+
+  setupEventListeners();
   setTimeout(function() {
     areWeLoggedin();
     $(".tooltipped").tooltip({
       delay: 350
     });
-  }, 3000);
+  }, 4000);
 }

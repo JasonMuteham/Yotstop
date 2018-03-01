@@ -2,9 +2,12 @@ var MAP_DATA ={
     "settings": {
         "imageCloudName": "yotstop",
         "uploadPreset":"l2fptshe",
+        "navKey" : "Navionics_webapi_03337",
         "imagePath": "https://res.cloudinary.com/yotstop/image/upload/",
-        "preview": "c_scale,e_unsharp_mask:100,q_auto:best,w_360/",
-        "thumbnail": "c_scale,e_unsharp_mask:100,q_auto:best,w_100/",
+        "navImage": "c_limit,q_auto:best,w_360,dpr_auto,f_auto,e_unsharp_mask:50/",
+        "geImage": "c_limit,q_auto:best,w_1200,dpr_auto,f_auto/",
+        "preview": "c_limit,q_auto:best,w_360,dpr_auto,f_auto,e_unsharp_mask:50/",
+        "thumbnail": "c_limit,q_auto:best,w_100,f_auto,dpr_auto,e_unsharp_mask:50/",
         "full": "1200px/",
         "mapCenter": {
             "lat": 54.50,
@@ -47,7 +50,7 @@ var MAP_DATA ={
             "addPhoto":true
         },
         "chandlery": {
-            "description": "chandlery",
+            "description": "Chandlery",
             "icon": 'info.png',
             "enhanced": 'info-en.png',
             "addPhoto":false

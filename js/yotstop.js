@@ -10,15 +10,17 @@ var IncrementInterval = 50;
 
 var PauseBeforeNextImage = 5000;
 
-
+var imagePrefix = "https://res.cloudinary.com/yotstop/image/upload/f_auto,dpr_auto,w_auto/";
+imagePrefix = "";
           
-imageArr.push('url("/images/1920px/cover-1.jpg")');
-imageArr.push('url("/images/1920px/pyefleet-creek-1.jpg")');
-imageArr.push('url("/images/1920px/sharfleet-creek.jpg")');  
-imageArr.push('url("/images/1920px/boy-on-bow.jpg")');
-imageArr.push('url("/images/1920px/red-sands-fort.jpg")');
-imageArr.push('url("/images/1920px/old-lady.jpg")');
-imageArr.push('url("/images/1920px/fort-darnet.jpg")');
+imageArr.push('url("' + imagePrefix + 'images/1920px/cover-1.jpg")');
+imageArr.push('url("' + imagePrefix + 'images/1920px/pyefleet-creek-1.jpg")');
+imageArr.push('url("' + imagePrefix + 'images/1920px/sharfleet-creek.jpg")');  
+imageArr.push('url("' + imagePrefix + 'images/1920px/boy-on-bow.jpg")');
+imageArr.push('url("' + imagePrefix + 'images/1920px/red-sands-fort.jpg")');
+imageArr.push('url("' + imagePrefix + 'images/1920px/old-lady.jpg")');
+imageArr.push('url("' + imagePrefix + 'images/1920px/fort-darnet.jpg")');
+imageArr.push('url("' + imagePrefix + 'images/1920px/sealand.jpg")');
 
 
 
@@ -49,6 +51,7 @@ function FadeOut() {
         currentImage++;
         if( currentImage > topImage ) { currentImage = 0; }
         image.style.backgroundImage = imageArr[currentImage];
+        // console.log(imageArr[currentImage]);
         timerthing = setInterval("FadeIn()",IncrementInterval);
     }
 }

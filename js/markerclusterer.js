@@ -1091,6 +1091,7 @@ ClusterIcon.prototype.onAdd = function() {
 
   var that = this;
   google.maps.event.addDomListener(this.div_, 'click', function() {
+    // console.log('clusterclick');
     that.triggerClusterClick();
   });
 };

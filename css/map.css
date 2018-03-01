@@ -22,6 +22,9 @@
 .mt-10 {
   margin-top: 10px;
 }
+.mt-30 {
+  margin-top: 30px;
+}
 .pt-5 {
   padding-top: 5px;
 }
@@ -49,9 +52,10 @@
 }
 
 #nav-url{
+  padding :0px;
   /* position: relative; */
-  width: 100px;
-  margin: auto;
+  /* width: 100px; */
+  /* margin: auto; */
 }
 
 .image-line-pos{
@@ -97,9 +101,9 @@ body {
   /* height: auto; */
 }
 
-/* .hide {
+.hide {
   display: none;
-} */
+}
 
 #fab-main {
   color: white;
@@ -108,6 +112,37 @@ body {
 .img-360 {
   width: 100%;
   height: 92%;
+}
+
+.pop-in{
+  /* display: block; */
+  opacity: 1;
+  transform: scaleX(1);
+  transition-delay: 3;
+  top: 10%;
+}
+
+.pop-out{
+  /* display: none; */
+  opacity: 0;
+  transform: scaleX(0.7);
+  transition-delay: 3;
+  top: 4%;
+}
+
+#ChartModal{
+    /* display: none; */
+    /* opacity: 0; */
+    /* top: 4%; */
+  position: fixed; 
+  z-index: 99999; /* Sit on top */
+  margin-top: 55px; 
+  padding-left: 0px;
+  left: 5%;
+  /* top: 0; */
+  width: 90%;
+  height: 80%; 
+  /* overflow: hidden; Enable scroll if needed */
 }
 
 #vr-modal {
@@ -165,6 +200,14 @@ a.disabled {
   margin: auto;
   border: 1px solid #888;
   width: 100%;
+}
+
+.ChartClose{
+  /* cursor: pointer; */
+  height: 30px;
+  /* top: 15px; */
+  margin-right: 5px;
+  margin-top: 5px;
 }
 
 /* The Close Button  */

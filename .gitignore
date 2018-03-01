@@ -18,3 +18,12 @@ functions/node_modules/**
 storage-test.html
 *.png
 icons/**
+fonts/**
+images/**
+bootstrap.min.js
+jquery-3.3.1.min.js
+animate.css
+bootstrap.*
+materialize.*
+markerclusterer.js
+workbox-cli-config.js
