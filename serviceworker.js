@@ -9,7 +9,6 @@ if (workbox) {
 }
 
 workbox.precaching.precacheAndRoute([
-//  workboxSW.precache([
   {
     "url": "css/animate.css",
     "revision": "346964e149ad49ccf4f3da77b66fa086"
@@ -20,7 +19,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "css/map.css",
-    "revision": "d916b7a90d4d1448d654ba646853fe8c"
+    "revision": "066d1f7263492cc938c60a1a2391743e"
   },
   {
     "url": "css/materialize.min.css",
@@ -88,7 +87,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "js/map.js",
-    "revision": "d1ff9f672a07bea95b4ec32495507179"
+    "revision": "be833fdf90e8e522fdc077667cdf50b5"
   },
   {
     "url": "js/markerclusterer.js",
@@ -100,7 +99,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "js/servicing.js",
-    "revision": "9871a31731c0c07231da9c308717009d"
+    "revision": "b3d313e406274ed3aca5f5c5516a86d1"
+  },
+  {
+    "url": "js/vue.js",
+    "revision": "d6ccc3bd9b0aa69e27fe33e69fd67c12"
   },
   {
     "url": "js/yotstop.js",
@@ -155,6 +158,7 @@ workbox.precaching.precacheAndRoute([
     "revision": "1f35e6a11d27d2e10d28946d42332dc5"
   }
 ]);
+
 
  workbox.routing.registerRoute(
   new RegExp("https://fonts.(?:googleapis|gstatic).com/(.*)"),

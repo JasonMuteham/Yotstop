@@ -8,8 +8,8 @@ if (workbox) {
   console.log(`Boo! Workbox didn't load 😬`);
 }
 
-workbox.precaching.precacheAndRoute([
-//  workboxSW.precache([]);
+workbox.precaching.precacheAndRoute([]);
+
 
  workbox.routing.registerRoute(
   new RegExp("https://fonts.(?:googleapis|gstatic).com/(.*)"),

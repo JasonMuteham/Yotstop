@@ -8,7 +8,7 @@ var features = [];
 var userAuth = false;
 var uid;
 var vrModal = document.getElementById("vr-modal");
-var noEditModal = document.getElementById("noEditModal");
+// var noEditModal = document.getElementById("noEditModal");
 var dataEntryModal = document.getElementById("data-entry-modal");
 var vrClose = document.getElementById("vrClose");
 var dataClose = document.getElementById("dataClose");
@@ -78,12 +78,12 @@ function setupEventListeners() {
   };
   document.querySelector("#ChartClose").onclick = function() {
     // document.querySelector("#ChartModal").classList.add("hide");
-
+    document.querySelector("#ChartModal").classList.remove("zoomIn");
     document.querySelector("#ChartModal").classList.add("zoomOut");
 
     setTimeout(() => {
       document.querySelector("#ChartModal").classList.add("hide");
-      document.querySelector("#ChartModal").classList.remove("zoomIn");
+      
     }, 1000);
 
     document.querySelector("#navionics-chart").innerHTML = "";
@@ -305,16 +305,19 @@ function initMap() {
 
   map.addListener("drag", function() {
     $(".fixed-action-btn").closeFAB();
+    
   });
   map.addListener("click", function() {
     infoWindow.close(map);
     $(".fixed-action-btn").closeFAB();
+    search.close();
   });
 
   if (MAP_DATA.settings.debugger) {
     map.addListener("dblclick", function(e) {
       if (!authorised()) {
-        $("#noEditModal").modal("open");
+        // $("#noEditModal").modal("open");
+        noEditMsg.show();
       } else {
         if (
           document.getElementById("data-entry-modal").style.display == "block"
@@ -418,18 +421,16 @@ function buildIconSelect() {
     filterBuild.appendChild(tmpNode);
   });
   $("select").material_select();
-  $(".filter-checked").on("click", function(){
+  $(".filter-checked").on("click", function() {
     filterMarkers();
   });
 }
 
 function filterMarkers() {
-  console.log("filterMarkers");
   setMapOnAll(null);
   markerCluster.clearMarkers();
 
   $(".filter-checked:checked").each(function() {
-    console.log(this.dataset.type);
     for (var i = 0; i < markers.length; i++) {
       var feature = getFeature(markers[i].id);
       if (feature.type === this.dataset.type) {
@@ -684,7 +685,8 @@ function getSideNav(feature) {
 
 function editData(id) {
   if (!authorised()) {
-    $("#noEditModal").modal("open");
+    // $("#noEditModal").modal("open");
+    noEditMsg.show();
   } else {
     loadEditData(getFeature(id));
     $(".button-collapse").sideNav("hide");
@@ -940,6 +942,7 @@ function loadDataBase() {
         createMarker(dbData);
         features.push(dbData);
       });
+      filterMarkers();
       preloader(false);
     })
     .catch(function(error) {
@@ -1084,7 +1087,7 @@ function saveData(id) {
   if (!appUser.isMod()) {
     Materialize.toast(
       "Subject to review your submission will be live soon",
-      5000,
+      8000,
       "light-blue lighten-2"
     );
   }
@@ -1371,7 +1374,7 @@ function initApp() {
   setTimeout(function() {
     areWeLoggedin();
     $(".tooltipped").tooltip({
-      delay: 350
+      delay: 500
     });
   }, 4000);
 }

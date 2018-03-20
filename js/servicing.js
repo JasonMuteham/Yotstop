@@ -1,7 +1,7 @@
 
 if ("serviceWorker" in navigator) {
   function showRefreshUI(registration) {
-    var $toastContent = $("<span>New version available.</span>").add(
+    var $toastContent = $("<span>New version available</span>").add(
       $('<button id="swRefresh" class="btn-flat toast-action">Refresh</button>')
     );
     Materialize.toast($toastContent, 15000);
