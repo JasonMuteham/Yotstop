@@ -48,11 +48,11 @@ var search = new Vue({
         this.matchCount = markers.length;
       }
       this.matchMessage = this.matchCount + " matches";
-      // console.log("running",this.isVisable)
+    
       this.isVisable = true;
     },
     close: function() {
-      // console.log("running",this.isVisable)
+   
       this.isClosing = true;
       setTimeout(() => {
         this.isVisable = false;
@@ -60,8 +60,6 @@ var search = new Vue({
       }, 600);
     },
     search: function(event) {
-      console.log(this.searchString);
-      console.log(event);
       var matchCount, filter;
       filter = this.searchString.toUpperCase();
       this.matchCount = 0;
@@ -90,8 +88,6 @@ var search = new Vue({
       this.matchMessage = this.matchCount + " matches";
       setMapOnAll(null);
       markerCluster.clearMarkers();
-      // this.close();
-      // Materialize.toast("Search results cleared", 4000);
       for (var i = 0; i < markers.length; i++) {
         var feature = getFeature(markers[i].id);
 
@@ -111,12 +107,9 @@ function searchShow() {
 }
 
 $("#searchstring").on("keyup", function(e) {
-  // if (navigator.userAgent.match(/Android/i)) {
+  
   var inputValue = e.target.value;
   search.searchString = inputValue;
-  console.log(search.searchString);
-  console.log(e)
-  // console.log(event);
   var matchCount, filter;
   filter = inputValue.toUpperCase();
   search.matchCount = 0;

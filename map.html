@@ -57,7 +57,7 @@
 <body data-root="https://webapiv2.navionics.com/dist/webapi/images">
 
   <div class="hide">
-    <div id="version" class="noselect">v0.9.1.3</div>
+    <div id="version" class="noselect">v0.9.1.5</div>
   </div>
 
   <div class="hide">
@@ -143,7 +143,7 @@
           <div class="input-field">
 
             <i class="material-icons prefix">search</i>
-            <!-- <input id="search" type="text" v-model="searchString" v-on:input="search()" > -->
+           
             
             <input id="searchstring" type="text">
             
@@ -168,18 +168,6 @@
     </div>
   </div>
 
-
-  <!-- <div id="noEditModal" class="modal modal-fixed-footer blue lighten-4">
-    <div class="modal-content center-align blue lighten-4">
-      <h4>Please Login</h4>
-      <p>Only registered users may add or edit data.</p>
-    </div>
-    <div class="modal-footer blue lighten-4">
-      <a href="#!" class="modal-action modal-close btn-floating waves-effect waves-light red">
-        <i class="material-icons">close</i>
-      </a>
-    </div>
-  </div> -->
 
 
   <div id="help-modal" class="modal modal-fixed-footer blue lighten-4">
@@ -339,8 +327,9 @@
           <label for="title">Place Name</label>
         </div>
         <div class="input-field">
-          <input type="text" name="description" id="data-description" required>
-          <label for="description">Description</label>
+            <textarea id="data-description" class="materialize-textarea"></textarea>
+          <!-- <input type="text" name="description" id="data-description" required> -->
+          <label for="data-description">Description</label>
         </div>
         <div class="input-field">
           <select id="data-type" required>
@@ -349,12 +338,12 @@
           <label>Type</label>
         </div>
         <div class="input-field">
-          <input class="validate" type="url" name="website" id="data-url">
-          <label for="website">https://www.website.com</label>
+          <input class="validate" type="url" name="website" id="data-url" placeholder="https://www.website.com">
+          <label for="website">Website</label>
         </div>
         <div class="input-field">
-          <input class="validate" type="url" name="vr360 url" id="data-VRurl">
-          <label for="vr360 url">/VR360/something-vr360.html</label>
+          <input class="validate" type="url" name="vr360 url" id="data-VRurl" placeholder="/VR360/something-vr360.html">
+          <label for="vr360 url">vr360 link</label>
         </div>
       </form>
 
@@ -465,10 +454,7 @@
                 </span>
 
               </div>
-              <!-- <h6 class="center-align">
-                <strong>Anchorage Details</strong>
-              </h6> -->
-              <!-- <div class="divider"></div> -->
+           
               <div class="collapsible-body white">
                 <ul class="collapsible" data-collapsible="expandable">
                   <li>
@@ -602,54 +588,54 @@
       </a>
       <ul>
         <li>
-          <a id="layer-icon" class="btn-floating light-blue lighten-2 z-depth-2 !tooltipped disabled" data-position="left" data-delay="50"
-            data-tooltip="Navionics Charts" onClick="toggleChart()">
+          <a id="layer-icon" class="btn-floating light-blue lighten-2 z-depth-2 tooltipped disabled" data-position="left" data-delay="350"
+            data-tooltip="Chart Overlay" onClick="toggleChart()">
             <i class="material-icons">layers</i>
           </a>
         </li>
         <li>
-          <a class="btn-floating light-blue lighten-2 z-depth-2 !tooltipped" data-position="left" data-delay="50" data-tooltip="refresh"
+          <a class="btn-floating light-blue lighten-2 z-depth-2 tooltipped" data-position="left" data-delay="350" data-tooltip="Refresh"
             onClick="loadMarkers()">
             <i class="material-icons">autorenew</i>
           </a>
         </li>
         <li>
-          <a id="gps-icon" class="btn-floating light-blue lighten-2 z-depth-2 !tooltipped" data-position="left" data-delay="50" data-tooltip="Current Location"
+          <a id="gps-icon" class="btn-floating light-blue lighten-2 z-depth-2 tooltipped" data-position="left" data-delay="350" data-tooltip="Current Location"
             onClick="getLocation()">
             <i class="material-icons">gps_not_fixed</i>
           </a>
         </li>
         <li>
-          <a class="btn-floating light-blue lighten-2 z-depth-2 !tooltipped" data-position="left" data-delay="50" data-tooltip="Search"
+          <a class="btn-floating light-blue lighten-2 z-depth-2 tooltipped" data-position="left" data-delay="350" data-tooltip="Search"
             onClick="searchShow()">
             <i class="material-icons">search</i>
           </a>
         </li>
         <li>
-          <a class="btn-floating light-blue lighten-2 z-depth-2 modal-trigger !tooltipped" data-position="left" data-delay="50" data-tooltip="Filter Icons"
+          <a class="btn-floating light-blue lighten-2 z-depth-2 modal-trigger tooltipped" data-position="left" data-delay="350" data-tooltip="Filter Icons"
             href="#filter-modal">
             <i class="material-icons">list</i>
           </a>
         </li>
         <li>
-          <a id="login-icon" class="login-icon btn-floating red z-depth-2 pulse !tooltipped" onClick="login()" data-position="left"
-            data-delay="50" data-tooltip="Login Logout">
+          <a id="login-icon" class="login-icon btn-floating red z-depth-2 pulse tooltipped" onClick="login()" data-position="left"
+            data-delay="350" data-tooltip="Login Logout">
             <i class="material-icons tiny">person_outline</i>
           </a>
         </li>
         <li>
-          <a class="btn-floating red z-depth-2 !tooltipped disabled" data-position="left" data-delay="50" data-tooltip="Settings">
+          <a class="btn-floating red z-depth-2 tooltipped disabled" data-position="left" data-delay="350" data-tooltip="Settings">
             <i class="material-icons">settings</i>
           </a>
         </li>
         <li>
-          <a class="btn-floating light-blue lighten-2 z-depth-2 modal-trigger !tooltipped" data-position="left" data-delay="50" data-tooltip="Help"
+          <a class="btn-floating light-blue lighten-2 z-depth-2 modal-trigger tooltipped" data-position="left" data-delay="350" data-tooltip="Help"
             href="#help-modal">
             <i class="material-icons">help</i>
           </a>
         </li>
         <li>
-          <a class="btn-floating light-blue lighten-2 z-depth-2 modal-trigger !tooltipped" data-position="left" data-delay="50" data-tooltip="About"
+          <a class="btn-floating light-blue lighten-2 z-depth-2 modal-trigger tooltipped" data-position="left" data-delay="350" data-tooltip="About"
             href="#about-modal">
             <i class="material-icons">info_outline</i>
           </a>

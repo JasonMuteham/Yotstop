@@ -115,6 +115,10 @@ function setLoginIcon() {
 
     startPulse(loginIcon);
     loginIcon.setAttribute("data-tooltip", "Login");
+    setTimeout(() => {
+      Materialize.toast('Login to access all features.', 8000,'red');
+      
+    }, 5000);
   }
   $(".tooltipped").tooltip({
     delay: 350
@@ -183,7 +187,7 @@ function login() {
   if (userAuth) {
     firebase.auth().signOut();
     //  ui.reset();
-    Materialize.toast("You have logout", 5000, "light-blue lighten-2");
+    Materialize.toast("You have logged out", 5000, "light-blue lighten-2");
   } else {
     // var widgetURL = "login.html";
     // window.open(
@@ -335,7 +339,7 @@ function initMap() {
           map: map,
           id: generateUUID()
         });
-
+ console.log(marker);
         markers.push(marker);
 
         google.maps.event.addListener(marker, "click", function(e) {
@@ -362,7 +366,7 @@ function initMap() {
               "data-entry-pos-dms"
             ).textContent = dmsCoords;
           });
-
+console.log(newData);
           loadEditData(newData);
           dataModalOn();
         });
@@ -672,7 +676,7 @@ function getSideNav(feature) {
   }
 
   if (feature.type == "anchor") {
-    sideNav.querySelector("#anchorage-details").classList.remove("hide");
+    // sideNav.querySelector("#anchorage-details").classList.remove("hide");
   } else {
     sideNav.querySelector("#anchorage-details").classList.add("hide");
   }
@@ -727,6 +731,8 @@ function loadEditData(feature) {
   }
 
   document.getElementById("data-description").value = feature.description;
+  $('#data-description').trigger('autoresize');
+  
   document.getElementById("data-type").value = feature.type;
 
   setDefaultType(feature.type).then(function() {

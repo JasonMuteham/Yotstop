@@ -177,13 +177,11 @@ body {
   display: none;
   position: fixed;
   z-index: 1;
-  /* margin-top: 55px;  */
-  /* padding-left: 0px; */
   left: 0;
-  /* top: 0; */
+  top: 0;
   width: 360;
   height: 100%;
-  overflow: auto; /* Enable scroll if needed */
+  overflow: auto; 
 }
 .data-modal-footer {
   /* padding-bottom: 10px; */
