@@ -415,7 +415,7 @@ var APP_DATA = {
   ],
   "name": "Reculver - North Kent Coast",
   "settings": {
-    "tilePath": "tiles/reculver/",
+    "tilePath": "https://images.yotstop.com/file/yotstop/VR360/tiles/reculver/",
     "mouseViewMode": "drag",
     "autorotateEnabled": true,
     "fullscreenButton": true,

@@ -35,7 +35,7 @@ var APP_DATA = {
   ],
   name: "Stangate Creek",
   settings: {
-    tilePath: "tiles/stangate-creek/",
+    tilePath: "https://images.yotstop.com/file/yotstop/VR360/tiles/stangate-creek/",
     mouseViewMode: "drag",
     autorotateEnabled: true,
     fullscreenButton: true,

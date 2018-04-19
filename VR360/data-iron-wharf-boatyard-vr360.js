@@ -79,7 +79,7 @@ var APP_DATA = {
   ],
   "name": "Iron Wharf Boatyard",
   "settings": {
-    "tilePath":"tiles/iron-wharf-boatyard/",
+    "tilePath":"https://images.yotstop.com/file/yotstop/VR360/tiles/iron-wharf-boatyard/",
     "mouseViewMode": "drag",
     "autorotateEnabled": true,
     "fullscreenButton": true,

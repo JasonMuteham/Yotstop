@@ -35,7 +35,7 @@ var APP_DATA = {
   ],
   "name": "Upnor Castle",
   "settings": {
-    tilePath: "tiles/upnor-castle/",
+    tilePath: "https://images.yotstop.com/file/yotstop/VR360/tiles/upnor-castle/",
     "mouseViewMode": "drag",
     "autorotateEnabled": true,
     "fullscreenButton": true,
