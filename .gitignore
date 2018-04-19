@@ -4,13 +4,9 @@
 *.jpg
 *.jpg
 *.apk
-*.apk
 .firebaserc
 *.code-workspace
 firebase-debug.log
-*.json
-*.json
-data/map.json
 *.bak
 data/UK.json
 firebase.json
@@ -26,4 +22,3 @@ animate.css
 bootstrap.*
 materialize.*
 markerclusterer.js
-workbox-cli-config.js

@@ -4,9 +4,9 @@ var MAP_DATA ={
         "uploadPreset":"l2fptshe",
         "navKey" : "Navionics_webapi_03337",
         "imagePath": "https://res.cloudinary.com/yotstop/image/upload/",
-        "navImage": "c_limit,q_auto:best,w_360,f_auto,dpr_auto,e_unsharp_mask:50/",
-        "geImage": "c_limit,q_auto:best,w_1200,f_auto,dpr_auto/",
-        "preview": "c_limit,q_auto:best,w_360,f_auto,dpr_auto,e_unsharp_mask:50/",
+        "navImage": "c_limit,q_auto:best,w_360,dpr_auto,f_auto,e_unsharp_mask:50/",
+        "geImage": "c_limit,q_auto:best,w_1200,dpr_auto,f_auto/",
+        "preview": "c_limit,q_auto:best,w_360,dpr_auto,f_auto,e_unsharp_mask:50/",
         "thumbnail": "c_limit,q_auto:best,w_100,dpr_auto,f_auto,e_unsharp_mask:50/",
         "full": "1200px/",
         "mapCenter": {
