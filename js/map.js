@@ -35,6 +35,31 @@ var db = firebase.firestore();
 var storage = firebase.storage();
 var storageRef = firebase.storage().ref();
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
+// var uiConfig = {
+//   callbacks: {
+//     // Called when the user has been successfully signed in.
+//     signInSuccess: function(user, credential, redirectUrl) {
+//       $("#LoginModal").modal("close");
+//       // areWeLoggedin();
+//       // Do not redirect.
+//       console.log(redirectUrl);
+//       return false;
+//     }
+//   },
+//   signInFlow: "popup",
+//   signInSuccessUrl: "/map.html",
+//   signInOptions: [
+//     // Leave the lines as is for the providers you want to offer your users.
+//     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+//     // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+//     // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+//     // firebase.auth.GithubAuthProvider.PROVIDER_ID,
+//     firebase.auth.EmailAuthProvider.PROVIDER_ID
+//     // firebase.auth.PhoneAuthProvider.PROVIDER_ID
+//   ],
+//   // Terms of service url.
+//   tosUrl: "/index.html"
+// };
 var uiConfig = {
   callbacks: {
     // Called when the user has been successfully signed in.
@@ -49,14 +74,30 @@ var uiConfig = {
   signInFlow: "popup",
   signInSuccessUrl: "/map.html",
   signInOptions: [
+    //{
+      // Google provider must be enabled in Firebase Console to support one-tap
+      // sign-up.
+      //provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      // Required to enable this provider in one-tap sign-up.
+     // authMethod: 'https://accounts.google.com',
+      // Required to enable ID token credentials for this provider.
+      // This can be obtained from the Credentials page of the Google APIs
+      // console.
+      //clientId: 'xxxxxxxxxxxxxxxxx.apps.googleusercontent.com'
+   // },
     // Leave the lines as is for the providers you want to offer your users.
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
     // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
     // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
     // firebase.auth.GithubAuthProvider.PROVIDER_ID,
-    firebase.auth.EmailAuthProvider.PROVIDER_ID
+    {
+      provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+      requireDisplayName: false
+    }
+    // firebase.auth.EmailAuthProvider.PROVIDER_ID
     // firebase.auth.PhoneAuthProvider.PROVIDER_ID
   ],
+  credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
   // Terms of service url.
   tosUrl: "/index.html"
 };

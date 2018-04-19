@@ -1,6 +1,8 @@
-importScripts(
-  "https://storage.googleapis.com/workbox-cdn/releases/3.0.0-beta.0/workbox-sw.js"
-);
+// importScripts(
+//   "https://storage.googleapis.com/workbox-cdn/releases/3.0.0-beta.0/workbox-sw.js"
+// );
+
+importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.1.0/workbox-sw.js");
 
 if (workbox) {
   console.log(`Yay! Workbox is loaded 🎉`);
@@ -19,7 +21,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "css/map.css",
-    "revision": "3ada8806bd389b42f3b96b780261fef4"
+    "revision": "f152609dc75405c3f368cde52e874df8"
   },
   {
     "url": "css/materialize.min.css",
@@ -87,7 +89,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "js/map.js",
-    "revision": "e0ec2d639cc0b275ae5b4e7694e71bac"
+    "revision": "d30aaec9441fe076950fb70f37f93cbd"
   },
   {
     "url": "js/markerclusterer.js",
@@ -116,6 +118,10 @@ workbox.precaching.precacheAndRoute([
   {
     "url": "manifest.json",
     "revision": "d3fd5388897d36b844465339a6431e00"
+  },
+  {
+    "url": "workbox-config.js",
+    "revision": "b0433dc6b4d96f1ff073c30b4a95640c"
   },
   {
     "url": "fonts/roboto/Roboto-Bold.woff",
@@ -158,7 +164,6 @@ workbox.precaching.precacheAndRoute([
     "revision": "1f35e6a11d27d2e10d28946d42332dc5"
   }
 ]);
-
 
  workbox.routing.registerRoute(
   new RegExp("https://fonts.(?:googleapis|gstatic).com/(.*)"),

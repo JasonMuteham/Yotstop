@@ -342,6 +342,9 @@ a.disabled {
 .regular {
   font-size: 2.5rem !important;
 }
+#mouseover{
+  cursor: pointer;
+}
 .mouseover-img {
   width: 100px;
   height: 60px;

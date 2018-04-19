@@ -1,6 +1,8 @@
-importScripts(
-  "https://storage.googleapis.com/workbox-cdn/releases/3.0.0-beta.0/workbox-sw.js"
-);
+// importScripts(
+//   "https://storage.googleapis.com/workbox-cdn/releases/3.0.0-beta.0/workbox-sw.js"
+// );
+
+importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.1.0/workbox-sw.js");
 
 if (workbox) {
   console.log(`Yay! Workbox is loaded 🎉`);
@@ -9,7 +11,6 @@ if (workbox) {
 }
 
 workbox.precaching.precacheAndRoute([]);
-
 
  workbox.routing.registerRoute(
   new RegExp("https://fonts.(?:googleapis|gstatic).com/(.*)"),
