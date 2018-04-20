@@ -1,0 +1,29 @@
+{
+  "name": "YotStop - Anchor, Moor & Explore",
+  "short_name": "YotStop",
+  "start_url": "/map.html",
+  "display": "standalone",
+  "background_color": "#2962ff",
+  "theme_color": "#1a237e",
+  "description": "Where to stop and mess about on boats!",
+  "dir": "ltr",
+  "lang": "en-US",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icons/res/mipmap-mdpi/ic_launcher_yotstop.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "/icons/res/mipmap-hdpi/ic_launcher_yotstop.png",
+      "type": "image/png",
+      "sizes": "72x72"
+    },
+    {
+      "src": "/icons/res/mipmap-xhdpi/ic_launcher_yotstop.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    }
+  ]
+}

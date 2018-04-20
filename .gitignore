@@ -1,17 +1,12 @@
 
 *.zip
 *.jpg
-*.jpg
-*.jpg
-*.apk
 .firebaserc
 *.code-workspace
 firebase-debug.log
 *.bak
 data/UK.json
 firebase.json
-functions/node_modules/**
-storage-test.html
 *.png
 icons/**
 fonts/**

@@ -21,7 +21,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "css/map.css",
-    "revision": "f152609dc75405c3f368cde52e874df8"
+    "revision": "fd90fbe32d67d5124d58497e340f9640"
   },
   {
     "url": "css/materialize.min.css",
@@ -33,51 +33,19 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "data/map.json",
-    "revision": "e1ce6dc7171b9628be38dba076bc93b9"
+    "revision": "6c4b9621e8ea01a9ee8c301d358a27bd"
   },
   {
     "url": "data/UK.json",
-    "revision": "a62d4a66d79acaafa4889b00d18d0985"
+    "revision": "cc957444be1811b6f50e5e1a4493b656"
   },
   {
-    "url": "images/1920px/boy-on-bow.jpg",
-    "revision": "3b22eeb7ff0219dae814eff427fb9e52"
-  },
-  {
-    "url": "images/1920px/cover-1.jpg",
-    "revision": "617bc2e80f711a38c42cf4cdb96a31ae"
-  },
-  {
-    "url": "images/1920px/cover-2.jpg",
-    "revision": "3b22eeb7ff0219dae814eff427fb9e52"
-  },
-  {
-    "url": "images/1920px/fort-darnet.jpg",
-    "revision": "f6e8731bd10d3429e932b5588cb03301"
-  },
-  {
-    "url": "images/1920px/old-lady.jpg",
-    "revision": "86bf46b95a8c050bbe282bfed05c7768"
-  },
-  {
-    "url": "images/1920px/pyefleet-creek-1.jpg",
-    "revision": "c80aa2fd413d7d65b306c502763d5d0f"
-  },
-  {
-    "url": "images/1920px/red-sands-fort.jpg",
-    "revision": "013692a67cf185d3a08ca71924dc9da5"
-  },
-  {
-    "url": "images/1920px/sealand.jpg",
-    "revision": "51711b3b11409ce261c31e6e1416bd00"
-  },
-  {
-    "url": "images/1920px/sharfleet-creek.jpg",
-    "revision": "1546148f4e989dcf68d20406a7790ee7"
+    "url": "index.html",
+    "revision": "ce034b8fc0b7a585db578f07a40489b7"
   },
   {
     "url": "js/admin.js",
-    "revision": "18b1b2bba4a7be460933f6b4db01853a"
+    "revision": "93bc9357f24e10fd640bd4b87953ab2f"
   },
   {
     "url": "js/bootstrap.min.js",
@@ -89,11 +57,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "js/map.js",
-    "revision": "d30aaec9441fe076950fb70f37f93cbd"
+    "revision": "06d8c97e9f5077e56219a1092dabef78"
   },
   {
     "url": "js/markerclusterer.js",
-    "revision": "7773b3a186881f7596d694e85fb7d552"
+    "revision": "1964cf0abf02d86398f3153fd305657e"
   },
   {
     "url": "js/materialize.min.js",
@@ -101,67 +69,23 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "js/servicing.js",
-    "revision": "b3d313e406274ed3aca5f5c5516a86d1"
+    "revision": "865be1b6a8493eab1d391684c743520c"
   },
   {
     "url": "js/vue.js",
-    "revision": "cc32785305fbdc3e117e9ec90ef262fb"
+    "revision": "d0442fb88cab3b758d8c5effa3bccca8"
   },
   {
     "url": "js/yotstop.js",
-    "revision": "4ba034d6e569a7df41220117dded6eef"
+    "revision": "a01fcb73ca7470096ca08a583c988e3d"
   },
   {
     "url": "main.css",
-    "revision": "357448b2530c2bfc912229f82d199b9b"
+    "revision": "c9d2e7110e653a6f09c12d69ab784252"
   },
   {
     "url": "manifest.json",
     "revision": "d3fd5388897d36b844465339a6431e00"
-  },
-  {
-    "url": "workbox-config.js",
-    "revision": "b0433dc6b4d96f1ff073c30b4a95640c"
-  },
-  {
-    "url": "fonts/roboto/Roboto-Bold.woff",
-    "revision": "eed9aab5449cc9c8430d7d258108f602"
-  },
-  {
-    "url": "fonts/roboto/Roboto-Bold.woff2",
-    "revision": "c0f1e4a4fdfb8048c72e86aadb2a247d"
-  },
-  {
-    "url": "fonts/roboto/Roboto-Light.woff",
-    "revision": "ea36cd9a0e9eee97012a67b8a4570d7b"
-  },
-  {
-    "url": "fonts/roboto/Roboto-Light.woff2",
-    "revision": "3c37aa69cd77e6a53a067170fa8fe2e9"
-  },
-  {
-    "url": "fonts/roboto/Roboto-Medium.woff",
-    "revision": "cf4d60bc0b1d4b2314085919a00e1724"
-  },
-  {
-    "url": "fonts/roboto/Roboto-Medium.woff2",
-    "revision": "1561b424aaef2f704bbd89155b3ce514"
-  },
-  {
-    "url": "fonts/roboto/Roboto-Regular.woff",
-    "revision": "3cf6adf61054c328b1b0ddcd8f9ce24d"
-  },
-  {
-    "url": "fonts/roboto/Roboto-Regular.woff2",
-    "revision": "5136cbe62a63604402f2fedb97f246f8"
-  },
-  {
-    "url": "fonts/roboto/Roboto-Thin.woff",
-    "revision": "44b78f142603eb69f593ed4002ed7a4a"
-  },
-  {
-    "url": "fonts/roboto/Roboto-Thin.woff2",
-    "revision": "1f35e6a11d27d2e10d28946d42332dc5"
   }
 ]);
 
