@@ -1,0 +1,104 @@
+.tidetimes-widget {
+  min-height: 20px;
+  width: 260px;
+  border: solid 1px #c5d4e3;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  padding: 15px;
+  padding-bottom: 15px;
+  text-decoration: none;
+  color: #3d3c3c;
+  font-family: 'Lato', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.tidetimes-widget a {
+  border: 0px;
+  color: #4f4d4b;
+  text-decoration: none;
+}
+
+.tidetimes-widget > h1.tidetimes-title {
+  color: #4f4d4b;
+  font-size: 20px;
+  line-height: 20px;
+  padding: 0 0 5px;
+  margin: 0;
+  letter-spacing: -0.25px;
+}
+
+.tidetimes-widget p.tidetimes-disclaimer, .tidetimes-widget p.tidetimes-cite {
+  color: #807c78;
+  font-size: 11px;
+  line-height: 12px;
+  margin-bottom: 20px;
+  margin: 0 0 13px;
+}
+
+.tidetimes-widget p.tidetimes-disclaimer > a, .tidetimes-widget p.tidetimes-cite > a{
+  text-decoration: underline;
+}
+
+.tidetimes-widget .tidetimes-forecast-date a {
+  color: #2b6399;
+  font-size: 16px;
+  line-height: 16px;
+  margin-bottom: 3px;
+  font-weight: 600;
+}
+
+.tidetimes-widget .tidetimes-date-for {
+  display: none;
+}
+
+.tidetimes-widget  p.tidetimes-cite {
+  font-size: 10px;
+}
+
+.tidetimes-widget .tidetimes-times dl {
+}
+
+.tidetimes-widget .tidetimes-times dl dd {
+  margin: 10px 0;
+}
+
+.tidetimes-widget .tidetimes-times dl dd dl{
+  margin: 0;
+}
+
+.tidetimes-widget .tidetimes-times dl dd dt, .tidetimes-widget .tidetimes-times dl dd dd {
+  display: inline-block;
+  margin: 0 0 5px;
+}
+
+.tidetimes-widget .tidetimes-times dl dd dt {
+  width: 70px;
+}
+
+.tidetimes-widget .tidetimes-times dl dd dd {
+  margin-left: 10px;
+  width: 140px;
+  font-weight: bold;
+}
+
+.tidetimes-widget .hi {
+  color: #4f4d4b;
+}
+
+.tidetimes-widget .low {
+  color: #2b6399;
+}
+
+.tidetimes-widget .tidetimes-logo {
+  display: block;
+  height: 60px;
+  width: 220px;
+  background: url('http://tidetimes.co.uk/assets/logo.svg') center bottom no-repeat #fff;
+  background-size: 100%;
+  margin-top: 3px;
+  text-indent: -99999px;
+}

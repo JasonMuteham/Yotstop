@@ -35,31 +35,7 @@ var db = firebase.firestore();
 var storage = firebase.storage();
 var storageRef = firebase.storage().ref();
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
-// var uiConfig = {
-//   callbacks: {
-//     // Called when the user has been successfully signed in.
-//     signInSuccess: function(user, credential, redirectUrl) {
-//       $("#LoginModal").modal("close");
-//       // areWeLoggedin();
-//       // Do not redirect.
-//       console.log(redirectUrl);
-//       return false;
-//     }
-//   },
-//   signInFlow: "popup",
-//   signInSuccessUrl: "/map.html",
-//   signInOptions: [
-//     // Leave the lines as is for the providers you want to offer your users.
-//     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-//     // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-//     // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-//     // firebase.auth.GithubAuthProvider.PROVIDER_ID,
-//     firebase.auth.EmailAuthProvider.PROVIDER_ID
-//     // firebase.auth.PhoneAuthProvider.PROVIDER_ID
-//   ],
-//   // Terms of service url.
-//   tosUrl: "/index.html"
-// };
+
 var uiConfig = {
   callbacks: {
     // Called when the user has been successfully signed in.

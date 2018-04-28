@@ -32,6 +32,10 @@ workbox.precaching.precacheAndRoute([
     "revision": "ce8f4cb1d55ba2913034afcec6b421a5"
   },
   {
+    "url": "css/widget.css",
+    "revision": "5ff4950f6d9fd5167254ab663ba28cea"
+  },
+  {
     "url": "data/map.json",
     "revision": "6c4b9621e8ea01a9ee8c301d358a27bd"
   },
@@ -40,8 +44,36 @@ workbox.precaching.precacheAndRoute([
     "revision": "cc957444be1811b6f50e5e1a4493b656"
   },
   {
-    "url": "index.html",
-    "revision": "ce034b8fc0b7a585db578f07a40489b7"
+    "url": "images/1920px/boy-on-bow.jpg",
+    "revision": "3b22eeb7ff0219dae814eff427fb9e52"
+  },
+  {
+    "url": "images/1920px/cover-1.jpg",
+    "revision": "617bc2e80f711a38c42cf4cdb96a31ae"
+  },
+  {
+    "url": "images/1920px/fort-darnet.jpg",
+    "revision": "f6e8731bd10d3429e932b5588cb03301"
+  },
+  {
+    "url": "images/1920px/old-lady.jpg",
+    "revision": "86bf46b95a8c050bbe282bfed05c7768"
+  },
+  {
+    "url": "images/1920px/pyefleet-creek-1.jpg",
+    "revision": "c80aa2fd413d7d65b306c502763d5d0f"
+  },
+  {
+    "url": "images/1920px/red-sands-fort.jpg",
+    "revision": "013692a67cf185d3a08ca71924dc9da5"
+  },
+  {
+    "url": "images/1920px/sealand.jpg",
+    "revision": "51711b3b11409ce261c31e6e1416bd00"
+  },
+  {
+    "url": "images/1920px/sharfleet-creek.jpg",
+    "revision": "1546148f4e989dcf68d20406a7790ee7"
   },
   {
     "url": "js/admin.js",
@@ -57,7 +89,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "js/map.js",
-    "revision": "06d8c97e9f5077e56219a1092dabef78"
+    "revision": "d13a785e694facebf5fb6ed2dee02feb"
   },
   {
     "url": "js/markerclusterer.js",

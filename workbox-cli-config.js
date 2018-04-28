@@ -6,6 +6,7 @@ module.exports = {
   swSrc: "serviceworker-base.js",
   swDest: "serviceworker.js",
   globIgnores: [
+    "index.html",
     "map.html", //stop add to home screen as it breaks auth
     "serviceworker.js",
     "serviceworker-base.js",
